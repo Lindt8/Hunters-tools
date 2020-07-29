@@ -1,3 +1,5 @@
+#### Online documentation: [http://lindt8.github.io/Hunters-tools/](http://lindt8.github.io/Hunters-tools/)
+
 # Hunter's tools
 
 This Python module contains a collection of my functions which I often utilize in other scripts and/or are just generally useful and could possibly be useful in the future.  It spans a wide range of applications and has been developed over many years of my usage of Python.  Broadly speaking, it is broken down into general purpose functions, science and engineering-related functions, and plotting-relevant functions.
