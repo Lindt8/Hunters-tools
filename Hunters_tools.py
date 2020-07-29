@@ -1,7 +1,7 @@
 '''
 
 This Python module contains a collection of my functions which I often utilize in 
-other scripts and/or are just generally useful and could possibly be useful in the future..
+other scripts and/or are just generally useful and could possibly be useful in the future.
 
 The functions contained in this module and brief descriptions of their functions are included below.
 
