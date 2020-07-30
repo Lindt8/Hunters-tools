@@ -7,59 +7,59 @@ The functions contained in this module and brief descriptions of their functions
 
 ### General Purpose Functions 
 
-- find                            : return index of the first instance of a value in a list
-- scan_folder_for_file            : determine if a file is present a folder or any of its subfolders
-- slugify                         : converts a string to a characterset usable in filenames
-- hex_to_rgb                      : converts a hexidecimal color string to a RGB tuple
-- round_up_to_next_multiple       : rounds a number up to its next multiple of some value
-- round_down_to_next_multiple     : rounds a number down to its next multiple of some value
-- humansize_from_bytes            : converts a number in bytes to a more readable unit (kB, MB, GB, etc.)
-- table_array_generator           : generates an array of table values and headers 
-- Excel_table_generator           : generates an Excel-formatted (tab-delimited) table string
-- Latex_table_generator           : generates a LaTeX-formatted table string
+- `find`                            : return index of the first instance of a value in a list
+- `scan_folder_for_file`            : determine if a file is present a folder or any of its subfolders
+- `slugify`                         : converts a string to a characterset usable in filenames
+- `hex_to_rgb`                      : converts a hexidecimal color string to a RGB tuple
+- `round_up_to_next_multiple`       : rounds a number up to its next multiple of some value
+- `round_down_to_next_multiple`     : rounds a number down to its next multiple of some value
+- `humansize`                       : converts a number in bytes to a more readable unit (kB, MB, GB, etc.)
+- `table_array_generator`           : generates an array of table values and headers 
+- `Excel_table_generator`           : generates an Excel-formatted (tab-delimited) table string
+- `Latex_table_generator`           : generates a LaTeX-formatted table string
 
 ### Science/Engineering Functions 
 
-- time_str_to_sec_multiplier      : determine multiplier to convert a time unit to seconds
-- seconds_to_dhms                 : convert a time in seconds to a string of human-relatable time units
-- seconds_to_ydhms                : convert a time in seconds to a string of human-relatable time units (also with years)
-- SI_prefix_converter             : returns a multiplier to convert from one SI prefix to another
-- Element_Z_to_Sym                : returns elemental symbol provided the atomic number Z
-- Element_Sym_to_Z                : returns an atomic number Z provided the elemental symbol
-- Element_ZorSym_to_name          : returns a string of the name of an element provided its atomic number Z or symbol
-- Element_ZorSym_to_mass          : returns the average atomic mass of an element provided its atomic number Z or symbol
-- nuclide_to_Latex_form           : form a LaTeX-formatted string of a nuclide provided its information
-- nuclide_plain_str_to_latex_str  : convert a plaintext string for a nuclide to a LaTeX formatted raw string
-- nuclide_plain_str_ZZZAAAM       : convert a plaintext string for a nuclide to an integer ZZZAAAM value
-- relative_error_to_N             : convert a relative uncertainty to an "N" value (analogous to number of counts)
-- N_to_relative_error             : convert an "N" value (analogous to number of counts) to a relative uncertainty
-- fractional_error                : calculate the fractional error of a test value relative to a reference value
-- fractional_difference           : calculate the fractional difference between two values (of equal merit)
-- absolute_difference             : calculate the difference between a reference and test value
-- quotient                        : safely divide two values, returning 0 if either the numerator or denominator are 0
-- Lorentz_gamma                   : determine the Lorentz variable gamma from a velocity in cm/ns
-- Lorentz_B2_from_Tn              : determine the Lorentz variable beta^2 from a neutron kinetic energy in MeV
-- dist                            : Cartesian distance between two N-dimensional points
-- curvature                       : find the curvature (N-2 values) of N 2D Cartesian points
-- circumradius                    : find the circumradius of 3 2D Cartesian points
-- circumcenter                    : find the circumcenter of 3 2D Cartesian points
-- circ_solid_angle                : calculate solid angle of a source as seen by a detector, provided coordinates for all
-- rebinner                        : rebin a set of y-data to a new x-binning structure (edges not necessarily preserved)
-- calc_GCR_intensity              : calculate GCR intensity for a provided solar modulation, ion, and energy
-- assemble_GCR_flux               : assemble GCR spectra for desired elements/ions
-- ICRP116_effective_dose_coeff    : returns effective dose of a mono-energetic particle of some species and some geometry
-- fetch_MC_material               : returns a string of a formatted material for MCNP or PHITS
+- `time_str_to_sec_multiplier`      : determine multiplier to convert a time unit to seconds
+- `seconds_to_dhms`                 : convert a time in seconds to a string of human-relatable time units
+- `seconds_to_ydhms`                : convert a time in seconds to a string of human-relatable time units (also with years)
+- `SI_prefix_converter`             : returns a multiplier to convert from one SI prefix to another
+- `Element_Z_to_Sym`                : returns elemental symbol provided the atomic number Z
+- `Element_Sym_to_Z`                : returns an atomic number Z provided the elemental symbol
+- `Element_ZorSym_to_name`          : returns a string of the name of an element provided its atomic number Z or symbol
+- `Element_ZorSym_to_mass`          : returns the average atomic mass of an element provided its atomic number Z or symbol
+- `nuclide_to_Latex_form`           : form a LaTeX-formatted string of a nuclide provided its information
+- `nuclide_plain_str_to_latex_str`  : convert a plaintext string for a nuclide to a LaTeX formatted raw string
+- `nuclide_plain_str_ZZZAAAM`       : convert a plaintext string for a nuclide to an integer ZZZAAAM value
+- `relative_error_to_N`             : convert a relative uncertainty to an "N" value (analogous to number of counts)
+- `N_to_relative_error`             : convert an "N" value (analogous to number of counts) to a relative uncertainty
+- `fractional_error`                : calculate the fractional error of a test value relative to a reference value
+- `fractional_difference`           : calculate the fractional difference between two values (of equal merit)
+- `absolute_difference`             : calculate the difference between a reference and test value
+- `quotient`                        : safely divide two values, returning 0 if either the numerator or denominator are 0
+- `Lorentz_gamma`                   : determine the Lorentz variable gamma from a velocity in cm/ns
+- `Lorentz_B2_from_Tn`              : determine the Lorentz variable beta^2 from a neutron kinetic energy in MeV
+- `dist`                            : Cartesian distance between two N-dimensional points
+- `curvature`                       : find the curvature (N-2 values) of N 2D Cartesian points
+- `circumradius`                    : find the circumradius of 3 2D Cartesian points
+- `circumcenter`                    : find the circumcenter of 3 2D Cartesian points
+- `circ_solid_angle`                : calculate solid angle of a source as seen by a detector, provided coordinates for all
+- `rebinner`                        : rebin a set of y-data to a new x-binning structure (edges not necessarily preserved)
+- `calc_GCR_intensity`              : calculate GCR intensity for a provided solar modulation, ion, and energy
+- `assemble_GCR_flux`               : assemble GCR spectra for desired elements/ions
+- `ICRP116_effective_dose_coeff`    : returns effective dose of a mono-energetic particle of some species and some geometry
+- `fetch_MC_material`               : returns a string of a formatted material for MCNP or PHITS
 
 
 ### Plotting-related Functions 
 
-- generate_line_bar_coordinates   : convert a set of bin-wise data to line coordinates to plot normally looking like bars
-- colors_list_6                   : return 1 of 6 color values from ColorBrewer
-- colors_list_12                  : return 1 of 12 color values from ColorBrewer
-- colors_list_10                  : return 1 of 10 color values from the new matplotlib default from v3 1 1
-- makeErrorBoxes                  : draw uncertainties as a box surrounding a point (can be used with/instead of crosshair-style error bars)
-- fancy_plot                      : very comprehensive plotter for 2D datasets, an accumulation of all of my past plotting commands/settings
-- fancy_3D_plot                   : very comprehensive plotter for 3D datasets on 3D axes, an accumulation of all of my past plotting commands/settings
+- `generate_line_bar_coordinates`   : convert a set of bin-wise data to line coordinates to plot normally looking like bars
+- `colors_list_6`                   : return 1 of 6 color values from ColorBrewer
+- `colors_list_12`                  : return 1 of 12 color values from ColorBrewer
+- `colors_list_10`                  : return 1 of 10 color values from the new matplotlib default from v3 1 1
+- `makeErrorBoxes`                  : draw uncertainties as a box surrounding a point (can be used with/instead of crosshair-style error bars)
+- `fancy_plot`                      : very comprehensive plotter for 2D datasets, an accumulation of all of my past plotting commands/settings
+- `fancy_3D_plot`                   : very comprehensive plotter for 3D datasets on 3D axes, an accumulation of all of my past plotting commands/settings
 
 '''
 '''
@@ -112,11 +112,11 @@ def find(target, myList):
         Search for and return the index of the first occurance of a value in a list.
         
     Inputs:
-        - target = value to be searched for
-        - myList = list of values 
+        - `target` = value to be searched for
+        - `myList` = list of values 
         
     Output:
-        - index of first instance of 'target' in 'myList'
+        - index of first instance of `target` in `myList`
     '''
     for i in range(len(myList)):
         if myList[i] == target:
@@ -128,14 +128,14 @@ def scan_folder_for_file(path,filename):
         Provided a path to a folder and a filename, determine if the file is present in the folder or any of its subfolders
     
     Dependencies:
-        import os
+        `import os`
     
     Inputs:
-        - path = string, path to folder (containing files, folders, and/or nested subfolders)
-        - filename = string, filename to search for in folders
+        - `path` = string, path to folder (containing files, folders, and/or nested subfolders)
+        - `filename` = string, filename to search for in folders
         
     Outputs:
-        - logical variable True or False stating whether the filename exists anywhere in the specified path and it's subdirectories
+        - logical variable `True` or `False` stating whether the filename exists anywhere in the specified path and it's subdirectories
     '''
     file_found = False
     #for entry in os.scandir(final_exp_folder_path):
@@ -153,14 +153,14 @@ def slugify(value):
         This is useful for quickly converting TeX strings, plot titles, etc. into legal filenames.
     
     Dependencies:
-        - import unicodedata as ud
-        - import re
+        - `import unicodedata as ud`
+        - `import re`
     
     Input:
-        - value = string to be "slugified"
+        - `value` = string to be "slugified"
     
     Output:
-        - 'value' converted to a string only consisting of characters legal in filenames
+        - `value` converted to a string only consisting of characters legal in filenames
     '''
     old_value = value
     value = str(ud.normalize('NFKD', value).encode('ascii', 'ignore'))
@@ -172,12 +172,12 @@ def slugify(value):
 def hex_to_rgb(hexcol,opacity=1.0,out_of_one=False):
     '''
     Description:
-        Return (red, green, blue, opacity) for the color given as #rrggbb and optional opacity 
+        Return (red, green, blue, opacity) for the color given as `#rrggbb` and optional opacity 
         
     Inputs:
-        - hexcol = string of hexidecimal color formatted as '#rrggbb'
-        - opacity = float between 0 and 1 specifying color opacity (D=1.0)
-        - out_of_one = bool which toggles whether output will be out of 255 (default, =False) or 1 (=True)
+        - `hexcol` = string of hexidecimal color formatted as `#rrggbb`
+        - `opacity` = float between 0 and 1 specifying color opacity (D=1.0)
+        - `out_of_one` = bool which toggles whether output will be out of 255 (default, =`False`) or 1 (=`True`)
                      useful if you'd rather have white be (255,255,255) (default) or (1,1,1)
     Outputs:
         - tuple containing RGB values and opacity,  (red, green, blue, opacity)
@@ -198,14 +198,14 @@ def round_up_to_next_multiple(value,mult=1):
         Round a number up to its nearest multiple of some value
     
     Dependencies:
-        import numpy as np
+        `import numpy as np`
     
     Input:
-        - value = number to be rounded
-        - mult = multiple to be rounded to (D=1, next higher integer)
+        - `value` = number to be rounded
+        - `mult` = multiple to be rounded to (D=1, next higher integer)
     
     Output:
-        - 'value' rounded up to its nearest multiple of 'mult'
+        - `value` rounded up to its nearest multiple of `mult`
     '''
     round_val = np.ceil(value/mult)*mult 
     if isinstance(mult,int) or (abs(round_val)%1<0.01): round_val = int(round_val)
@@ -217,14 +217,14 @@ def round_down_to_next_multiple(value,mult=1):
         Round a number down to its nearest multiple of some value
     
     Dependencies:
-        import numpy as np
+        `import numpy as np`
     
     Input:
-        - value = number to be rounded
-        - mult = multiple to be rounded to (D=1, next lower integer)
+        - `value` = number to be rounded
+        - `mult` = multiple to be rounded to (D=1, next lower integer)
     
     Output:
-        - 'value' rounded down to its nearest multiple of 'mult'
+        - `value` rounded down to its nearest multiple of `mult`
     '''
     round_val = np.floor(value/mult)*mult 
     if isinstance(mult,int) or (abs(round_val)%1<0.01): round_val = int(round_val)
@@ -237,10 +237,10 @@ def humansize(nbytes):
         Provided an integer describing a number of bytes, return a string in more human-readable units
     
     Dependencies:
-        import numpy as np
+        `import numpy as np`
     
     Input:
-        - nbytes = integer number of bytes (B)
+        - `nbytes` = integer number of bytes (B)
     
     Output:
         - string containing the number converted to a human-readable number in *B
@@ -260,7 +260,7 @@ def table_array_generator(core_table,row_headers=None,row_header_spans=None,colu
         Generates a properly populated array which can be easily converted to a table.
     
     Dependencies:
-        import numpy as np
+        `import numpy as np`
     
     Notes:
     
@@ -271,22 +271,22 @@ def table_array_generator(core_table,row_headers=None,row_header_spans=None,colu
     Inputs:
        (required)
        
-       - core_table = an RxC array (number of rows x number of columns) or equivalent list of table values constituting
+       - `core_table` = an RxC array (number of rows x number of columns) or equivalent list of table values constituting
                       the core portion of the table composed of 1x1 cell elements
     
     Inputs:
        (optional)
        
-       - row_headers = A list (or list of lists) of row headers; it must be accompanied by the below variable:
-       - row_header_spans = A list (or list of lists) of the number of rows each row header spans.  If these are to
+       - `row_headers` = A list (or list of lists) of row headers; it must be accompanied by the below variable:
+       - `row_header_spans` = A list (or list of lists) of the number of rows each row header spans.  If these are to
                       be uniform for all entries, a single value (or list of single values) may be provided instead.
-       - column_headers = A list (or list of lists) of column headers; it must be accompanied by the below variable:
-       - column_header_spans = A list (or list of lists) of the number of column each column header spans.  If these are to
+       - `column_headers` = A list (or list of lists) of column headers; it must be accompanied by the below variable:
+       - `column_header_spans` = A list (or list of lists) of the number of column each column header spans.  If these are to
                       be uniform for all entries, a single value (or list of single values) may be provided instead.
-       - float_formatting = default formatting string for floating point numbers passed to this function (D='{:g}')
+       - `float_formatting` = default formatting string for floating point numbers passed to this function (D=`'{:g}'`)
     
     Outputs:
-       - table_array = an (R+num_col_heads)x(C+num_row_heads_
+       - `table_array` = an (R+num_col_heads)x(C+num_row_heads_
     '''
     
     core_num_rows, core_num_cols = np.shape(core_table)
@@ -402,7 +402,7 @@ def Excel_table_generator(core_table,title=None,row_headers=None,row_header_span
     Description:
     
     Dependencies:
-        - import numpy as np
+        - `import numpy as np`
     
     Notes:
         At its core, a table at minimum consists of an array of 1x1 cells.  In addition, it may be padded to
@@ -412,23 +412,23 @@ def Excel_table_generator(core_table,title=None,row_headers=None,row_header_span
     Inputs:
        (required)
        
-       - core_table = an RxC array (number of rows x number of columns) or equivalent list of table values 
+       - `core_table` = an RxC array (number of rows x number of columns) or equivalent list of table values 
                       constituting the core portion of the table composed of 1x1 cell elements
     
     Inputs:
         (optional)
         
-       - title = (optional) string to be placed above the table (D=None)
-       - row_headers = A list (or list of lists) of row headers; it must be accompanied by the below variable:
-       - row_header_spans = A list (or list of lists) of the number of rows each row header spans.  If these are to
+       - `title` = (optional) string to be placed above the table (D=`None`)
+       - `row_headers` = A list (or list of lists) of row headers; it must be accompanied by the below variable:
+       - `row_header_spans` = A list (or list of lists) of the number of rows each row header spans.  If these are to
                       be uniform for all entries, a single value (or list of single values) may be provided instead.
-       - column_headers = A list (or list of lists) of column headers; it must be accompanied by the below variable:
-       - column_header_spans = A list (or list of lists) of the number of column each column header spans.  If these are to
+       - `column_headers` = A list (or list of lists) of column headers; it must be accompanied by the below variable:
+       - `column_header_spans` = A list (or list of lists) of the number of column each column header spans.  If these are to
                       be uniform for all entries, a single value (or list of single values) may be provided instead.
-       - float_formatting = default formatting string for floating point numbers passed to this function (D='{:g}')
+       - `float_formatting` = default formatting string for floating point numbers passed to this function (D=`'{:g}'`)
        
     Outputs: 
-       - tab_str = text string containing the formatted table
+       - `tab_str` = text string containing the formatted table
     '''
     
     core_table = np.array(core_table)
@@ -462,7 +462,7 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
         other formatting and header information.
     
     Dependencies:
-        import numpy as np
+        `import numpy as np`
     
     Notes:
         At its core, a table at minimum consists of an array of 1x1 cells.  In addition, it may be padded to
@@ -472,32 +472,32 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
     Inputs:
        (required)
        
-       - core_table = an RxC array (number of rows x number of columns) or equivalent list of table values 
+       - `core_table` = an RxC array (number of rows x number of columns) or equivalent list of table values 
                       constituting the core portion of the table composed of 1x1 cell elements
     
     Inputs:
        (optional)
        
-       - title = (optional) string to be placed above the table (D=None)
-       - row_headers = A list (or list of lists) of row headers; it must be accompanied by the below variable:
-       - row_header_spans = A list (or list of lists) of the number of rows each row header spans.  If these are to
+       - `title` = (optional) string to be placed above the table (D=`None`)
+       - `row_headers` = A list (or list of lists) of row headers; it must be accompanied by the below variable:
+       - `row_header_spans` = A list (or list of lists) of the number of rows each row header spans.  If these are to
                       be uniform for all entries, a single value (or list of single values) may be provided instead.
-       - column_headers = A list (or list of lists) of column headers; it must be accompanied by the below variable:
-       - column_header_spans = A list (or list of lists) of the number of column each column header spans.  If these are to
+       - `column_headers` = A list (or list of lists) of column headers; it must be accompanied by the below variable:
+       - `column_header_spans` = A list (or list of lists) of the number of column each column header spans.  If these are to
                       be uniform for all entries, a single value (or list of single values) may be provided instead.
-       - float_formatting = default formatting string for floating point numbers passed to this function (D='{:g}')
-       - table_positioning = string of table positioning argument for LaTeX (D='[H]')
-       - label = string of table label (D = slugify(title))
-       - use_table_ruling = boolean controlling automatic use of toprule, midrule, and bottomrule (D=True)
-       - coulmn_formatting = string controlling column borders and justification (D='{ccc...ccc}' (all columns centered))
-       - hline_row_indices = list (or single) of integer row indices beneath which a hline, spanning all columns, 
-                      should be drawn (D=None) (-1 places line above very first row)
-       - cline_row_cstart_cend_indices_triplets = list of length-3 lists (or an individual length-3 list) composed of 
+       - `float_formatting` = default formatting string for floating point numbers passed to this function (D=`'{:g}'`)
+       - `table_positioning` = string of table positioning argument for LaTeX (D=`'[H]'`)
+       - `label` = string of table label (D = `slugify(title)`)
+       - `use_table_ruling` = boolean controlling automatic use of toprule, midrule, and bottomrule (D=`True`)
+       - `coulmn_formatting` = string controlling column borders and justification (D=`'{ccc...ccc}'` (all columns centered))
+       - `hline_row_indices` = list (or single) of integer row indices beneath which a hline, spanning all columns, 
+                      should be drawn (D=`None`) (-1 places line above very first row)
+       - `cline_row_cstart_cend_indices_triplets` = list of length-3 lists (or an individual length-3 list) composed of 
                       [row index, column start, column end] for the \cline{start-stop} command
-       - return_only_core_tabular_environment = boolean specifying whether the whole table (False) or just the inner 
-                      tabular environment (True) will be returned (D=False)
+       - `return_only_core_tabular_environment` = boolean specifying whether the whole table (`False`) or just the inner 
+                      tabular environment (`True`) will be returned (D=`False`)
     Outputs: 
-       - tab_str = text string containing the formatted table
+       - `tab_str` = text string containing the formatted table
     '''
     
     core_table = np.array(core_table)
@@ -655,10 +655,10 @@ def time_str_to_sec_multiplier(time_str):
         Provide a time unit and this function provides what those time units need to be multiplied by to obtain seconds.
     
     Inputs:
-        - time_str = string containing time units character(s) [s,m,h,d,y,ms,us,ns,ps,fs]
+        - `time_str` = string containing time units character(s) [s,m,h,d,y,ms,us,ns,ps,fs]
     
     Outputs:
-        - m = multiplier to convert a time of the supplied units to seconds
+        - `m` = multiplier to convert a time of the supplied units to seconds
     
     '''
     try:
@@ -693,10 +693,10 @@ def seconds_to_dhms(t_sec):
         Provide a time in seconds and obtain a string with the time in days, hours, minutes, and seconds
     
     Inputs:
-        - t_sec = a time in seconds (float or int)
+        - `t_sec` = a time in seconds (float or int)
     
     Outputs:
-        - time_str = string containing the time prettily formatted in d/h/m/s format
+        - `time_str` = string containing the time prettily formatted in d/h/m/s format
     
     '''
     m, s = divmod(t_sec, 60)
@@ -722,10 +722,10 @@ def seconds_to_ydhms(t_sec):
         Provide a time in seconds and obtain a string with the time in years, days, hours, minutes, and seconds
     
     Inputs:
-        - t_sec = a time in seconds (float or int)
+        - `t_sec` = a time in seconds (float or int)
     
     Outputs:
-        - time_str = string containing the time prettily formatted in y/d/h/m/s format
+        - `time_str` = string containing the time prettily formatted in y/d/h/m/s format
     
     '''
     m, s = divmod(t_sec, 60)
@@ -761,14 +761,14 @@ def SI_prefix_converter(SI1,SI2=''):
         find (function within the "Hunter's tools" package)
     
     Inputs:
-        - SI1 = string of SI prefix of the current value
-        - SI2 = string of the desired SI prefix of the value (D='', no SI prefix)
+        - `SI1` = string of SI prefix of the current value
+        - `SI2` = string of the desired SI prefix of the value (D=`''`, no SI prefix)
           
-          These values should be from this list:
-            ['y','z','a','f','p','n','u','m','c','d','','da','h','k','M','G','T','P','E','Z','Y']
+          These values should be selected from this list:
+            `['y', 'z', 'a', 'f', 'p', 'n', 'u', 'm', 'c', 'd', '', 'da', 'h', 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']`
     
     Outputs:
-        - m = multiplier to convert a value of SI prefix SI1 to one of SI prefix SI2
+        - `m` = multiplier to convert a value of SI prefix `SI1` to one of SI prefix `SI2`
             
     '''
     SI_prefixes = ['y','z','a','f','p','n','u','m','c','d','','da','h','k','M','G','T','P','E','Z','Y']
@@ -794,10 +794,10 @@ def Element_Z_to_Sym(Z):
         Returns elemental symbol for a provided atomic number Z        
     
     Inputs:
-        - Z = atomic number 
+        - `Z` = atomic number 
     
     Outputs:
-        - string of elemental symbol for element of atomic number Z
+        - `sym` = string of elemental symbol for element of atomic number Z
     '''
     elms = ["n ",\
             "H ","He","Li","Be","B ","C ","N ","O ","F ","Ne",\
@@ -824,13 +824,13 @@ def Element_Sym_to_Z(sym):
         Returns atomic number Z for a provided elemental symbol        
     
     Dependencies:
-        find (function within the "Hunter's tools" package)
+        `find` (function within the "Hunter's tools" package)
     
     Inputs:
-        - sym = string of elemental symbol for element of atomic number Z
+        - `sym` = string of elemental symbol for element of atomic number Z
     
     Outputs:
-        - Z = atomic number 
+        - `Z` = atomic number 
     '''
     elms = ["n ",\
             "H ","He","Li","Be","B ","C ","N ","O ","F ","Ne",\
@@ -873,10 +873,10 @@ def Element_ZorSym_to_name(Z):
         Returns an element's name provided its atomic number Z or elemental symbol        
     
     Inputs:
-        - Z = string of elemental symbol or atomic number Z
+        - `Z` = string of elemental symbol or atomic number Z
     
     Outputs:
-        - name = element name
+        - `name` = element name
     '''
     element_names = ['neutron','Hydrogen','Helium','Lithium','Beryllium','Boron','Carbon','Nitrogen','Oxygen','Fluorine',
                      'Neon','Sodium','Magnesium','Aluminium','Silicon','Phosphorus','Sulfur','Chlorine','Argon',
@@ -906,10 +906,10 @@ def Element_ZorSym_to_mass(Z):
         Returns an element's average atomic mass provided its atomic number Z or elemental symbol        
     
     Inputs:
-        - Z = string of elemental symbol or atomic number Z
+        - `Z` = string of elemental symbol or atomic number Z
     
     Outputs:
-        - A_avg = average atomic mass
+        - `A_avg` = average atomic mass
     '''
     
     average_atomic_masses = [1.008664,1.007,4.002602,6.941,9.012182,10.811,12.0107,14.0067,15.9994,18.9984032,
@@ -936,13 +936,13 @@ def nuclide_to_Latex_form(Z,A,m=''):
         Form a LaTeX-formatted string of a nuclide provided its information
     
     Dependencies:
-        Element_Z_to_Sym (function within the "Hunter's tools" package)
+        `Element_Z_to_Sym` (function within the "Hunter's tools" package)
         (only required if inputed Z is not already an elemental symbol)
     
     Inputs:
-        - Z = atomic number of nuclide (int, float, or string) or elemental symbol (string)
-        - A = atomic mass of nuclide (int, float, or string) or string to go in place of A (ex. 'nat')
-        - m = metastable state (D='', ground state); this will be appended to the end of A
+        - `Z` = atomic number of nuclide (int, float, or string) or elemental symbol (string)
+        - `A` = atomic mass of nuclide (int, float, or string) or string to go in place of A (ex. 'nat')
+        - `m` = metastable state (D='', ground state); this will be appended to the end of A
               if not a string already, it will be converted into one and appended to 'm' (ex. 1 -> 'm1')
     
     Outputs:
@@ -962,23 +962,23 @@ def nuclide_plain_str_to_latex_str(nuc_str,include_Z=False):
         Note: if you already have the Z, A, and isomeric state information determined, the "nuclide_to_Latex_form" function can be used instead
     
     Dependencies:
-        - Element_Z_to_Sym (function within the "Hunter's tools" package) (only required if include_Z = True)
+        - `Element_Z_to_Sym` (function within the "Hunter's tools" package) (only required if `include_Z = True`)
     
     Input:
         (required)
      
-       - nuc_str = string to be converted; a huge variety of formats are supported, but they all must follow the following rules:
+       - `nuc_str` = string to be converted; a huge variety of formats are supported, but they all must follow the following rules:
            + Isomeric/metastable state characters must always immediately follow the atomic mass characters.
                Isomeric state labels MUST either:
                - (1) be a single lower-case character OR 
                - (2) begin with any non-numeric character and end with a number
-           + Atomic mass numbers must be nonnegative integers OR the string "nat" (in which case no metastable states can be written)
+           + Atomic mass numbers must be nonnegative integers OR the string `"nat"` (in which case no metastable states can be written)
            + Elemental symbols MUST begin with an upper-case character
     
     Input:
        (optional)
         
-       - include_Z = True/False determining whether the nuclide's atomic number Z will be printed as a subscript beneath the atomic mass
+       - `include_Z` = `True`/`False` determining whether the nuclide's atomic number Z will be printed as a subscript beneath the atomic mass
     
     Output:
         - LaTeX-formatted raw string of nuclide
@@ -1087,10 +1087,10 @@ def nuclide_plain_str_ZZZAAAM(nuc_str):
         Converts a plaintext string of a nuclide to an integer ZZZAAAM = 10000\*Z + 10\*A + M
     
     Dependencies:
-        Element_Z_to_Sym (function within the "Hunter's tools" package)
+        `Element_Z_to_Sym` (function within the "Hunter's tools" package)
     
     Input:
-       - nuc_str = string to be converted; a huge variety of formats are supported, but they all must follow the following rules:
+       - `nuc_str` = string to be converted; a huge variety of formats are supported, but they all must follow the following rules:
            + Isomeric/metastable state characters must always immediately follow the atomic mass characters.
                Isomeric state labels MUST either:
                - (1) be a single lower-case character OR 
@@ -1216,9 +1216,9 @@ def relative_error_to_N(relerr):
     Description:
         Convert a relative uncertainty to a "N" value        
     Inputs:
-      - relerr = a relative uncertainty
+      - `relerr` = a relative uncertainty
     Outputs:
-      - N = "number of counts"-like number
+      - `N` = "number of counts"-like number
     '''
     if relerr == 0:
         N = 0
@@ -1231,9 +1231,9 @@ def N_to_relative_error(N):
     Description:
         Convert an "N" value to a relative uncertainty      
     Inputs:
-      - N = "number of counts"-like number
+      - `N` = "number of counts"-like number
     Outputs:
-      - relerr = a relative uncertainty
+      - `relerr` = a relative uncertainty
     '''
     if N == 0: # or N < 0:
         relerr = 0
@@ -1246,10 +1246,10 @@ def fractional_error(test_val,ref_val):
     Description:
         Calculate fractional error of an experimental test value relative to a reference value     
     Inputs:
-      - test_val = new/tested/experimental value (float ot int)
-      - ref_val = old/established/reference value (float or int)
+      - `test_val` = new/tested/experimental value (`float` ot `int`)
+      - `ref_val` = old/established/reference value (`float` ot `int`)
     Outputs:
-      - ferr = fractional error of the new value from the old one
+      - `ferr` = fractional error of the new value from the old one
     '''
     if ref_val != 0:
         ferr = (test_val-ref_val)/ref_val
@@ -1265,10 +1265,10 @@ def fractional_difference(v1,v2):
     Description:
         Calculate fractional difference between two values (neither of more merit than the other)     
     Inputs:
-      - v1 = first value (float or int)
-      - v2 = second value (float ot int)
+      - `v1` = first value (`float` ot `int`)
+      - `v2` = second value (`float` ot `int`)
     Outputs:
-      - fdiff = fractional difference between the two values
+      - `fdiff` = fractional difference between the two values
     '''
     if v1 != 0 and v2 != 0:
         fdiff = abs(v1-v2)/(0.5*(v1+v2))
@@ -1283,10 +1283,10 @@ def absolute_difference(test_val,ref_val):
     Description:
         Calculate absolute difference of a reference value and an experimental test value     
     Inputs:
-      - test_val = new/tested/experimental value (float ot int)
-      - ref_val = old/established/reference value (float or int)
+      - `test_val` = new/tested/experimental value (`float` ot `int`)
+      - `ref_val` = old/established/reference value (`float` ot `int`)
     Outputs:
-      - absdiff = difference of reference and test values
+      - `absdiff` = difference of reference and test values
     '''
     absdiff = ref_val-test_val
     return absdiff
@@ -1296,10 +1296,10 @@ def quotient(n,d):
     Description:
         Calculate the quotient of two value, returning 0 if either the numerator or demoninator equal zero     
     Inputs:
-      - n = numerator (float ot int)
-      - d = denominator (float or int)
+      - `n` = numerator (`float` ot `int`)
+      - `d` = denominator (`float` ot `int`)
     Outputs:
-      - q = quotient of n and d (q=n/d)
+      - `q` = quotient of `n` and `d` (`q=n/d`)
     '''
     if n != 0 and d != 0:
         q = n/d
@@ -1313,9 +1313,9 @@ def Lorentz_gamma(v):
     Description:
         Calculate the Lorentz variable gamma provided a velocity in cm/ns     
     Inputs:
-      - v = velocity in cm/ns (float ot int)
+      - `v` = velocity in cm/ns (`float` ot `int`)
     Outputs:
-      - gamma = Lorentz variable gamma
+      - `gamma` = Lorentz variable gamma
     '''
     m_n = 939.5654133 # neutron mass in MeV/c^2
     c_vac = 29979245800 # cm/s
@@ -1331,9 +1331,9 @@ def Lorentz_B2_from_Tn(Tn):
     Description:
         Calculate the Lorentz variable beta^2 provided a neutron kinetic energy in MeV     
     Inputs:
-      - Tn = neutron kinetic energy in MeV (float ot int)
+      - `Tn` = neutron kinetic energy in MeV (`float` ot `int`)
     Outputs:
-      - beta_squared = Lorentz variable beta^2
+      - `beta_squared` = Lorentz variable beta^2
     '''
     m_n = 939.5654133 # neutron mass in MeV/c^2
     c_vac = 29979245800 # cm/s
@@ -1349,12 +1349,12 @@ def dist(a,b):
     Description:
         Calculate the distance between two N-dimensional Cartesian points a and b    
     Dependencies:
-        import numpy as np
+        `import numpy as np`
     Inputs:
-      - a = length N list containing coordinates of the first point, a  (ex. [ax,ay] or [ax,ay,az])
-      - b = length N list containing coordinates of the second point, b (same format as a)
+      - `a` = length N list containing coordinates of the first point, a  (ex. [ax,ay] or [ax,ay,az])
+      - `b` = length N list containing coordinates of the second point, b (same format as a)
     Outputs:
-      - d = Cartesian distance between points a and b
+      - `d` = Cartesian distance between points a and b
     
     '''
     if len(a) != len(b):
@@ -1372,13 +1372,13 @@ def curvature(x_data,y_data):
         Calculates curvature for all interior points on a curve whose coordinates are provided
     
     Dependencies:
-        circumradius (function within the "Hunter's tools" package)
+        `circumradius` (function within the "Hunter's tools" package)
         
     Inputs:
-        - x_data = list of N x-coordinates
-        - y_data = list of N y-coordinates
+        - `x_data` = list of N x-coordinates
+        - `y_data` = list of N y-coordinates
     Outputs:
-        - curvature = list of N-2 curvature values
+        - `curvature` = list of N-2 curvature values
     '''
     curvature = []
     for i in range(1,len(x_data)-1):
@@ -1395,10 +1395,10 @@ def circumradius(xvals,yvals):
         Calculates circumradius between three 2-dimensional points
         
     Inputs:
-        - xvals = list of 3 x-coordinates
-        - yvals = list of 3 y-coordinates
+        - `xvals` = list of 3 x-coordinates
+        - `yvals` = list of 3 y-coordinates
     Outputs:
-        - R = circumradius of the three points
+        - `R` = circumradius of the three points
     '''
     x1, x2, x3, y1, y2, y3 = xvals[0], xvals[1], xvals[2], yvals[0], yvals[1], yvals[2]
     den = 2*((x2-x1)*(y3-y2)-(y2-y1)*(x3-x2))
@@ -1415,11 +1415,11 @@ def circumcenter(xvals,yvals):
         Calculates circumcenter between three 2-dimensional points
         
     Inputs:
-        - xvals = list of 3 x-coordinates
-        - yvals = list of 3 y-coordinates
+        - `xvals` = list of 3 x-coordinates
+        - `yvals` = list of 3 y-coordinates
     Outputs:
-        - x = x-coordinate of circumcenter
-        - y = y-coordinate of circumcenter
+        - `x` = x-coordinate of circumcenter
+        - `y` = y-coordinate of circumcenter
     '''
     x1, x2, x3, y1, y2, y3 = xvals[0], xvals[1], xvals[2], yvals[0], yvals[1], yvals[2]
     A = 0.5*((x2-x1)*(y3-y2)-(y2-y1)*(x3-x2))
@@ -1436,14 +1436,14 @@ def circ_solid_angle(pp,a,b,r):
     Description:
         Calculates the solid angle subtended on (circular-faced) detector from point pp [xp,yp] to two points on a detector a [xa, ya] and b [xb, yb]    
     Dependencies:
-        import numpy as np
+        `import numpy as np`
     Inputs:
-      - pp = point of emission (radiation source), N-dimensional, list of floats/ints
-      - a = point on edge of circular detector face, N-dimensional, list of floats/ints
-      - b = point on edge of circular detector face opposite a, N-dimensional, list of floats/ints
-      - r = radius of the detector (in the same units as the coordinates)
+      - `pp` = point of emission (radiation source), N-dimensional, list of floats/ints
+      - `a` = point on edge of circular detector face, N-dimensional, list of floats/ints
+      - `b` = point on edge of circular detector face opposite a, N-dimensional, list of floats/ints
+      - `r` = radius of the detector (in the same units as the coordinates)
     Outputs:
-      - omega = solid angle of source at pp as seen by a detector whose circular face has a diameter with ends at a and b
+      - `omega` = solid angle of source at pp as seen by a detector whose circular face has a diameter with ends at a and b
     
     '''
     d_pa = dist(pp,a)
@@ -1459,15 +1459,15 @@ def rebinner(output_xbins,input_xbins,input_ybins):
         The function seeks to be as generalized as possible, meaning bin sizes do not need to be consistent.
     
     Dependencies:
-        import numpy as np
+        `import numpy as np`
     
     Inputs:
-      - output_xbins = output array containing bounds of x bins of length N; first entry is leftmost bin boundary
-      - input_xbins  = input array containing bounds of x bins of length M; first entry is leftmost bin boundary
-      - input_ybins  = input array containing y values of length M-1
+      - `output_xbins` = output array containing bounds of x bins of length N; first entry is leftmost bin boundary
+      - `input_xbins`  = input array containing bounds of x bins of length M; first entry is leftmost bin boundary
+      - `input_ybins`  = input array containing y values of length M-1
     
     Outputs:
-      - output_ybins = output array containing y values of length N-1
+      - `output_ybins` = output array containing y values of length N-1
     """
     
     N = len(output_xbins)
@@ -1518,14 +1518,14 @@ def calc_GCR_intensity(Z,W,E):
         https://www.sciencedirect.com/science/article/pii/S0273117712005947?via%3Dihub
     
     Dependencies:
-        import numpy as np
+        `import numpy as np`
     
     Inputs:
-       - Z = GCR ion Z
-       - W = solar modulation parameter
-       - E = GCR ion energy (in MeV/n)
+       - `Z` = GCR ion Z
+       - `W` = solar modulation parameter
+       - `E` = GCR ion energy (in MeV/n)
     Outputs: 
-       - IOSI = ion flux in (s\*sr\*cm^2\*MeV/n)^-1
+       - `IOSI` = ion flux in (s\*sr\*cm^2\*MeV/n)^-1
     '''
     
     if Z<1 or Z>28 or W<0 or W>200:
@@ -1562,16 +1562,16 @@ def assemble_GCR_flux(W,Z_list,nEbins=1000):
         Composes a NumPy array containing GCR flux from 10 MeV/n to 1 TeV/n for each GCR ion specified
     
     Dependencies:
-        import numpy as np
-        calc_GCR_intensity (function within the "Hunter's tools" package)
+        `import numpy as np`
+        `calc_GCR_intensity` (function within the "Hunter's tools" package)
     
     Inputs:
-       - W = solar modulation parameter
-       - Z_list = list of element atomic numbers to form GCR spectra for
-       - nEbins = number of evenly-logspaced energy bins (D=1000)
+       - `W` = solar modulation parameter
+       - `Z_list` = list of element atomic numbers to form GCR spectra for
+       - `nEbins` = number of evenly-logspaced energy bins (D=1000)
        
     Outputs:
-       - GCR_flux(len(Z_list),4,nEbins) = array containing flux values in (s\*sr\*cm^2\*MeV/n)^-1 ; [emin/emid/emax/flux]
+       - `GCR_flux(len(Z_list),4,nEbins)` = array containing flux values in (s\*sr\*cm^2\*MeV/n)^-1 ; [emin/emid/emax/flux]
     '''
     GCR_flux = np.zeros((len(Z_list),4,nEbins))
     
@@ -1605,21 +1605,21 @@ def ICRP116_effective_dose_coeff(E=1.0,particle='photon',geometry='AP',interp_sc
         effective dose conversion coefficient from ICRP 116         
     
     Dependencies:
-        - import numpy as np
-        - from scipy.interpolate import CubicSpline, lagrange, interp1d
-        - find (function within the "Hunter's tools" package)
+        - `import numpy as np`
+        - `from scipy.interpolate import CubicSpline, lagrange, interp1d`
+        - `find` (function within the "Hunter's tools" package)
     
     Inputs:
-       - E = energy of the particle in MeV (D=1)
-       - particle = select particle (D='photon', options include: ['photon', 'electron', 'positron' ,'neutron' ,'proton', 'negmuon', 'posmuon', 'negpion', 'pospion', 'He3ion'])
-       - geometry = geometric arrangement (D='AP', options include: ['AP', 'PA', 'LLAT', 'RLAT', 'ROT', 'ISO', 'H\*(10)'] ('LLAT','RLAT','ROT' only available for photon, proton, and neutron))
+       - `E` = energy of the particle in MeV (D=`1`)
+       - `particle` = select particle (D=`'photon'`, options include: `['photon', 'electron', 'positron' ,'neutron' ,'proton', 'negmuon', 'posmuon', 'negpion', 'pospion', 'He3ion']`)
+       - `geometry` = geometric arrangement (D=`'AP'`, options include: `['AP', 'PA', 'LLAT', 'RLAT', 'ROT', 'ISO', 'H*(10)']` (`'LLAT'`,`'RLAT'`,`'ROT'` only available for photon, proton, and neutron))
               - Meanings: 
                AP, antero-posterior; PA, postero-anterior; LLAT, left lateral; RLAT, right lateral; ROT, rotational; ISO, isotropic.
-              - Note: 'H\*(10)' ambient dose equivalent is available for photons only
-       - interp_scale = interpolation scale (D='log' to interpolate on a log scale, options include: ['log','lin'], ICRP 74/116 suggest log-log cubic interpolation)
-       - interp_type  = interpolation method (D='cubic' to interpolate with a cubic spline, options include: ['cubic','linear'], ICRP 74/116 suggest log-log cubic interpolation)
-                                              technically, any options available for scipy.interpolate.interp1d() can be used: ['linear', 'nearest', 'zero', 'slinear', 'quadratic', 'cubic', 'previous']
-       - extrapolation_on = boolean designating whether values outside of the tabulated energies will be extrapolated (D=False)
+              - Note: `'H*(10)'` ambient dose equivalent is available for photons only
+       - `interp_scale` = interpolation scale (D=`'log'` to interpolate on a log scale, options include: `['log','lin']`, ICRP 74/116 suggest log-log cubic interpolation)
+       - `interp_type`  = interpolation method (D=`'cubic'` to interpolate with a cubic spline, options include: `['cubic','linear']`, ICRP 74/116 suggest log-log cubic interpolation)
+                                              technically, any options available for scipy.interpolate.interp1d() can be used: `['linear', 'nearest', 'zero', 'slinear', 'quadratic', 'cubic', 'previous']`
+       - `extrapolation_on` = boolean designating whether values outside of the tabulated energies will be extrapolated (D=`False`)
        
              |                      |                                                                       |
              | -------------------- | --------------------------------------------------------------------- |
@@ -1628,7 +1628,7 @@ def ICRP116_effective_dose_coeff(E=1.0,particle='photon',geometry='AP',interp_sc
              | if True  & E < E_min | f(E) is linearly interpolated between (0,0) and (E_min,f(E_min))      |
              | if True  & E > E_max | f(E) is extrapolated using the specified interpolation scale and type |
     Outputs:
-       - f = effective dose conversion coefficient in pSv*cm^2
+       - `f` = effective dose conversion coefficient in pSv*cm^2
     '''
     
     pars_list = ['photon','electron','positron','neutron','proton','negmuon','posmuon','negpion','pospion','He3ion']
@@ -1808,24 +1808,24 @@ def fetch_MC_material(matid=None,matname=None,matsource=None,concentration_type=
         Returns a materials definition string formatted for use in MCNP or PHITS
     
     Dependencies:
-        - import os
-        - import pickle
+        - `import os`
+        - `import pickle`
         - PYTHONPATH environmental variable must be set and one entry must contain the directory
                 which contains the vital "MC_tools/materials/Hunters_MC_materials.pkl" file.
     
     Inputs:
        (required to enter `matid` OR `matname`, with `matid` taking priority if conflicting)
        
-       - matid = ID number in the "Hunters_MC_materials" file
-       - matname = exact name of material in "Hunters_MC_materials" file
-       - matsource = exact source of material in "Hunters_MC_materials" file, only used when multiple
+       - `matid` = ID number in the "Hunters_MC_materials" file
+       - `matname` = exact name of material in "Hunters_MC_materials" file
+       - `matsource` = exact source of material in "Hunters_MC_materials" file, only used when multiple
                 materials have identical names
-       - concentration_type = selection between 'weight fraction' (default if no formula) and 'atom fraction' (default if formula present) to be returned
-       - particle = selection of whether natural ('photons', default) or isotopic ('neutrons') elements are used
-                Note that if "enriched" or "depleted" appears in the material's name, particle='neutrons' is set automatically.
+       - `concentration_type` = selection between `'weight fraction'` (default if no formula) and `'atom fraction'` (default if formula present) to be returned
+       - `particle` = selection of whether natural (`'photons'`, default) or isotopic (`'neutrons'`) elements are used
+                Note that if "enriched" or "depleted" appears in the material's name, particle=`'neutrons'` is set automatically.
        
     Outputs:
-       - mat_str = string containing the material's information, ready to be inserted directly into a MCNP/PHITS input deck
+       - `mat_str` = string containing the material's information, ready to be inserted directly into a MCNP/PHITS input deck
     '''
     
     if not matid and not matname:
@@ -1978,12 +1978,12 @@ def generate_line_bar_coordinates(xbins,yvals):
         Converts a set of bin boundaries and bin contents to coordinates mapping a bar plot if drawn with a line
     
     Inputs:
-      - xbins = list of length N+1 bin boundary values
-      - yvals = list of length N bin content values 
+      - `xbins` = list of length N+1 bin boundary values
+      - `yvals` = list of length N bin content values 
     
     Outputs:
-      - newx = list of length 2N + 2 of x-coordinates mapping a 'bar plot' of the input histogram data
-      - newy = list of length 2N + 2 of y-coordinates mapping a 'bar plot' of the input histogram data
+      - `newx` = list of length 2N + 2 of x-coordinates mapping a 'bar plot' of the input histogram data
+      - `newy` = list of length 2N + 2 of y-coordinates mapping a 'bar plot' of the input histogram data
     """
     if len(yvals) != (len(xbins)-1):
         pstr = 'xbins should be a list of bin edges of length one more than yvals, the values associated with the contents of each bin' + '\n'
@@ -2032,27 +2032,27 @@ def makeErrorBoxes(ax,xdata,ydata,xerror,yerror,fc='None',ec='k',alpha=1.0,lw=0.
         Generate uncertainty/error "boxes" which are overlaid on points
     
     Dependencies:
-      - import numpy as np
-      - import matplotlib.pyplot as plt
-      - from matplotlib.collections import PatchCollection
-      - from matplotlib.patches import Rectangle
+      - `import numpy as np`
+      - `import matplotlib.pyplot as plt`
+      - `from matplotlib.collections import PatchCollection`
+      - `from matplotlib.patches import Rectangle`
     
     Inputs:
        (required) 
        
-      - ax = axis handles onto which error boxes will be drawn
-      - xdata = a list/array of x data
-      - ydata = a list/array of y data
-      - xerror = a list/array of 2 lists/arrays of x absolute uncertainties as [x_lower_errors, x_upper_errors]
-      - yerror = a list/array of 2 lists/arrays of y absolute uncertainties as [y_lower_errors, y_upper_errors]
+      - `ax` = axis handles onto which error boxes will be drawn
+      - `xdata` = a list/array of x data
+      - `ydata` = a list/array of y data
+      - `xerror` = a list/array of 2 lists/arrays of x absolute uncertainties as [x_lower_errors, x_upper_errors]
+      - `yerror` = a list/array of 2 lists/arrays of y absolute uncertainties as [y_lower_errors, y_upper_errors]
     
     Inputs:
        (optional) 
        
-      - fc = face color of boxes (D=None)
-      - ec = edge color of boxes (D='k', black)
-      - alpha = opacity of box filling (D=1.0)
-      - lw = line width of box edge (D=0.5)
+      - `fc` = face color of boxes (D=`None`)
+      - `ec` = edge color of boxes (D=`'k'`, black)
+      - `alpha` = opacity of box filling (D=`1.0`)
+      - `lw` = line width of box edge (D=`0.5`)
       
     Notes:
         For best results, repeat this function twice, first rendering the edges and then a second time for the filling as shown below:
@@ -2108,21 +2108,21 @@ def fancy_plot(
         Function which makes very customizable and beautiful plots.  It is intended to be used when plotting multiple datasets at once with a legend but can also handle individual datasets
     
     Dependencies:
-      - import numpy as np
-      - import matplotlib.pyplot as plt
+      - `import numpy as np`
+      - `import matplotlib.pyplot as plt`
     
     Inputs:
       (Required)
     
-      - xdata_lists = a list containing lists/arrays of x data (or single list of xdata applied to all ydata in y_data_lists)
-      - ydata_lists = a list containing lists/arrays of y data (or single list of ydata)
+      - `xdata_lists` = a list containing lists/arrays of x data (or single list of xdata applied to all ydata in y_data_lists)
+      - `ydata_lists` = a list containing lists/arrays of y data (or single list of ydata)
       
       OR 
       
       - dictionaries (see below)
     
     Dictionaries:
-      - dictionaries = a list containing dictionary objects for each dataset to be plotted (or single dictionary object).
+      - `dictionaries` = a list containing dictionary objects for each dataset to be plotted (or single dictionary object).
       
             This provides an alternate way of providing this function with data to be plotted.  If wanting to use exclusively dictionaries, 
             set xdata_lists=None and ydata_lists=None; otherwise, the two modes may be used together.
@@ -2130,52 +2130,53 @@ def fancy_plot(
             Below are listed the input keywords for these dictionaries; where not the same as the normal variables for this function, 
             the equivalent name is provided in parentheses.
             
-            - Required: xdata (xdata_lists), ydata (ydata_lists)
-            - Optional (basic): data_label (data_labels), xerr (xerr_lists), yerr (yerr_lists), 
-                        color, alpha, linestyle, linewidth, marker, markersize, markerfacecolor, markeredgecolor, markeredgewidth,
-                        errorstyle, error_band_opacity, elinewidth, capsize 
-            - Optional (advanced): errorbox_xdata_l, errorbox_xdata_r, errorbox_ydata_l, errorbox_ydata_u, 
-                        errorbox_fc, errorbox_fa, errorbox_ec, errorbox_ea, errorbox_ew
+            - Required: `'xdata'` (xdata_lists), `'ydata'` (ydata_lists)
+            - Optional (basic): `'data_label'` (data_labels), `'xerr'` (xerr_lists), `'yerr'` (yerr_lists), 
+                        `'color'`, `'alpha'`, `'linestyle'`, `'linewidth'`, `'marker'`, `'markersize'`, 
+                        `'markerfacecolor'`, `'markeredgecolor'`, `'markeredgewidth'`,
+                        `'errorstyle'`, `'error_band_opacity'`, `'elinewidth'`, `'capsize'`
+            - Optional (advanced): `'errorbox_xdata_l'`, `'errorbox_xdata_r'`, `'errorbox_ydata_l'`, `'errorbox_ydata_u'`, 
+                        `'errorbox_fc'`, `'errorbox_fa'`, `'errorbox_ec'`, `'errorbox_ea'`, `'errorbox_ew'`
             
             For any entry omitted from a dictionary, the value provided to the function is checked first; otherwise the default value is assumed.
-            For example, for entries missing the 'color' keyword, the value provided to the color variable is used.  If it has not been changed from
+            For example, for entries missing the `'color'` keyword, the value provided to the color variable is used.  If it has not been changed from
             its default value, then the default behavior is used.
     
     Inputs:
        (Optional, basic)
        
-      - data_labels = a list of strings to be used as data labels in the legend (D=[], no legend generated)
-      - xerr_lists = a list containing lists/arrays of x data absolute uncertainties (or single list of xdata errors applied to all ydata in y_data_lists) (D=[[]], No error)
-      - yerr_lists = a list containing lists/arrays of y data absolute uncertainties (or single list of ydata errors) (D=[[]], No error)
-      - figi = figure index (D=1)
-      - title_str = string to be used as the title of the plot (D='title')
-      - x_label_str = string to be used as x-axis title (D='x-axis')
-      - y_label_str = string to be used as y-axis title (D='y-axis')
-      - x_limits = length 2 list specifying minimum and maximum x-axis bounds [xmin,xmax] (D=auto-calculated based on x_data_lists)
-      - y_limits = length 2 list specifying minimum and maximum y-axis bounds [ymin,ymax] (D=auto-calculated based on y_data_lists)
-      - x_scale = x-axis scale, either "linear", "log", "symlog", or "logit"
-      - y_scale = y-axis scale, either "linear", "log", "symlog", or "logit"
-      - color = list of color strings to be used of same length as y_data_lists (or individual color string) (D=Matplotlib default color cycle)
-      - alpha = list of (or individual) alpha values (D=1.0)
-      - linestyle = list of (or individual) strings denoting linestyle: '', '-', '--', '-.', or ':' (D='')
-      - linewidth = list of (or individual) int/float of the width of line (D=1)
-      - marker = list of (or individual) marker styles (D='.') For all options, see: https://matplotlib.org/3.1.0/api/markers_api.html
-      - markersize = list of (or individual) int/float of marker size (D=5)
-      - markerfacecolor = list of (or individual) marker face colors (D=None, use value of 'color')
-      - markeredgecolor = list of (or individual) marker edge colors (D=None, use value of 'color')
-      - markeredgewidth = list of (or individual) int/float of marker edge widths (D=None)
-      - errorstyle = list of (or individual) strings specifying how y-error is represented (D='bar-band', ['bar-band','bar','band']
-      - error_band_opacity = list of (or individual) int/float of error band opacities (D=0.15)
-      - elinewidth = list of (or individual) int/float  line width of error bar lines (D=None, use current linewidth)
-      - capsize = list of (or individual) int/float of length of the error bar caps in points (D=None)
-      - fig_width_inch = figure width in inches (D=9.5)
-      - fig_height_inch = figure height in inches (D=6.5)
-      - title_fs = title font size (D=16)
-      - axis_fs = axis label font size (D=14)
-      - f_family = string specifying font family (D='sans-serif'); options include: ['serif', 'sans-serif', 'cursive', 'fantasy', 'monospace']
-      - f_style = string specifying font style (D='normal'); options include: ['normal', 'italic', 'oblique']
-      - f_variant = string specifying font variant (D='normal'); options include: ['normal', 'small-caps']
-      - f_weight = string specifying font weight (D='normal'); options include: ['light', 'normal', 'medium', 'semibold', 'bold', 'heavy', 'black']
+      - `data_labels` = a list of strings to be used as data labels in the legend (D=`[]`, no legend generated)
+      - `xerr_lists` = a list containing lists/arrays of x data absolute uncertainties (or single list of xdata errors applied to all ydata in y_data_lists) (D=`[[]]`, No error)
+      - `yerr_lists` = a list containing lists/arrays of y data absolute uncertainties (or single list of ydata errors) (D=`[[]]`, No error)
+      - `figi` = figure index (D=`1`)
+      - `title_str` = string to be used as the title of the plot (D=`'title'`)
+      - `x_label_str` = string to be used as x-axis title (D=`'x-axis'`)
+      - `y_label_str` = string to be used as y-axis title (D=`'y-axis'`)
+      - `x_limits` = length 2 list specifying minimum and maximum x-axis bounds [xmin,xmax] (D=auto-calculated based on x_data_lists)
+      - `y_limits` = length 2 list specifying minimum and maximum y-axis bounds [ymin,ymax] (D=auto-calculated based on y_data_lists)
+      - `x_scale` = x-axis scale, either `"linear"`, `"log"`, `"symlog"`, or `"logit"`
+      - `y_scale` = y-axis scale, either `"linear"`, `"log"`, `"symlog"`, or `"logit"`
+      - `color` = list of color strings to be used of same length as y_data_lists (or individual color string) (D=Matplotlib default color cycle)
+      - `alpha` = list of (or individual) alpha values (D=`1.0`)
+      - `linestyle` = list of (or individual) strings denoting linestyle: `''`, `'-'`, `'--'`, `'-.'`, or `':'` (D=`''`)
+      - `linewidth` = list of (or individual) int/float of the width of line (D=`1`)
+      - `marker` = list of (or individual) marker styles (D=`'.'`) For all options, see: https://matplotlib.org/3.1.0/api/markers_api.html
+      - `markersize` = list of (or individual) int/float of marker size (D=`5`)
+      - `markerfacecolor` = list of (or individual) marker face colors (D=`None`, use value of `'color'`)
+      - `markeredgecolor` = list of (or individual) marker edge colors (D=`None`, use value of `'color'`)
+      - `markeredgewidth` = list of (or individual) int/float of marker edge widths (D=`None`)
+      - `errorstyle` = list of (or individual) strings specifying how y-error is represented (D=`'bar-band'`, `['bar-band','bar','band']`)
+      - `error_band_opacity` = list of (or individual) int/float of error band opacities (D=`0.15`)
+      - `elinewidth` = list of (or individual) int/float  line width of error bar lines (D=`None`, use current `linewidth`)
+      - `capsize` = list of (or individual) int/float of length of the error bar caps in points (D=`None`)
+      - `fig_width_inch` = figure width in inches (D=`9.5`)
+      - `fig_height_inch` = figure height in inches (D=`6.5`)
+      - `title_fs` = title font size (D=`16`)
+      - `axis_fs` = axis label font size (D=`14`)
+      - `f_family` = string specifying font family (D=`'sans-serif'`); options include: `['serif', 'sans-serif', 'cursive', 'fantasy', 'monospace']`
+      - `f_style` = string specifying font style (D=`'normal'`); options include: `['normal', 'italic', 'oblique']`
+      - `f_variant` = string specifying font variant (D=`'normal'`); options include: `['normal', 'small-caps']`
+      - `f_weight` = string specifying font weight (D=`'normal'`); options include: `['light', 'normal', 'medium', 'semibold', 'bold', 'heavy', 'black']`
       
       
     Inputs:
@@ -2183,47 +2184,47 @@ def fancy_plot(
        
        Legend settings
      
-      - legend_position = one of the default matplotlib legend position strings ('best','upper right','lower center','lower left',etc.) to place the legend inside the plot or
-                        'outside right' or 'outside bottom' to place the legend outside of the plot area (D='outside right', if legend is to be used)
-      - legend_anchor = legend anchor position (x=left-right position, y=bottom-top position) only used when legend position is set to one of the "outside" options
-                        (D=None which becomes (1.0,0.75) if position is 'outside right' or (0.5,-0.17) if position is 'outside bottom')
-                        Note that only one coordinate usually should be adjusted.  If using an 'outside right' legend, only the y-coordinate needs to be manipulated
-                        to scoot the legend up/down.  Likewise, for 'outside bottom' legends only the x-coordinate needs adjusting for tuning left/right position
-      - legend_ncol = number of columns in legend (D=1 in all cases except for legend_position='outside bottom' where D=len(ydata_lists))
-      - legend_alpha = alpha of legend background (D=None, auto determined by matplotlib)
-      - legend_columnspacing = column spacing of legend (D=None, auto determined by matplotlib)
+      - `legend_position` = one of the default matplotlib legend position strings (`'best'`,`'upper right'`,`'lower center'`,`'lower left'`,etc.) to place the legend inside the plot or
+                        `'outside right'` or `'outside bottom'` to place the legend outside of the plot area (D=`'outside right'`, if legend is to be used)
+      - `legend_anchor` = legend anchor position (x=left-right position, y=bottom-top position) only used when legend position is set to one of the "outside" options
+                        (D=`None` which becomes `(1.0,0.75)` if position is `'outside right'` or `(0.5,-0.17)` if position is `'outside bottom'`)
+                        Note that only one coordinate usually should be adjusted.  If using an `'outside right'` legend, only the y-coordinate needs to be manipulated
+                        to scoot the legend up/down.  Likewise, for `'outside bottom'` legends only the x-coordinate needs adjusting for tuning left/right position
+      - `legend_ncol` = number of columns in legend (D=`1` in all cases except for legend_position=`'outside bottom'` where D=`len(ydata_lists)`)
+      - `legend_alpha` = alpha of legend background (D=`None`, auto determined by matplotlib)
+      - `legend_columnspacing` = column spacing of legend (D=`None`, auto determined by matplotlib)
     
        Error boxes (can be used in addition to or in lieu of normal error bars)
      
-      - errorbox_xdata_l = a list containing lists/arrays of errorbox left widths from center (x-data lower error)  
-      - errorbox_xdata_r = a list containing lists/arrays of errorbox right widths from center (x-data upper error) 
-      - errorbox_ydata_l = a list containing lists/arrays of errorbox lower heights from center (y-data lower error)
-      - errorbox_ydata_u = a list containing lists/arrays of errorbox upper heights from center (y-data upper error)
+      - `errorbox_xdata_l` = a list containing lists/arrays of errorbox left widths from center (x-data lower error)  
+      - `errorbox_xdata_r` = a list containing lists/arrays of errorbox right widths from center (x-data upper error) 
+      - `errorbox_ydata_l` = a list containing lists/arrays of errorbox lower heights from center (y-data lower error)
+      - `errorbox_ydata_u` = a list containing lists/arrays of errorbox upper heights from center (y-data upper error)
       
           *Error boxes will only be drawn if at least one x list and one y list of the four above arrays is specified; unspecified lists will default to zero error.*
       
-      - errorbox_fc = list of (or individual) error box face color (D='k', black)
-      - errorbox_fa = list of (or individual) error box face alpha (D=0.1)
-      - errorbox_ec = list of (or individual) error box edge color (D='k', black)
-      - errorbox_ea = list of (or individual) error box edge alpha (D=1.0)
-      - errorbox_ew = list of (or individual) error box edge width (D=0.5)
+      - `errorbox_fc` = list of (or individual) error box face color (D=`'k'`, black)
+      - `errorbox_fa` = list of (or individual) error box face alpha (D=`0.1`)
+      - `errorbox_ec` = list of (or individual) error box edge color (D=`'k'`, black)
+      - `errorbox_ea` = list of (or individual) error box edge alpha (D=`1.0`)
+      - `errorbox_ew` = list of (or individual) error box edge width (D=`0.5`)
     
        Subplots
      
-      - fig = figure handles from existing figure to draw on (D=None, fig=None should always be used for initial subplot unless a figure canvas has already been generated)
-      - ax = axis handles from an existing figure to draw on (D=None, ax=None should always be used for initial subplot)
-      - spnrows = number of rows in final subplot (D=1)
-      - spncols = number of columns in final subplot (D=1)
-      - spindex = index of current subplot (between 1 and spnrows*spncols) (D=1)
-      - man_sp_placement = logical variable controlling manual sizing/placement of subplots using below variables (D=False, use automatic sizing)
-      - spx0 = distance from canvas left edge where this plotting area should begin (D=0.1), generally a number around 0~1
-      - spy0 = distance from canvas bottom edge where this plotting area should begin (D=0.1), generally a number around 0~1
-      - spw0 = width of this plotting area on the canvas (D=0.4), generally a number around 0~1
-      - sph0 = height of this plotting area on the canvas (D=0.4), generally a number around 0~1
+      - `fig` = figure handles from existing figure to draw on (D=`None`, `fig=None` should always be used for initial subplot unless a figure canvas has already been generated)
+      - `ax` = axis handles from an existing figure to draw on (D=`None`, `ax=None` should always be used for initial subplot)
+      - `spnrows` = number of rows in final subplot (D=`1`)
+      - `spncols` = number of columns in final subplot (D=`1`)
+      - `spindex` = index of current subplot (between 1 and spnrows*spncols) (D=`1`)
+      - `man_sp_placement` = logical variable controlling manual sizing/placement of subplots using below variables (D=`False`, use automatic sizing)
+      - `spx0` = distance from canvas left edge where this plotting area should begin (D=`0.1`), generally a number around 0~1
+      - `spy0` = distance from canvas bottom edge where this plotting area should begin (D=`0.1`), generally a number around 0~1
+      - `spw0` = width of this plotting area on the canvas (D=`0.4`), generally a number around 0~1
+      - `sph0` = height of this plotting area on the canvas (D=`0.4`), generally a number around 0~1
     
     Outputs:
-      - fig = pyplot figure
-      - ax  = pyplot figure plot/subplot axes handles
+      - `fig` = pyplot figure
+      - `ax`  = pyplot figure plot/subplot axes handles
     '''
     include_legend = True # used to toggle legend on/off
     single_dataset = False # Assume multiple datasets entered, but this can be tested to see if it is the case or not.
@@ -2811,20 +2812,20 @@ def fancy_3D_plot(
            of the z-axis dataset.
            
     Dependencies:
-      - import numpy as np
-      - import matplotlib.pyplot as plt
-      - from mpl_toolkits.mplot3d import Axes3D
-      - import matplotlib.ticker as mticker
-      - from mpl_toolkits.mplot3d.axis3d import Axis
-      - import matplotlib.projections as proj
-      - from matplotlib.colors import colorConverter
+      - `import numpy as np`
+      - `import matplotlib.pyplot as plt`
+      - `from mpl_toolkits.mplot3d import Axes3D`
+      - `import matplotlib.ticker as mticker`
+      - `from mpl_toolkits.mplot3d.axis3d import Axis`
+      - `import matplotlib.projections as proj`
+      - `from matplotlib.colors import colorConverter`
     
     Inputs:
        (Required)
        
-      - xdata_lists = a list containing lists/arrays of 1-D x data (or single list of xdata applied to all zdata in z_data_lists)
-      - ydata_lists = a list containing lists/arrays of 1-D y data (or single list of ydata applied to all zdata in z_data_lists)
-      - zdata_lists = a list containing lists/arrays of z datasets (or a single list/array), 
+      - `xdata_lists` = a list containing lists/arrays of 1-D x data (or single list of xdata applied to all zdata in `z_data_lists`)
+      - `ydata_lists` = a list containing lists/arrays of 1-D y data (or single list of ydata applied to all zdata in `z_data_lists`)
+      - `zdata_lists` = a list containing lists/arrays of z datasets (or a single list/array), 
            - individual z datasets can be provided in either of two different formats:
                - 1) 1-D lists (of the same dimension of the corresponding x and y lists)
                - 2) 2-D NumPy arrays whose whidth and height match the dimensions of the x and y lists.
@@ -2832,66 +2833,66 @@ def fancy_3D_plot(
     Inputs:
        (Optional, basic, generic)
        
-      - plot_styles = list of (or individual) strings denoting the plot style to be used for each dataset. Options include: 
-          + 1-D ['line','scatter','trisurface']   (D='line')
-          + 2-D ['surface','wireframe','trisurface','contour','filledcontour']   (D='trisurface')
-          + 2-D_colormaps ['map_pcolormesh','map_filledcontour','map_contour']
-      - data_labels = a list of strings to be used as data labels in the legend (D=[], no legend generated) (labels do not work for contours)
-      - figi = figure index (D=1)
-      - title_str = string to be used as the title of the plot (D='')
-      - x_label_str = string to be used as x-axis title (D='x-axis')
-      - y_label_str = string to be used as y-axis title (D='y-axis')
-      - z_label_str = string to be used as z-axis title (D='z-axis')
-      - x_limits = length 2 list specifying minimum and maximum x-axis bounds [xmin,xmax] (D=auto-calculated based on x_data_lists)
-      - y_limits = length 2 list specifying minimum and maximum y-axis bounds [ymin,ymax] (D=auto-calculated based on y_data_lists)
-      - z_limits = length 2 list specifying minimum and maximum z-axis bounds [zmin,zmax] (D=auto-calculated based on z_data_lists)
-      - use_mpl_limits = boolean specifying if Matplotlib default (True) or specially calculated (False) log-scale axis limits are used when they aren't specified (D=True)
-      - x_scale = x-axis scale, either "linear" or "log"
-      - y_scale = y-axis scale, either "linear" or "log"
-      - z_scale = y-axis scale, either "linear" or "log"
-      - OoB_z_handling = string denoting how z values outside of z_limits, if provided, will be handled. (D='NaN', other option are 'limits' and 'None')  
-                       By default, out of bounds (OoB) values are replaced with NaN.  If this is set to 'limits', OoB values are set equal to the lower/upper limit provided.  
-                       If 'None', no values are replaced (this may cause errors with 3-D plots).
-      - fig_width_inch = figure width in inches (D=9.5)
-      - fig_height_inch = figure height in inches (D=6.5)
-      - title_fs = title font size (D=16)
-      - axis_fs = axis label font size (D=14)
-      - f_family = string specifying font family (D='sans-serif'); options include: ['serif', 'sans-serif', 'cursive', 'fantasy', 'monospace']
-      - f_style = string specifying font style (D='normal'); options include: ['normal', 'italic', 'oblique']
-      - f_variant = string specifying font variant (D='normal'); options include: ['normal', 'small-caps']
-      - f_weight = string specifying font weight (D='normal'); options include: ['light', 'normal', 'medium', 'semibold', 'bold', 'heavy', 'black']
+      - `plot_styles` = list of (or individual) strings denoting the plot style to be used for each dataset. Options include: 
+          + 1-D `['line','scatter','trisurface']`   (D=`'line'`)
+          + 2-D `['surface','wireframe','trisurface','contour','filledcontour']`   (D=`'trisurface'`)
+          + 2-D_colormaps ['map_pcolormesh','map_filledcontour','map_contour']`
+      - `data_labels` = a list of strings to be used as data labels in the legend (D=`[]`, no legend generated) (labels do not work for contours)
+      - `figi` = figure index (D=`1`)
+      - `title_str` = string to be used as the title of the plot (D=`''`)
+      - `x_label_str` = string to be used as x-axis title (D=`'x-axis'`)
+      - `y_label_str` = string to be used as y-axis title (D=`'y-axis'`)
+      - `z_label_str` = string to be used as z-axis title (D=`'z-axis'`)
+      - `x_limits` = length 2 list specifying minimum and maximum x-axis bounds [xmin,xmax] (D=auto-calculated based on `x_data_lists`)
+      - `y_limits` = length 2 list specifying minimum and maximum y-axis bounds [ymin,ymax] (D=auto-calculated based on `y_data_lists`)
+      - `z_limits` = length 2 list specifying minimum and maximum z-axis bounds [zmin,zmax] (D=auto-calculated based on `z_data_lists`)
+      - `use_mpl_limits` = boolean specifying if Matplotlib default (`True`) or specially calculated (`False`) log-scale axis limits are used when they aren't specified (D=`True`)
+      - `x_scale` = x-axis scale, either `"linear"` or `"log"`
+      - `y_scale` = y-axis scale, either `"linear"` or `"log"`
+      - `z_scale` = z-axis scale, either `"linear"` or `"log"`
+      - `OoB_z_handling` = string denoting how z values outside of z_limits, if provided, will be handled. (D=`'NaN'`, other option are `'limits'` and `'None'`)  
+                       By default, out of bounds (OoB) values are replaced with `NaN`.  If this is set to `'limits'`, OoB values are set equal to the lower/upper limit provided.  
+                       If `'None'`, no values are replaced (this may cause errors with 3-D plots).
+      - `fig_width_inch` = figure width in inches (D=`9.5`)
+      - `fig_height_inch` = figure height in inches (D=`6.5`)
+      - `title_fs` = title font size (D=`16`)
+      - `axis_fs` = axis label font size (D=`14`)
+      - `f_family` = string specifying font family (D=`'sans-serif'`); options include: `['serif', 'sans-serif', 'cursive', 'fantasy', 'monospace']`
+      - `f_style` = string specifying font style (D=`'normal'`); options include: `['normal', 'italic', 'oblique']`
+      - `f_variant` = string specifying font variant (D=`'normal'`); options include: `['normal', 'small-caps']`
+      - `f_weight` = string specifying font weight (D=`'normal'`); options include: `['light', 'normal', 'medium', 'semibold', 'bold', 'heavy', 'black']`
       
     Inputs:
        (Optional, basic, 3D plot type specific)
        
-        The below options are only applicable to specific plot styles; this is denoted by the leftmost column.
+        The below options are only applicable to specific `plot_styles`; this is denoted by the leftmost column.
         
-      - `L P S W T C F` (L='line', P='scatter'(points), S='surface', W='wireframe', T='trisurface', C='contour', F='filledcontour'; 'o' indicates options used by each plot type)
-      - `o o o o o o o`   alpha = list of (or individual) int/float of the alpha/opacity of each point/curve/surface/etc. (D=None)
-      - `o o o o o o o`   color = list of color strings to be used of same length as z_data_lists (or individual color string) (D=Matplotlib default color cycle)
-      - `. . o . o o o`   cmap = list of colormaps to be used of same length as z_data_lists, this will overwrite 'color' (or individual colormap) (D=None)
-      - `o . . o . o .`   linestyle = list of (or individual) strings denoting linestyle: '', '-', '--', '-.', or ':' (D='-')
-      - `o . . o . o .`   linewidth = list of (or individual) int/float of the width of line (D=1)
-      - `o o . . . . .`   marker = list of (or individual) marker styles (D='.') For all options, see: https://matplotlib.org/3.1.0/api/markers_api.html
-      - `o o . . . . .`   markersize = list of (or individual) int/float of marker size (D=5)
-      - `o o . . . . .`   markerfacecolor = list of (or individual) marker face colors (D=None, use value of 'color')
-      - `o o . . . . .`   markeredgecolor = list of (or individual) marker edge colors (D=None, use value of 'color')
-      - `o o . . . . .`   markeredgewidth = list of (or individual) int/float of marker edge widths (D=None)
-      - `. o . . . . .`   depthshade = list of (or individual) booleans to enable/disable marker shading for appearance of depth (D=True)
-      - `. . o o . . .`   rstride = [DEPRECATED] list of (or individual) int/float of array row strides (D=1)
-      - `. . o o . . .`   cstride = [DEPRECATED] list of (or individual) int/float of array column strides (D=1)
-      - `. . o o . . .`   rcount  = list of (or individual) int/float of maximum number of rows used (D=50)
-      - `. . o o . . .`   ccount  = list of (or individual) int/float of maximum number of columns used (D=50)
-      - `. . o . . . .`   facecolors = list of (or individual) array mapping colors to each facet of the zdata (D=None) overwrites cmap
+      - `L P S W T C F` (L=`'line'`, P=`'scatter'`(points), S=`'surface'`, W=`'wireframe'`, T=`'trisurface'`, C=`'contour'`, F=`'filledcontour'`; `'o'` indicates options used by each plot type)
+      - `o o o o o o o` |  `alpha` = list of (or individual) int/float of the alpha/opacity of each point/curve/surface/etc. (D=`None`)
+      - `o o o o o o o` |  `color` = list of color strings to be used of same length as z_data_lists (or individual color string) (D=Matplotlib default color cycle)
+      - `. . o . o o o` |  `cmap` = list of colormaps to be used of same length as z_data_lists, this will overwrite 'color' (or individual colormap) (D=`None`)
+      - `o . . o . o .` |  `linestyle` = list of (or individual) strings denoting linestyle: `''`, `'-'`, `'--'`, `'-.'`, or `':'` (D=`'-'`)
+      - `o . . o . o .` |  `linewidth` = list of (or individual) int/float of the width of line (D=`1`)
+      - `o o . . . . .` |  `marker` = list of (or individual) marker styles (D=`'.'`) For all options, see: https://matplotlib.org/3.1.0/api/markers_api.html
+      - `o o . . . . .` |  `markersize` = list of (or individual) int/float of marker size (D=`5`)
+      - `o o . . . . .` |  `markerfacecolor` = list of (or individual) marker face colors (D=`None`, use value of `'color'`)
+      - `o o . . . . .` |  `markeredgecolor` = list of (or individual) marker edge colors (D=`None`, use value of `'color'`)
+      - `o o . . . . .` |  `markeredgewidth` = list of (or individual) int/float of marker edge widths (D=`None`)
+      - `. o . . . . .` |  `depthshade` = list of (or individual) booleans to enable/disable marker shading for appearance of depth (D=`True`)
+      - `. . o o . . .` |  `rstride` = [DEPRECATED] list of (or individual) int/float of array row strides (D=`1`)
+      - `. . o o . . .` |  `cstride` = [DEPRECATED] list of (or individual) int/float of array column strides (D=`1`)
+      - `. . o o . . .` |  `rcount`  = list of (or individual) int/float of maximum number of rows used (D=`50`)
+      - `. . o o . . .` |  `ccount`  = list of (or individual) int/float of maximum number of columns used (D=`50`)
+      - `. . o . . . .` |  `facecolors` = list of (or individual) array mapping colors to each facet of the zdata (D=`None`) overwrites cmap
 
     Inputs:
        (Optional, 2D colormap type specific)
        
-      - x_meaning = string specifying if x values describe x min, x max, or central x value for each corresponding z (D='mid'); options include: ['min','max','mid'] (think of like bin min/max/mid)
-      - y_meaning = string specifying if y values describe y min, y max, or central y value for each corresponding z (D='mid'); options include: ['min','max','mid'] 
-      - cbar_fs = color bar label font size (D=axis_fs (D=14))
-      - cbar_size = color bar size expressed as an integer/float between 0 and 100 (D=5) (think of as percentage width)
-      - cbar_pad = color bar padding (should be between 0 and 1) (D=0.1)
+      - `x_meaning` = string specifying if x values describe x min, x max, or central x value for each corresponding z (D=`'mid'`); options include: `['min','max','mid']` (think of like bin min/max/mid)
+      - `y_meaning` = string specifying if y values describe y min, y max, or central y value for each corresponding z (D=`'mid'`); options include: `['min','max','mid']` 
+      - `cbar_fs` = color bar label font size (D=`axis_fs` (D=`14`))
+      - `cbar_size` = color bar size expressed as an integer/float between 0 and 100 (D=`5`) (think of as percentage width)
+      - `cbar_pad` = color bar padding (should be between 0 and 1) (D=`0.1`)
       
 
     Inputs:
@@ -2899,27 +2900,27 @@ def fancy_3D_plot(
        
        Subplots
        
-         - fig = figure handles from existing figure to draw on (D=None, `fig=None` should always be used for initial subplot unless a figure canvas has already been generated)
-         - ax = axis handles from an existing figure to draw on (D=None, `ax=None` should always be used for initial subplot)
-         - spnrows = number of rows in final subplot (D=1)
-         - spncols = number of columns in final subplot (D=1)
-         - spindex = index of current subplot (between 1 and spnrows*spncols) (D=1)
-         - man_sp_placement = logical variable controlling manual sizing/placement of subplots using below variables (D=False, use automatic sizing)
-         - spx0 = distance from canvas left edge where this plotting area should begin (D=0.1), generally a number around 0~1
-         - spy0 = distance from canvas bottom edge where this plotting area should begin (D=0.1), generally a number around 0~1
-         - spw0 = width of this plotting area on the canvas (D=0.4), generally a number around 0~1
-         - sph0 = height of this plotting area on the canvas (D=0.4), generally a number around 0~1
+         - `fig` = figure handles from existing figure to draw on (D=`None`, `fig=None` should always be used for initial subplot unless a figure canvas has already been generated)
+         - `ax` = axis handles from an existing figure to draw on (D=`None`, `ax=None` should always be used for initial subplot)
+         - `spnrows` = number of rows in final subplot (D=`1`)
+         - `spncols` = number of columns in final subplot (D=`1`)
+         - `spindex` = index of current subplot (between 1 and spnrows*spncols) (D=`1`)
+         - `man_sp_placement` = logical variable controlling manual sizing/placement of subplots using below variables (D=`False`, use automatic sizing)
+         - `spx0` = distance from canvas left edge where this plotting area should begin (D=`0.1`), generally a number around 0~1
+         - `spy0` = distance from canvas bottom edge where this plotting area should begin (D=`0.1`), generally a number around 0~1
+         - `spw0` = width of this plotting area on the canvas (D=`0.4`), generally a number around 0~1
+         - `sph0` = height of this plotting area on the canvas (D=`0.4`), generally a number around 0~1
       
        Legend settings
        
-         - legend_position = one of the default matplotlib legend position strings ('best','upper right','lower center','lower left',etc.) to place the legend inside the plot or
-                           'outside right' or 'outside bottom' to place the legend outside of the plot area (D='outside bottom', if legend is to be used)
-         - legend_anchor = legend anchor position (x=left-right position, y=bottom-top position) only used when legend position is set to one of the "outside" options
-                           (D=None which becomes (1.0,0.75) if position is 'outside right' or (0.5,-0.17) if position is 'outside bottom')
-                           Note that only one coordinate usually should be adjusted.  If using an 'outside right' legend, only the y-coordinate needs to be manipulated
-                           to scoot the legend up/down.  Likewise, for 'outside bottom' legends only the x-coordinate needs adjusting for tuning left/right position
-         - legend_ncol = number of columns in legend (D=1 in all cases except for legend_position='outside bottom' where D=len(ydata_lists))
-         - legend_alpha = alpha of legend background (D=None, auto determined by matplotlib)
+         - `legend_position` = one of the default matplotlib legend position strings (`'best'`,`'upper right'`,`'lower center'`,`'lower left'`,etc.) to place the legend inside the plot or
+                           `'outside right'` or `'outside bottom'` to place the legend outside of the plot area (D=`'outside bottom'`, if legend is to be used)
+         - `legend_anchor` = legend anchor position (x=left-right position, y=bottom-top position) only used when legend position is set to one of the "outside" options
+                           (D=`None` which becomes `(1.0,0.75)` if position is `'outside right'` or `(0.5,-0.17)` if position is `'outside bottom'`)
+                           Note that only one coordinate usually should be adjusted.  If using an `'outside right'` legend, only the y-coordinate needs to be manipulated
+                           to scoot the legend up/down.  Likewise, for `'outside bottom'` legends only the x-coordinate needs adjusting for tuning left/right position
+         - `legend_ncol` = number of columns in legend (D=`1` in all cases except for legend_position=`'outside bottom'` where D=`len(ydata_lists)`)
+         - `legend_alpha` = alpha of legend background (D=`None`, auto determined by matplotlib)
     
         
     '''
