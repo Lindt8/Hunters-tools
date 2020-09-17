@@ -36,6 +36,8 @@ other scripts and/or are just generally useful and could possibly be useful in t
 : converts a string to a characterset usable in filenames</li>
 <li><code><a title="Hunters_tools.hex_to_rgb" href="#Hunters_tools.hex_to_rgb">hex_to_rgb()</a></code>
 : converts a hexidecimal color string to a RGB tuple</li>
+<li><code><a title="Hunters_tools.rgb_to_hex" href="#Hunters_tools.rgb_to_hex">rgb_to_hex()</a></code>
+: converts a RGB tuple to a hexidecimal color string</li>
 <li><code><a title="Hunters_tools.round_up_to_next_multiple" href="#Hunters_tools.round_up_to_next_multiple">round_up_to_next_multiple()</a></code>
 : rounds a number up to its next multiple of some value</li>
 <li><code><a title="Hunters_tools.round_down_to_next_multiple" href="#Hunters_tools.round_down_to_next_multiple">round_down_to_next_multiple()</a></code>
@@ -120,6 +122,10 @@ other scripts and/or are just generally useful and could possibly be useful in t
 : return 1 of 12 color values from ColorBrewer</li>
 <li><code><a title="Hunters_tools.colors_list_10" href="#Hunters_tools.colors_list_10">colors_list_10()</a></code>
 : return 1 of 10 color values from the new matplotlib default from v3 1 1</li>
+<li><code><a title="Hunters_tools.get_colormap" href="#Hunters_tools.get_colormap">get_colormap()</a></code>
+: retrieve a matplotlib colormap using just its string name</li>
+<li><code><a title="Hunters_tools.truncate_colormap" href="#Hunters_tools.truncate_colormap">truncate_colormap()</a></code>
+: truncate a colormap to new upper/lower bounds to a subset of the original colormap</li>
 <li><code><a title="Hunters_tools.makeErrorBoxes" href="#Hunters_tools.makeErrorBoxes">makeErrorBoxes()</a></code>
 : draw uncertainties as a box surrounding a point (can be used with/instead of crosshair-style error bars)</li>
 <li><code><a title="Hunters_tools.fancy_plot" href="#Hunters_tools.fancy_plot">fancy_plot()</a></code>
@@ -144,6 +150,7 @@ The functions contained in this module and brief descriptions of their functions
 - `scan_folder_for_file`            : determine if a file is present a folder or any of its subfolders
 - `slugify`                         : converts a string to a characterset usable in filenames
 - `hex_to_rgb`                      : converts a hexidecimal color string to a RGB tuple
+- `rgb_to_hex`                      : converts a RGB tuple to a hexidecimal color string
 - `round_up_to_next_multiple`       : rounds a number up to its next multiple of some value
 - `round_down_to_next_multiple`     : rounds a number down to its next multiple of some value
 - `humansize`                       : converts a number in bytes to a more readable unit (kB, MB, GB, etc.)
@@ -190,6 +197,8 @@ The functions contained in this module and brief descriptions of their functions
 - `colors_list_6`                   : return 1 of 6 color values from ColorBrewer
 - `colors_list_12`                  : return 1 of 12 color values from ColorBrewer
 - `colors_list_10`                  : return 1 of 10 color values from the new matplotlib default from v3 1 1
+- `get_colormap`                    : retrieve a matplotlib colormap using just its string name
+- `truncate_colormap`               : truncate a colormap to new upper/lower bounds to a subset of the original colormap
 - `makeErrorBoxes`                  : draw uncertainties as a box surrounding a point (can be used with/instead of crosshair-style error bars)
 - `fancy_plot`                      : very comprehensive plotter for 2D datasets, an accumulation of all of my past plotting commands/settings
 - `fancy_3D_plot`                   : very comprehensive plotter for 3D datasets on 3D axes, an accumulation of all of my past plotting commands/settings
@@ -228,7 +237,7 @@ from scipy.interpolate import CubicSpline, lagrange, interp1d
 
 from mpl_toolkits.mplot3d.axis3d import Axis
 import matplotlib.projections as proj
-from matplotlib.colors import colorConverter
+from matplotlib.colors import colorConverter, LinearSegmentedColormap
 import matplotlib.ticker as ticker
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
@@ -312,6 +321,7 @@ def hex_to_rgb(hexcol,opacity=1.0,out_of_one=False):
         - `opacity` = float between 0 and 1 specifying color opacity (D=1.0)
         - `out_of_one` = bool which toggles whether output will be out of 255 (default, =`False`) or 1 (=`True`)
                      useful if you&#39;d rather have white be (255,255,255) (default) or (1,1,1)
+    
     Outputs:
         - tuple containing RGB values and opacity,  (red, green, blue, opacity)
     &#39;&#39;&#39;
@@ -324,6 +334,31 @@ def hex_to_rgb(hexcol,opacity=1.0,out_of_one=False):
     rgbo = [rgb[0]/divisor,rgb[1]/divisor,rgb[2]/divisor,opacity]
     return tuple(rgbo)
 
+def rgb_to_hex(rgb):
+    &#39;&#39;&#39;
+    Description:
+        Return hexidecimal color string `#rrggbb` for the color given as a tuple (red, green, blue, opacity)
+        
+    Inputs:
+        - `rgb` = tuple containing RGB values and (optionally) opacity,  (red, green, blue, opacity); note that
+                  the opacity value is not preserved when converted to hex
+    
+    Outputs:
+        - string of hexidecimal color formatted as `#rrggbb`
+        
+    Notes:
+      Each RGB tuple value needs to be either between 0 and 1 or between 0 and 255.  If no values greater
+      than 1 are provided in the rgb tuple, they will be automatically renormalized to 255.
+      Additionally, any values outside of the bounds will be reassigned to the nearest bound value.
+    &#39;&#39;&#39;
+    if any(rgb[i]&gt;255 or rgb[i]&lt;0 for i in range(3)):
+        print(&#39;Warning: Check that rgb values of color tuple are within bounds [0,255].&#39;)
+    if any(rgb[i]&gt;1 for i in range(3)):
+        nrm_fac = 1
+    else:
+        nrm_fac = 255
+    hex_col_str = &#39;#%02x%02x%02x&#39; % (max(0, min(int(nrm_fac*rgb[0]), 255)),max(0, min(int(nrm_fac*rgb[1]), 255)),max(0, min(int(nrm_fac*rgb[2]), 255)))
+    return hex_col_str
 
 def round_up_to_next_multiple(value,mult=1):
     &#39;&#39;&#39;
@@ -533,6 +568,8 @@ def table_array_generator(core_table,row_headers=None,row_header_spans=None,colu
 def Excel_table_generator(core_table,title=None,row_headers=None,row_header_spans=None,column_headers=None,column_header_spans=None,float_formatting=&#39;{:g}&#39;):
     &#39;&#39;&#39;
     Description:
+        This function generates a string containing a Excel-formatted (tab delimited) table from an input array supplemented with 
+        other formatting and header information.
     
     Dependencies:
         - `import numpy as np`
@@ -588,7 +625,8 @@ def Excel_table_generator(core_table,title=None,row_headers=None,row_header_span
 
 def Latex_table_generator(core_table,title=None,row_headers=None,row_header_spans=None,column_headers=None,column_header_spans=None,
                           float_formatting=&#39;{:g}&#39;,table_positioning=&#39;[H]&#39;,label=None,use_table_ruling=True,coulmn_formatting=None,
-                          hline_row_indices=None,cline_row_cstart_cend_indices_triplets = None,return_only_core_tabular_environment=False):
+                          hline_row_indices=None,cline_row_cstart_cend_indices_triplets = None,return_only_core_tabular_environment=False,
+                          nest_in_ruledtabular=False):
     &#39;&#39;&#39;
     Description:
         This function generates a string containing a LaTeX-formatted table from an input array supplemented with 
@@ -629,6 +667,9 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
                       [row index, column start, column end] for the \cline{start-stop} command
        - `return_only_core_tabular_environment` = boolean specifying whether the whole table (`False`) or just the inner 
                       tabular environment (`True`) will be returned (D=`False`)
+       - `nest_in_ruledtabular` = boolean specifying if the tabular environment will (`True`) or will not (`False`) be
+                      nested inside of the ruledtabular environment used by REVTeX (D=`False`)
+    
     Outputs: 
        - `tab_str` = text string containing the formatted table
     &#39;&#39;&#39;
@@ -667,6 +708,8 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
             tab_str += &#39;\t&#39; + r&#39;%\label{tab:Label}&#39; + &#39;\n&#39;  
         tab_str += &#39;\t&#39; + r&#39;\centering&#39; + &#39;\n&#39;
     
+    if nest_in_ruledtabular:
+        tab_str += &#39;\t&#39; + r&#39;\begin{ruledtabular}&#39; + &#39;\n&#39;
     
     if coulmn_formatting:
         tab_str += &#39;\t&#39; + r&#39;\begin{tabular}&#39; + coulmn_formatting + &#39;\n&#39;
@@ -677,8 +720,7 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
     if use_table_ruling: tab_str += &#39;\t\t&#39; + r&#39;\toprule&#39; + &#39;\n&#39;
     
     if hline_row_indices:
-        if -1 in hline_row_indices:
-            if use_table_ruling: tab_str += &#39;\t\t&#39; + r&#39;\hline&#39; + &#39;\n&#39;
+        if -1 in hline_row_indices: tab_str += &#39;\t\t&#39; + r&#39;\hline&#39; + &#39;\n&#39;
     
     
     chi_list = [0 for i in range(num_row_header_columns)]
@@ -728,6 +770,7 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
         
         for ci in range(num_cols):
             val = table_array[ri,ci]
+            if not isinstance(val,str): val = float_formatting.format(val)
             
             # add multicolumns where appropriate
             if ci &lt; num_row_header_columns: 
@@ -765,9 +808,10 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
     if use_table_ruling: tab_str += &#39;\t\t&#39; + r&#39;\bottomrule&#39; + &#39;\n&#39;
     
     tab_str += &#39;\t&#39; + r&#39;\end{tabular}&#39; + &#39;\n&#39;
+    if nest_in_ruledtabular:
+        tab_str += &#39;\t&#39; + r&#39;\end{ruledtabular}&#39; + &#39;\n&#39;
     if not return_only_core_tabular_environment:
         tab_str += r&#39;\end{table}&#39; + &#39;\n&#39;
-    
     if return_only_core_tabular_environment:
         tab_str = tab_str[1:].replace(&#39;\n\t&#39;,&#39;\n&#39;) # remove extra tab character from start of each line
     
@@ -891,7 +935,7 @@ def SI_prefix_converter(SI1,SI2=&#39;&#39;):
         Provides the multiplication constant needed to convert between SI prefixes
     
     Dependencies:
-        find (function within the &#34;Hunter&#39;s tools&#34; package)
+        `find` (function within the &#34;Hunter&#39;s tools&#34; package)
     
     Inputs:
         - `SI1` = string of SI prefix of the current value
@@ -1695,8 +1739,8 @@ def assemble_GCR_flux(W,Z_list,nEbins=1000):
         Composes a NumPy array containing GCR flux from 10 MeV/n to 1 TeV/n for each GCR ion specified
     
     Dependencies:
-        `import numpy as np`
-        `calc_GCR_intensity` (function within the &#34;Hunter&#39;s tools&#34; package)
+       - `import numpy as np`
+       - `calc_GCR_intensity` (function within the &#34;Hunter&#39;s tools&#34; package)
     
     Inputs:
        - `W` = solar modulation parameter
@@ -2137,6 +2181,10 @@ def generate_line_bar_coordinates(xbins,yvals):
     return newx, newy
 
 def colors_list_6(di):
+    &#39;&#39;&#39;
+    Colorbrewer qualitative color cycle scheme 6 (modified)   
+    See: https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6
+    &#39;&#39;&#39;
     #colors_list = [&#39;b&#39;,&#39;g&#39;,&#39;r&#39;,&#39;c&#39;,&#39;m&#39;,&#39;y&#39;] # Python 3 old default
     #colors_list = [&#39;#b2182b&#39;,&#39;#d6604d&#39;,&#39;#f4a582&#39;,&#39;#92c5de&#39;,&#39;#4393c3&#39;,&#39;#2166ac&#39;] # blue to red cold
     #colors_list = [&#39;#d73027&#39;,&#39;#f46d43&#39;,&#39;#fdae61&#39;,&#39;#abd9e9&#39;,&#39;#74add1&#39;,&#39;#4575b4&#39;] # blue to red warm
@@ -2148,16 +2196,64 @@ def colors_list_6(di):
     return colors_list[di%6]
 
 def colors_list_12(di):
+    &#39;&#39;&#39;
+    Colorbrewer qualitative color cycle scheme 6 (expanded)   
+    See: https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6
+    &#39;&#39;&#39;
     colors_list = [&#39;#e41a1c&#39;,&#39;#377eb8&#39;,&#39;#4daf4a&#39;,&#39;#984ea3&#39;,&#39;#ff7f00&#39;,&#39;#a65628&#39;,&#39;#8dd3c7&#39;,&#39;#bebada&#39;,&#39;#fb8072&#39;,&#39;#80b1d3&#39;,&#39;#fdb462&#39;,&#39;#b3de69&#39;]
     return colors_list[di%12]
 
 def colors_list_10(di):
     &#39;&#39;&#39;
-    Default cycle as of matplotlib v3.1.1
+    Default cycle as of matplotlib v3.1.1   
     See: https://matplotlib.org/3.1.1/users/dflt_style_changes.html
     &#39;&#39;&#39;
     colors_list = [&#39;#1f77b4&#39;, &#39;#ff7f0e&#39;, &#39;#2ca02c&#39;, &#39;#d62728&#39;, &#39;#9467bd&#39;, &#39;#8c564b&#39;, &#39;#e377c2&#39;, &#39;#7f7f7f&#39;, &#39;#bcbd22&#39;, &#39;#17becf&#39;]
     return colors_list[di%10]
+
+def get_colormap(cmap_str):
+    &#39;&#39;&#39;
+    Description:
+        Retrieve a matplotlib colormap using just its string name  
+        See available colormaps: https://matplotlib.org/3.3.1/tutorials/colors/colormaps.html
+    
+    Dependencies:
+      - `from matplotlib import cm`
+    
+    Inputs:
+      - `cmap_str` = string of name of colormap
+    
+    Outputs:
+      - callable colormap object which can be provided to plotting functions or evaluated for any value from 0 to 1
+    &#39;&#39;&#39;
+    return cm.get_cmap(cmap_str)
+
+def truncate_colormap(cmap, min_val=0.0, max_val=1.0, n=100):
+    &#39;&#39;&#39;
+    Description:
+        Truncate a colormap object&#39;s bounds to a subset of the original colormap, renormalizing new bounds to [0,1].
+        For instance, the upper and lower 20% of a colormap could be removed with `cmap=truncate_colormap(cmap, min_val=0.2, max_val=0.8)`.
+    
+    Dependencies:
+      - `from matplotlib.colors import LinearSegmentedColormap`
+      - `import numpy as np`
+    
+    Inputs:
+      - `cmap` = callable colormap object or string of matplotlib colormap name to be truncated and rescaled
+      - `min_val` = float specifying new lower bound of cmap in [0,1) (D=`0.0`)
+      - `max_val` = float specifying new upper bound of cmap in (0,1] (D=`1.0`)
+      - `n` = integer specifying number of bins cmap will be subdivided into (D=`100`); note that nearest neighbor
+              linear interpolation will be used when providing values to and evaluating the new colormap.
+              Higher values of `n` just correspond to a higher-quality and more accurate interpolation.
+    
+    Outputs:
+      - callable colormap object which can be provided to plotting functions or evaluated for any value from 0 to 1
+    &#39;&#39;&#39;
+    if isinstance(cmap,str): cmap = get_colormap(cmap)
+    new_cmap = LinearSegmentedColormap.from_list(
+        &#39;trunc({n},{a:.2f},{b:.2f})&#39;.format(n=cmap.name, a=min_val, b=max_val),
+        cmap(np.linspace(min_val, max_val, n)))
+    return new_cmap
 
 def makeErrorBoxes(ax,xdata,ydata,xerror,yerror,fc=&#39;None&#39;,ec=&#39;k&#39;,alpha=1.0,lw=0.5):
     &#39;&#39;&#39;
@@ -4599,7 +4695,9 @@ if debugging_fancy_plot or debugging_fancy_3d_plot:
 <span>def <span class="ident">Excel_table_generator</span></span>(<span>core_table, title=None, row_headers=None, row_header_spans=None, column_headers=None, column_header_spans=None, float_formatting='{:g}')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Description:</p>
+<div class="desc"><h2 id="description">Description</h2>
+<p>This function generates a string containing a Excel-formatted (tab delimited) table from an input array supplemented with
+other formatting and header information.</p>
 <h2 id="dependencies">Dependencies</h2>
 <ul>
 <li><code>import numpy as np</code></li>
@@ -4638,6 +4736,8 @@ be uniform for all entries, a single value (or list of single values) may be pro
 <pre><code class="python">def Excel_table_generator(core_table,title=None,row_headers=None,row_header_spans=None,column_headers=None,column_header_spans=None,float_formatting=&#39;{:g}&#39;):
     &#39;&#39;&#39;
     Description:
+        This function generates a string containing a Excel-formatted (tab delimited) table from an input array supplemented with 
+        other formatting and header information.
     
     Dependencies:
         - `import numpy as np`
@@ -4964,7 +5064,7 @@ technically, any options available for scipy.interpolate.interp1d() can be used:
 </details>
 </dd>
 <dt id="Hunters_tools.Latex_table_generator"><code class="name flex">
-<span>def <span class="ident">Latex_table_generator</span></span>(<span>core_table, title=None, row_headers=None, row_header_spans=None, column_headers=None, column_header_spans=None, float_formatting='{:g}', table_positioning='[H]', label=None, use_table_ruling=True, coulmn_formatting=None, hline_row_indices=None, cline_row_cstart_cend_indices_triplets=None, return_only_core_tabular_environment=False)</span>
+<span>def <span class="ident">Latex_table_generator</span></span>(<span>core_table, title=None, row_headers=None, row_header_spans=None, column_headers=None, column_header_spans=None, float_formatting='{:g}', table_positioning='[H]', label=None, use_table_ruling=True, coulmn_formatting=None, hline_row_indices=None, cline_row_cstart_cend_indices_triplets=None, return_only_core_tabular_environment=False, nest_in_ruledtabular=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="description">Description</h2>
@@ -5005,17 +5105,20 @@ should be drawn (D=<code>None</code>) (-1 places line above very first row)</li>
 <li><code>cline_row_cstart_cend_indices_triplets</code> = list of length-3 lists (or an individual length-3 list) composed of
 [row index, column start, column end] for the \cline{start-stop} command</li>
 <li><code>return_only_core_tabular_environment</code> = boolean specifying whether the whole table (<code>False</code>) or just the inner
-tabular environment (<code>True</code>) will be returned (D=<code>False</code>)
-Outputs: </li>
-<li><code>tab_str</code> = text string containing the formatted table</li>
-</ul></div>
+tabular environment (<code>True</code>) will be returned (D=<code>False</code>)</li>
+<li><code>nest_in_ruledtabular</code> = boolean specifying if the tabular environment will (<code>True</code>) or will not (<code>False</code>) be
+nested inside of the ruledtabular environment used by REVTeX (D=<code>False</code>)</li>
+</ul>
+<p>Outputs:
+- <code>tab_str</code> = text string containing the formatted table</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def Latex_table_generator(core_table,title=None,row_headers=None,row_header_spans=None,column_headers=None,column_header_spans=None,
                           float_formatting=&#39;{:g}&#39;,table_positioning=&#39;[H]&#39;,label=None,use_table_ruling=True,coulmn_formatting=None,
-                          hline_row_indices=None,cline_row_cstart_cend_indices_triplets = None,return_only_core_tabular_environment=False):
+                          hline_row_indices=None,cline_row_cstart_cend_indices_triplets = None,return_only_core_tabular_environment=False,
+                          nest_in_ruledtabular=False):
     &#39;&#39;&#39;
     Description:
         This function generates a string containing a LaTeX-formatted table from an input array supplemented with 
@@ -5056,6 +5159,9 @@ Outputs: </li>
                       [row index, column start, column end] for the \cline{start-stop} command
        - `return_only_core_tabular_environment` = boolean specifying whether the whole table (`False`) or just the inner 
                       tabular environment (`True`) will be returned (D=`False`)
+       - `nest_in_ruledtabular` = boolean specifying if the tabular environment will (`True`) or will not (`False`) be
+                      nested inside of the ruledtabular environment used by REVTeX (D=`False`)
+    
     Outputs: 
        - `tab_str` = text string containing the formatted table
     &#39;&#39;&#39;
@@ -5094,6 +5200,8 @@ Outputs: </li>
             tab_str += &#39;\t&#39; + r&#39;%\label{tab:Label}&#39; + &#39;\n&#39;  
         tab_str += &#39;\t&#39; + r&#39;\centering&#39; + &#39;\n&#39;
     
+    if nest_in_ruledtabular:
+        tab_str += &#39;\t&#39; + r&#39;\begin{ruledtabular}&#39; + &#39;\n&#39;
     
     if coulmn_formatting:
         tab_str += &#39;\t&#39; + r&#39;\begin{tabular}&#39; + coulmn_formatting + &#39;\n&#39;
@@ -5104,8 +5212,7 @@ Outputs: </li>
     if use_table_ruling: tab_str += &#39;\t\t&#39; + r&#39;\toprule&#39; + &#39;\n&#39;
     
     if hline_row_indices:
-        if -1 in hline_row_indices:
-            if use_table_ruling: tab_str += &#39;\t\t&#39; + r&#39;\hline&#39; + &#39;\n&#39;
+        if -1 in hline_row_indices: tab_str += &#39;\t\t&#39; + r&#39;\hline&#39; + &#39;\n&#39;
     
     
     chi_list = [0 for i in range(num_row_header_columns)]
@@ -5155,6 +5262,7 @@ Outputs: </li>
         
         for ci in range(num_cols):
             val = table_array[ri,ci]
+            if not isinstance(val,str): val = float_formatting.format(val)
             
             # add multicolumns where appropriate
             if ci &lt; num_row_header_columns: 
@@ -5192,9 +5300,10 @@ Outputs: </li>
     if use_table_ruling: tab_str += &#39;\t\t&#39; + r&#39;\bottomrule&#39; + &#39;\n&#39;
     
     tab_str += &#39;\t&#39; + r&#39;\end{tabular}&#39; + &#39;\n&#39;
+    if nest_in_ruledtabular:
+        tab_str += &#39;\t&#39; + r&#39;\end{ruledtabular}&#39; + &#39;\n&#39;
     if not return_only_core_tabular_environment:
         tab_str += r&#39;\end{table}&#39; + &#39;\n&#39;
-    
     if return_only_core_tabular_environment:
         tab_str = tab_str[1:].replace(&#39;\n\t&#39;,&#39;\n&#39;) # remove extra tab character from start of each line
     
@@ -5319,7 +5428,7 @@ Outputs: </li>
 <div class="desc"><h2 id="description">Description</h2>
 <p>Provides the multiplication constant needed to convert between SI prefixes</p>
 <h2 id="dependencies">Dependencies</h2>
-<p>find (function within the "Hunter's tools" package)</p>
+<p><code><a title="Hunters_tools.find" href="#Hunters_tools.find">find()</a></code> (function within the "Hunter's tools" package)</p>
 <h2 id="inputs">Inputs</h2>
 <ul>
 <li><code>SI1</code> = string of SI prefix of the current value</li>
@@ -5341,7 +5450,7 @@ Outputs: </li>
         Provides the multiplication constant needed to convert between SI prefixes
     
     Dependencies:
-        find (function within the &#34;Hunter&#39;s tools&#34; package)
+        `find` (function within the &#34;Hunter&#39;s tools&#34; package)
     
     Inputs:
         - `SI1` = string of SI prefix of the current value
@@ -5413,8 +5522,10 @@ Outputs: </li>
 <div class="desc"><h2 id="description">Description</h2>
 <p>Composes a NumPy array containing GCR flux from 10 MeV/n to 1 TeV/n for each GCR ion specified</p>
 <h2 id="dependencies">Dependencies</h2>
-<p><code>import numpy as np</code>
-<code><a title="Hunters_tools.calc_GCR_intensity" href="#Hunters_tools.calc_GCR_intensity">calc_GCR_intensity()</a></code> (function within the "Hunter's tools" package)</p>
+<ul>
+<li><code>import numpy as np</code></li>
+<li><code><a title="Hunters_tools.calc_GCR_intensity" href="#Hunters_tools.calc_GCR_intensity">calc_GCR_intensity()</a></code> (function within the "Hunter's tools" package)</li>
+</ul>
 <h2 id="inputs">Inputs</h2>
 <ul>
 <li><code>W</code> = solar modulation parameter</li>
@@ -5435,8 +5546,8 @@ Outputs: </li>
         Composes a NumPy array containing GCR flux from 10 MeV/n to 1 TeV/n for each GCR ion specified
     
     Dependencies:
-        `import numpy as np`
-        `calc_GCR_intensity` (function within the &#34;Hunter&#39;s tools&#34; package)
+       - `import numpy as np`
+       - `calc_GCR_intensity` (function within the &#34;Hunter&#39;s tools&#34; package)
     
     Inputs:
        - `W` = solar modulation parameter
@@ -5670,7 +5781,7 @@ Outputs: </li>
 <span>def <span class="ident">colors_list_10</span></span>(<span>di)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Default cycle as of matplotlib v3.1.1
+<div class="desc"><p>Default cycle as of matplotlib v3.1.1 <br>
 See: <a href="https://matplotlib.org/3.1.1/users/dflt_style_changes.html">https://matplotlib.org/3.1.1/users/dflt_style_changes.html</a></p></div>
 <details class="source">
 <summary>
@@ -5678,7 +5789,7 @@ See: <a href="https://matplotlib.org/3.1.1/users/dflt_style_changes.html">https:
 </summary>
 <pre><code class="python">def colors_list_10(di):
     &#39;&#39;&#39;
-    Default cycle as of matplotlib v3.1.1
+    Default cycle as of matplotlib v3.1.1   
     See: https://matplotlib.org/3.1.1/users/dflt_style_changes.html
     &#39;&#39;&#39;
     colors_list = [&#39;#1f77b4&#39;, &#39;#ff7f0e&#39;, &#39;#2ca02c&#39;, &#39;#d62728&#39;, &#39;#9467bd&#39;, &#39;#8c564b&#39;, &#39;#e377c2&#39;, &#39;#7f7f7f&#39;, &#39;#bcbd22&#39;, &#39;#17becf&#39;]
@@ -5689,12 +5800,17 @@ See: <a href="https://matplotlib.org/3.1.1/users/dflt_style_changes.html">https:
 <span>def <span class="ident">colors_list_12</span></span>(<span>di)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Colorbrewer qualitative color cycle scheme 6 (expanded) <br>
+See: <a href="https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6">https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def colors_list_12(di):
+    &#39;&#39;&#39;
+    Colorbrewer qualitative color cycle scheme 6 (expanded)   
+    See: https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6
+    &#39;&#39;&#39;
     colors_list = [&#39;#e41a1c&#39;,&#39;#377eb8&#39;,&#39;#4daf4a&#39;,&#39;#984ea3&#39;,&#39;#ff7f00&#39;,&#39;#a65628&#39;,&#39;#8dd3c7&#39;,&#39;#bebada&#39;,&#39;#fb8072&#39;,&#39;#80b1d3&#39;,&#39;#fdb462&#39;,&#39;#b3de69&#39;]
     return colors_list[di%12]</code></pre>
 </details>
@@ -5703,12 +5819,17 @@ See: <a href="https://matplotlib.org/3.1.1/users/dflt_style_changes.html">https:
 <span>def <span class="ident">colors_list_6</span></span>(<span>di)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Colorbrewer qualitative color cycle scheme 6 (modified) <br>
+See: <a href="https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6">https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def colors_list_6(di):
+    &#39;&#39;&#39;
+    Colorbrewer qualitative color cycle scheme 6 (modified)   
+    See: https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6
+    &#39;&#39;&#39;
     #colors_list = [&#39;b&#39;,&#39;g&#39;,&#39;r&#39;,&#39;c&#39;,&#39;m&#39;,&#39;y&#39;] # Python 3 old default
     #colors_list = [&#39;#b2182b&#39;,&#39;#d6604d&#39;,&#39;#f4a582&#39;,&#39;#92c5de&#39;,&#39;#4393c3&#39;,&#39;#2166ac&#39;] # blue to red cold
     #colors_list = [&#39;#d73027&#39;,&#39;#f46d43&#39;,&#39;#fdae61&#39;,&#39;#abd9e9&#39;,&#39;#74add1&#39;,&#39;#4575b4&#39;] # blue to red warm
@@ -8291,6 +8412,47 @@ Note that if "enriched" or "depleted" appears in the material's name, particle=<
     return newx, newy</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.get_colormap"><code class="name flex">
+<span>def <span class="ident">get_colormap</span></span>(<span>cmap_str)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Retrieve a matplotlib colormap using just its string name<br>
+See available colormaps: <a href="https://matplotlib.org/3.3.1/tutorials/colors/colormaps.html">https://matplotlib.org/3.3.1/tutorials/colors/colormaps.html</a></p>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li><code>from matplotlib import cm</code></li>
+</ul>
+<h2 id="inputs">Inputs</h2>
+<ul>
+<li><code>cmap_str</code> = string of name of colormap</li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li>callable colormap object which can be provided to plotting functions or evaluated for any value from 0 to 1</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_colormap(cmap_str):
+    &#39;&#39;&#39;
+    Description:
+        Retrieve a matplotlib colormap using just its string name  
+        See available colormaps: https://matplotlib.org/3.3.1/tutorials/colors/colormaps.html
+    
+    Dependencies:
+      - `from matplotlib import cm`
+    
+    Inputs:
+      - `cmap_str` = string of name of colormap
+    
+    Outputs:
+      - callable colormap object which can be provided to plotting functions or evaluated for any value from 0 to 1
+    &#39;&#39;&#39;
+    return cm.get_cmap(cmap_str)</code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.hex_to_rgb"><code class="name flex">
 <span>def <span class="ident">hex_to_rgb</span></span>(<span>hexcol, opacity=1.0, out_of_one=False)</span>
 </code></dt>
@@ -8323,6 +8485,7 @@ useful if you'd rather have white be (255,255,255) (default) or (1,1,1)</li>
         - `opacity` = float between 0 and 1 specifying color opacity (D=1.0)
         - `out_of_one` = bool which toggles whether output will be out of 255 (default, =`False`) or 1 (=`True`)
                      useful if you&#39;d rather have white be (255,255,255) (default) or (1,1,1)
+    
     Outputs:
         - tuple containing RGB values and opacity,  (red, green, blue, opacity)
     &#39;&#39;&#39;
@@ -8997,6 +9160,58 @@ The function seeks to be as generalized as possible, meaning bin sizes do not ne
     return N</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.rgb_to_hex"><code class="name flex">
+<span>def <span class="ident">rgb_to_hex</span></span>(<span>rgb)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Return hexidecimal color string <code>#rrggbb</code> for the color given as a tuple (red, green, blue, opacity)</p>
+<h2 id="inputs">Inputs</h2>
+<ul>
+<li><code>rgb</code> = tuple containing RGB values and (optionally) opacity,
+(red, green, blue, opacity); note that
+the opacity value is not preserved when converted to hex</li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li>string of hexidecimal color formatted as <code>#rrggbb</code></li>
+</ul>
+<h2 id="notes">Notes</h2>
+<p>Each RGB tuple value needs to be either between 0 and 1 or between 0 and 255.
+If no values greater
+than 1 are provided in the rgb tuple, they will be automatically renormalized to 255.
+Additionally, any values outside of the bounds will be reassigned to the nearest bound value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rgb_to_hex(rgb):
+    &#39;&#39;&#39;
+    Description:
+        Return hexidecimal color string `#rrggbb` for the color given as a tuple (red, green, blue, opacity)
+        
+    Inputs:
+        - `rgb` = tuple containing RGB values and (optionally) opacity,  (red, green, blue, opacity); note that
+                  the opacity value is not preserved when converted to hex
+    
+    Outputs:
+        - string of hexidecimal color formatted as `#rrggbb`
+        
+    Notes:
+      Each RGB tuple value needs to be either between 0 and 1 or between 0 and 255.  If no values greater
+      than 1 are provided in the rgb tuple, they will be automatically renormalized to 255.
+      Additionally, any values outside of the bounds will be reassigned to the nearest bound value.
+    &#39;&#39;&#39;
+    if any(rgb[i]&gt;255 or rgb[i]&lt;0 for i in range(3)):
+        print(&#39;Warning: Check that rgb values of color tuple are within bounds [0,255].&#39;)
+    if any(rgb[i]&gt;1 for i in range(3)):
+        nrm_fac = 1
+    else:
+        nrm_fac = 255
+    hex_col_str = &#39;#%02x%02x%02x&#39; % (max(0, min(int(nrm_fac*rgb[0]), 255)),max(0, min(int(nrm_fac*rgb[1]), 255)),max(0, min(int(nrm_fac*rgb[2]), 255)))
+    return hex_col_str</code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.round_down_to_next_multiple"><code class="name flex">
 <span>def <span class="ident">round_down_to_next_multiple</span></span>(<span>value, mult=1)</span>
 </code></dt>
@@ -9516,6 +9731,63 @@ be uniform for all entries, a single value (or list of single values) may be pro
         return None</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.truncate_colormap"><code class="name flex">
+<span>def <span class="ident">truncate_colormap</span></span>(<span>cmap, min_val=0.0, max_val=1.0, n=100)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Truncate a colormap object's bounds to a subset of the original colormap, renormalizing new bounds to [0,1].
+For instance, the upper and lower 20% of a colormap could be removed with <code>cmap=truncate_colormap(cmap, min_val=0.2, max_val=0.8)</code>.</p>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li><code>from matplotlib.colors import LinearSegmentedColormap</code></li>
+<li><code>import numpy as np</code></li>
+</ul>
+<h2 id="inputs">Inputs</h2>
+<ul>
+<li><code>cmap</code> = callable colormap object or string of matplotlib colormap name to be truncated and rescaled</li>
+<li><code>min_val</code> = float specifying new lower bound of cmap in [0,1) (D=<code>0.0</code>)</li>
+<li><code>max_val</code> = float specifying new upper bound of cmap in (0,1] (D=<code>1.0</code>)</li>
+<li><code>n</code> = integer specifying number of bins cmap will be subdivided into (D=<code>100</code>); note that nearest neighbor
+linear interpolation will be used when providing values to and evaluating the new colormap.
+Higher values of <code>n</code> just correspond to a higher-quality and more accurate interpolation.</li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li>callable colormap object which can be provided to plotting functions or evaluated for any value from 0 to 1</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def truncate_colormap(cmap, min_val=0.0, max_val=1.0, n=100):
+    &#39;&#39;&#39;
+    Description:
+        Truncate a colormap object&#39;s bounds to a subset of the original colormap, renormalizing new bounds to [0,1].
+        For instance, the upper and lower 20% of a colormap could be removed with `cmap=truncate_colormap(cmap, min_val=0.2, max_val=0.8)`.
+    
+    Dependencies:
+      - `from matplotlib.colors import LinearSegmentedColormap`
+      - `import numpy as np`
+    
+    Inputs:
+      - `cmap` = callable colormap object or string of matplotlib colormap name to be truncated and rescaled
+      - `min_val` = float specifying new lower bound of cmap in [0,1) (D=`0.0`)
+      - `max_val` = float specifying new upper bound of cmap in (0,1] (D=`1.0`)
+      - `n` = integer specifying number of bins cmap will be subdivided into (D=`100`); note that nearest neighbor
+              linear interpolation will be used when providing values to and evaluating the new colormap.
+              Higher values of `n` just correspond to a higher-quality and more accurate interpolation.
+    
+    Outputs:
+      - callable colormap object which can be provided to plotting functions or evaluated for any value from 0 to 1
+    &#39;&#39;&#39;
+    if isinstance(cmap,str): cmap = get_colormap(cmap)
+    new_cmap = LinearSegmentedColormap.from_list(
+        &#39;trunc({n},{a:.2f},{b:.2f})&#39;.format(n=cmap.name, a=min_val, b=max_val),
+        cmap(np.linspace(min_val, max_val, n)))
+    return new_cmap</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -9562,6 +9834,7 @@ be uniform for all entries, a single value (or list of single values) may be pro
 <li><code><a title="Hunters_tools.fractional_difference" href="#Hunters_tools.fractional_difference">fractional_difference</a></code></li>
 <li><code><a title="Hunters_tools.fractional_error" href="#Hunters_tools.fractional_error">fractional_error</a></code></li>
 <li><code><a title="Hunters_tools.generate_line_bar_coordinates" href="#Hunters_tools.generate_line_bar_coordinates">generate_line_bar_coordinates</a></code></li>
+<li><code><a title="Hunters_tools.get_colormap" href="#Hunters_tools.get_colormap">get_colormap</a></code></li>
 <li><code><a title="Hunters_tools.hex_to_rgb" href="#Hunters_tools.hex_to_rgb">hex_to_rgb</a></code></li>
 <li><code><a title="Hunters_tools.humansize" href="#Hunters_tools.humansize">humansize</a></code></li>
 <li><code><a title="Hunters_tools.makeErrorBoxes" href="#Hunters_tools.makeErrorBoxes">makeErrorBoxes</a></code></li>
@@ -9571,6 +9844,7 @@ be uniform for all entries, a single value (or list of single values) may be pro
 <li><code><a title="Hunters_tools.quotient" href="#Hunters_tools.quotient">quotient</a></code></li>
 <li><code><a title="Hunters_tools.rebinner" href="#Hunters_tools.rebinner">rebinner</a></code></li>
 <li><code><a title="Hunters_tools.relative_error_to_N" href="#Hunters_tools.relative_error_to_N">relative_error_to_N</a></code></li>
+<li><code><a title="Hunters_tools.rgb_to_hex" href="#Hunters_tools.rgb_to_hex">rgb_to_hex</a></code></li>
 <li><code><a title="Hunters_tools.round_down_to_next_multiple" href="#Hunters_tools.round_down_to_next_multiple">round_down_to_next_multiple</a></code></li>
 <li><code><a title="Hunters_tools.round_up_to_next_multiple" href="#Hunters_tools.round_up_to_next_multiple">round_up_to_next_multiple</a></code></li>
 <li><code><a title="Hunters_tools.scan_folder_for_file" href="#Hunters_tools.scan_folder_for_file">scan_folder_for_file</a></code></li>
@@ -9579,6 +9853,7 @@ be uniform for all entries, a single value (or list of single values) may be pro
 <li><code><a title="Hunters_tools.slugify" href="#Hunters_tools.slugify">slugify</a></code></li>
 <li><code><a title="Hunters_tools.table_array_generator" href="#Hunters_tools.table_array_generator">table_array_generator</a></code></li>
 <li><code><a title="Hunters_tools.time_str_to_sec_multiplier" href="#Hunters_tools.time_str_to_sec_multiplier">time_str_to_sec_multiplier</a></code></li>
+<li><code><a title="Hunters_tools.truncate_colormap" href="#Hunters_tools.truncate_colormap">truncate_colormap</a></code></li>
 </ul>
 </li>
 </ul>
