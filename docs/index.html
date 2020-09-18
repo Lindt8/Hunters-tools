@@ -454,7 +454,7 @@ def table_array_generator(core_table,row_headers=None,row_header_spans=None,colu
        - `float_formatting` = default formatting string for floating point numbers passed to this function (D=`&#39;{:g}&#39;`)
     
     Outputs:
-       - `table_array` = an (R+num_col_heads)x(C+num_row_heads_
+       - `table_array` = an (R+num_col_heads)x(C+num_row_heads) array of strings forming the table
     &#39;&#39;&#39;
     
     core_num_rows, core_num_cols = np.shape(core_table)
@@ -597,7 +597,7 @@ def Excel_table_generator(core_table,title=None,row_headers=None,row_header_span
                       be uniform for all entries, a single value (or list of single values) may be provided instead.
        - `float_formatting` = default formatting string for floating point numbers passed to this function (D=`&#39;{:g}&#39;`)
        
-    Outputs: 
+    Outputs:
        - `tab_str` = text string containing the formatted table
     &#39;&#39;&#39;
     
@@ -624,9 +624,9 @@ def Excel_table_generator(core_table,title=None,row_headers=None,row_header_span
 
 
 def Latex_table_generator(core_table,title=None,row_headers=None,row_header_spans=None,column_headers=None,column_header_spans=None,
-                          float_formatting=&#39;{:g}&#39;,table_positioning=&#39;[H]&#39;,label=None,use_table_ruling=True,coulmn_formatting=None,
+                          float_formatting=&#39;{:g}&#39;,table_positioning=&#39;[h]&#39;,label=None,use_table_ruling=True,coulmn_formatting=None,
                           hline_row_indices=None,cline_row_cstart_cend_indices_triplets = None,return_only_core_tabular_environment=False,
-                          nest_in_ruledtabular=False):
+                          nest_in_ruledtabular=False,colormap=None,color_transform_fcn=None,color_scale=&#39;linear&#39;,color_min_val=None,color_max_val=None):
     &#39;&#39;&#39;
     Description:
         This function generates a string containing a LaTeX-formatted table from an input array supplemented with 
@@ -657,7 +657,7 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
        - `column_header_spans` = A list (or list of lists) of the number of column each column header spans.  If these are to
                       be uniform for all entries, a single value (or list of single values) may be provided instead.
        - `float_formatting` = default formatting string for floating point numbers passed to this function (D=`&#39;{:g}&#39;`)
-       - `table_positioning` = string of table positioning argument for LaTeX (D=`&#39;[H]&#39;`)
+       - `table_positioning` = string of table positioning argument for LaTeX (D=`&#39;[h]&#39;`)
        - `label` = string of table label (D = `slugify(title)`)
        - `use_table_ruling` = boolean controlling automatic use of toprule, midrule, and bottomrule (D=`True`)
        - `coulmn_formatting` = string controlling column borders and justification (D=`&#39;{ccc...ccc}&#39;` (all columns centered))
@@ -669,10 +669,24 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
                       tabular environment (`True`) will be returned (D=`False`)
        - `nest_in_ruledtabular` = boolean specifying if the tabular environment will (`True`) or will not (`False`) be
                       nested inside of the ruledtabular environment used by REVTeX (D=`False`)
+       - `colormap` = callable colormap object or string of matplotlib colormap name to be used in setting the background
+                      color of each cell in the table.  By default, `colormap = None` and the table is produced normally.
+                      Otherwise, the specified colormap will be used to color the background of each cell based on its value.
+                      For the colors used, the values of `core_table` are rescaled from `[min(core_table),max(core_table)]`
+                      to `[0,1]` and then used to sample the provided colormap.  As a special case, if `colormap=&#39;default&#39;`
+                      then `colormap=truncate_colormap(&#39;bwr&#39;,0.35,0.65)` is used; ref:`truncate_colormap`
+                      Note that in the LaTeX document `\\usepackage[table]{xcolor}` must be included in the preamble for table colors to function.
+       - `color_transform_fcn` = user-supplied function called to alter each value of `core_table` used for color assignment, prior to
+                      rescaling/normalization.  This only affects color assignment, not the actual value printed to the final table. (D=`None`)
+       - `color_scale` = string specifying whether the mapping of colors to the table values should use `&#39;linear&#39;` (default) or `&#39;log&#39;` scaling
+       - `color_min_val` = float/int specifying new lower bound of `core_table` to be used in colormap normalization; all values 
+                      less than or equal to `col_min_val` will be set to 0 in the array used to sample the colormap.
+       - `color_max_val` = float/int specifying new upper bound of `core_table` to be used in colormap normalization; all values 
+                      greater than or equal to `col_max_val` will be set to 1 in the array used to sample the colormap.
     
-    Outputs: 
+    Outputs:
        - `tab_str` = text string containing the formatted table
-    &#39;&#39;&#39;
+    &#39;&#39;&#39;    
     
     core_table = np.array(core_table)
     core_nrows, core_ncols = np.shape(core_table)
@@ -680,6 +694,48 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
     table_array = table_array_generator(core_table,row_headers=row_headers,row_header_spans=row_header_spans,column_headers=column_headers,column_header_spans=column_header_spans,float_formatting=float_formatting)
     num_rows, num_cols = np.shape(table_array)
     num_column_header_rows, num_row_header_columns = num_rows-core_nrows, num_cols-core_ncols
+    
+    if colormap:
+        if isinstance(colormap,str): 
+            if colormap==&#39;default&#39; or colormap==&#39;Default&#39; or colormap==&#39;DEFAULT&#39;:
+                cmap = truncate_colormap(&#39;bwr&#39;, 0.35, 0.65)
+            else:
+                cmap = get_colormap(cmap)
+        else:
+            cmap = colormap 
+        
+        color_val_table = np.copy(core_table)
+        
+        if color_transform_fcn!=None: # user supplied function to transform values
+            for ri in range(core_nrows):
+                for ci in range(core_ncols):
+                    color_val_table[ri,ci] = color_transform_fcn(color_val_table[ri,ci])
+        
+        if color_min_val==None: col_min_val = np.min(color_val_table)
+        if color_max_val==None: col_max_val = np.max(color_val_table)
+        
+        color_val_table[color_val_table&lt;col_min_val] = col_min_val
+        color_val_table[color_val_table&gt;col_max_val] = col_max_val
+        
+        if color_scale==&#39;log&#39;:
+            if np.any(color_val_table&lt;0):
+                print(&#39;Warning: col_min_val&lt;0 &amp; core_table contains negative values and thus cannot be color scaled logarithmically; reverting to linear color scale.&#39;)
+            else:
+                if np.any(color_val_table==0):
+                    print(&#39;Warning: core_table contains zero values; they will be ignored while assigning colors.&#39;)
+                color_val_table[color_val_table==0] = np.NaN # set to NaN and use this as a flag to ignore later
+                color_val_table = np.log(color_val_table)
+                col_min_val = np.log(col_min_val)
+                col_max_val = np.log(col_max_val)
+            
+        color_val_table = (color_val_table - col_min_val)/(col_max_val - col_min_val)
+        
+        
+        # double check values are within bounds
+        color_val_table[color_val_table&lt;0] = 0
+        color_val_table[color_val_table&gt;1] = 1
+        
+        
     
     if hline_row_indices:
         if not isinstance(hline_row_indices,list): hline_row_indices = [hline_row_indices]
@@ -792,7 +848,14 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
                     line += val + &#39; &amp; &#39;
                 continue
             
+            if colormap:
+                if not np.isnan(color_val_table[ri-num_column_header_rows,ci-num_row_header_columns]): # skip zero values assigned NaN when log scaled
+                    col_rgb = cmap(color_val_table[ri-num_column_header_rows,ci-num_row_header_columns])
+                    col_hex = rgb_to_hex(col_rgb)[1:] # remove leading &#39;#&#39; character
+                    line += r&#39;\cellcolor[HTML]{&#39;+col_hex+&#39;} &#39;
+                    
             line += val + &#39; &amp; &#39;
+            
         tab_str += &#39;\t\t&#39; + line[:-2] + &#39; \\\\&#39; + &#39;\n&#39;
         
         if hline_row_indices:
@@ -1701,7 +1764,8 @@ def calc_GCR_intensity(Z,W,E):
        - `Z` = GCR ion Z
        - `W` = solar modulation parameter
        - `E` = GCR ion energy (in MeV/n)
-    Outputs: 
+    
+    Outputs:
        - `IOSI` = ion flux in (s\*sr\*cm^2\*MeV/n)^-1
     &#39;&#39;&#39;
     
@@ -2348,13 +2412,13 @@ def fancy_plot(
       
       OR 
       
-      - dictionaries (see below)
+      - `dictionaries` (see below)
     
     Dictionaries:
       - `dictionaries` = a list containing dictionary objects for each dataset to be plotted (or single dictionary object).
       
             This provides an alternate way of providing this function with data to be plotted.  If wanting to use exclusively dictionaries, 
-            set xdata_lists=None and ydata_lists=None; otherwise, the two modes may be used together.
+            set `xdata_lists=None` and `ydata_lists=None`; otherwise, the two modes may be used together.
             The dictionaries are converted to the &#34;standard&#34; list of lists/strings/etc format native to this function.
             Below are listed the input keywords for these dictionaries; where not the same as the normal variables for this function, 
             the equivalent name is provided in parentheses.
@@ -3065,7 +3129,7 @@ def fancy_3D_plot(
       - `plot_styles` = list of (or individual) strings denoting the plot style to be used for each dataset. Options include: 
           + 1-D `[&#39;line&#39;,&#39;scatter&#39;,&#39;trisurface&#39;]`   (D=`&#39;line&#39;`)
           + 2-D `[&#39;surface&#39;,&#39;wireframe&#39;,&#39;trisurface&#39;,&#39;contour&#39;,&#39;filledcontour&#39;]`   (D=`&#39;trisurface&#39;`)
-          + 2-D_colormaps [&#39;map_pcolormesh&#39;,&#39;map_filledcontour&#39;,&#39;map_contour&#39;]`
+          + 2-D_colormaps `[&#39;map_pcolormesh&#39;,&#39;map_filledcontour&#39;,&#39;map_contour&#39;]`
       - `data_labels` = a list of strings to be used as data labels in the legend (D=`[]`, no legend generated) (labels do not work for contours)
       - `figi` = figure index (D=`1`)
       - `title_str` = string to be used as the title of the plot (D=`&#39;&#39;`)
@@ -4727,8 +4791,10 @@ If these are to
 be uniform for all entries, a single value (or list of single values) may be provided instead.</li>
 <li><code>float_formatting</code> = default formatting string for floating point numbers passed to this function (D=<code>'{:g}'</code>)</li>
 </ul>
-<p>Outputs:
-- <code>tab_str</code> = text string containing the formatted table</p></div>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li><code>tab_str</code> = text string containing the formatted table</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4765,7 +4831,7 @@ be uniform for all entries, a single value (or list of single values) may be pro
                       be uniform for all entries, a single value (or list of single values) may be provided instead.
        - `float_formatting` = default formatting string for floating point numbers passed to this function (D=`&#39;{:g}&#39;`)
        
-    Outputs: 
+    Outputs:
        - `tab_str` = text string containing the formatted table
     &#39;&#39;&#39;
     
@@ -5064,7 +5130,7 @@ technically, any options available for scipy.interpolate.interp1d() can be used:
 </details>
 </dd>
 <dt id="Hunters_tools.Latex_table_generator"><code class="name flex">
-<span>def <span class="ident">Latex_table_generator</span></span>(<span>core_table, title=None, row_headers=None, row_header_spans=None, column_headers=None, column_header_spans=None, float_formatting='{:g}', table_positioning='[H]', label=None, use_table_ruling=True, coulmn_formatting=None, hline_row_indices=None, cline_row_cstart_cend_indices_triplets=None, return_only_core_tabular_environment=False, nest_in_ruledtabular=False)</span>
+<span>def <span class="ident">Latex_table_generator</span></span>(<span>core_table, title=None, row_headers=None, row_header_spans=None, column_headers=None, column_header_spans=None, float_formatting='{:g}', table_positioning='[h]', label=None, use_table_ruling=True, coulmn_formatting=None, hline_row_indices=None, cline_row_cstart_cend_indices_triplets=None, return_only_core_tabular_environment=False, nest_in_ruledtabular=False, colormap=None, color_transform_fcn=None, color_scale='linear', color_min_val=None, color_max_val=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="description">Description</h2>
@@ -5096,7 +5162,7 @@ be uniform for all entries, a single value (or list of single values) may be pro
 If these are to
 be uniform for all entries, a single value (or list of single values) may be provided instead.</li>
 <li><code>float_formatting</code> = default formatting string for floating point numbers passed to this function (D=<code>'{:g}'</code>)</li>
-<li><code>table_positioning</code> = string of table positioning argument for LaTeX (D=<code>'[H]'</code>)</li>
+<li><code>table_positioning</code> = string of table positioning argument for LaTeX (D=<code>'[h]'</code>)</li>
 <li><code>label</code> = string of table label (D = <code><a title="Hunters_tools.slugify" href="#Hunters_tools.slugify">slugify()</a>(title)</code>)</li>
 <li><code>use_table_ruling</code> = boolean controlling automatic use of toprule, midrule, and bottomrule (D=<code>True</code>)</li>
 <li><code>coulmn_formatting</code> = string controlling column borders and justification (D=<code>'{ccc...ccc}'</code> (all columns centered))</li>
@@ -5108,17 +5174,36 @@ should be drawn (D=<code>None</code>) (-1 places line above very first row)</li>
 tabular environment (<code>True</code>) will be returned (D=<code>False</code>)</li>
 <li><code>nest_in_ruledtabular</code> = boolean specifying if the tabular environment will (<code>True</code>) or will not (<code>False</code>) be
 nested inside of the ruledtabular environment used by REVTeX (D=<code>False</code>)</li>
+<li><code>colormap</code> = callable colormap object or string of matplotlib colormap name to be used in setting the background
+color of each cell in the table.
+By default, <code>colormap = None</code> and the table is produced normally.
+Otherwise, the specified colormap will be used to color the background of each cell based on its value.
+For the colors used, the values of <code>core_table</code> are rescaled from <code>[min(core_table),max(core_table)]</code>
+to <code>[0,1]</code> and then used to sample the provided colormap.
+As a special case, if <code>colormap='default'</code>
+then <code>colormap=truncate_colormap('bwr',0.35,0.65)</code> is used; ref:<code><a title="Hunters_tools.truncate_colormap" href="#Hunters_tools.truncate_colormap">truncate_colormap()</a></code>
+Note that in the LaTeX document <code>\usepackage[table]{xcolor}</code> must be included in the preamble for table colors to function.</li>
+<li><code>color_transform_fcn</code> = user-supplied function called to alter each value of <code>core_table</code> used for color assignment, prior to
+rescaling/normalization.
+This only affects color assignment, not the actual value printed to the final table. (D=<code>None</code>)</li>
+<li><code>color_scale</code> = string specifying whether the mapping of colors to the table values should use <code>'linear'</code> (default) or <code>'log'</code> scaling</li>
+<li><code>color_min_val</code> = float/int specifying new lower bound of <code>core_table</code> to be used in colormap normalization; all values
+less than or equal to <code>col_min_val</code> will be set to 0 in the array used to sample the colormap.</li>
+<li><code>color_max_val</code> = float/int specifying new upper bound of <code>core_table</code> to be used in colormap normalization; all values
+greater than or equal to <code>col_max_val</code> will be set to 1 in the array used to sample the colormap.</li>
 </ul>
-<p>Outputs:
-- <code>tab_str</code> = text string containing the formatted table</p></div>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li><code>tab_str</code> = text string containing the formatted table</li>
+</ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def Latex_table_generator(core_table,title=None,row_headers=None,row_header_spans=None,column_headers=None,column_header_spans=None,
-                          float_formatting=&#39;{:g}&#39;,table_positioning=&#39;[H]&#39;,label=None,use_table_ruling=True,coulmn_formatting=None,
+                          float_formatting=&#39;{:g}&#39;,table_positioning=&#39;[h]&#39;,label=None,use_table_ruling=True,coulmn_formatting=None,
                           hline_row_indices=None,cline_row_cstart_cend_indices_triplets = None,return_only_core_tabular_environment=False,
-                          nest_in_ruledtabular=False):
+                          nest_in_ruledtabular=False,colormap=None,color_transform_fcn=None,color_scale=&#39;linear&#39;,color_min_val=None,color_max_val=None):
     &#39;&#39;&#39;
     Description:
         This function generates a string containing a LaTeX-formatted table from an input array supplemented with 
@@ -5149,7 +5234,7 @@ nested inside of the ruledtabular environment used by REVTeX (D=<code>False</cod
        - `column_header_spans` = A list (or list of lists) of the number of column each column header spans.  If these are to
                       be uniform for all entries, a single value (or list of single values) may be provided instead.
        - `float_formatting` = default formatting string for floating point numbers passed to this function (D=`&#39;{:g}&#39;`)
-       - `table_positioning` = string of table positioning argument for LaTeX (D=`&#39;[H]&#39;`)
+       - `table_positioning` = string of table positioning argument for LaTeX (D=`&#39;[h]&#39;`)
        - `label` = string of table label (D = `slugify(title)`)
        - `use_table_ruling` = boolean controlling automatic use of toprule, midrule, and bottomrule (D=`True`)
        - `coulmn_formatting` = string controlling column borders and justification (D=`&#39;{ccc...ccc}&#39;` (all columns centered))
@@ -5161,10 +5246,24 @@ nested inside of the ruledtabular environment used by REVTeX (D=<code>False</cod
                       tabular environment (`True`) will be returned (D=`False`)
        - `nest_in_ruledtabular` = boolean specifying if the tabular environment will (`True`) or will not (`False`) be
                       nested inside of the ruledtabular environment used by REVTeX (D=`False`)
+       - `colormap` = callable colormap object or string of matplotlib colormap name to be used in setting the background
+                      color of each cell in the table.  By default, `colormap = None` and the table is produced normally.
+                      Otherwise, the specified colormap will be used to color the background of each cell based on its value.
+                      For the colors used, the values of `core_table` are rescaled from `[min(core_table),max(core_table)]`
+                      to `[0,1]` and then used to sample the provided colormap.  As a special case, if `colormap=&#39;default&#39;`
+                      then `colormap=truncate_colormap(&#39;bwr&#39;,0.35,0.65)` is used; ref:`truncate_colormap`
+                      Note that in the LaTeX document `\\usepackage[table]{xcolor}` must be included in the preamble for table colors to function.
+       - `color_transform_fcn` = user-supplied function called to alter each value of `core_table` used for color assignment, prior to
+                      rescaling/normalization.  This only affects color assignment, not the actual value printed to the final table. (D=`None`)
+       - `color_scale` = string specifying whether the mapping of colors to the table values should use `&#39;linear&#39;` (default) or `&#39;log&#39;` scaling
+       - `color_min_val` = float/int specifying new lower bound of `core_table` to be used in colormap normalization; all values 
+                      less than or equal to `col_min_val` will be set to 0 in the array used to sample the colormap.
+       - `color_max_val` = float/int specifying new upper bound of `core_table` to be used in colormap normalization; all values 
+                      greater than or equal to `col_max_val` will be set to 1 in the array used to sample the colormap.
     
-    Outputs: 
+    Outputs:
        - `tab_str` = text string containing the formatted table
-    &#39;&#39;&#39;
+    &#39;&#39;&#39;    
     
     core_table = np.array(core_table)
     core_nrows, core_ncols = np.shape(core_table)
@@ -5172,6 +5271,48 @@ nested inside of the ruledtabular environment used by REVTeX (D=<code>False</cod
     table_array = table_array_generator(core_table,row_headers=row_headers,row_header_spans=row_header_spans,column_headers=column_headers,column_header_spans=column_header_spans,float_formatting=float_formatting)
     num_rows, num_cols = np.shape(table_array)
     num_column_header_rows, num_row_header_columns = num_rows-core_nrows, num_cols-core_ncols
+    
+    if colormap:
+        if isinstance(colormap,str): 
+            if colormap==&#39;default&#39; or colormap==&#39;Default&#39; or colormap==&#39;DEFAULT&#39;:
+                cmap = truncate_colormap(&#39;bwr&#39;, 0.35, 0.65)
+            else:
+                cmap = get_colormap(cmap)
+        else:
+            cmap = colormap 
+        
+        color_val_table = np.copy(core_table)
+        
+        if color_transform_fcn!=None: # user supplied function to transform values
+            for ri in range(core_nrows):
+                for ci in range(core_ncols):
+                    color_val_table[ri,ci] = color_transform_fcn(color_val_table[ri,ci])
+        
+        if color_min_val==None: col_min_val = np.min(color_val_table)
+        if color_max_val==None: col_max_val = np.max(color_val_table)
+        
+        color_val_table[color_val_table&lt;col_min_val] = col_min_val
+        color_val_table[color_val_table&gt;col_max_val] = col_max_val
+        
+        if color_scale==&#39;log&#39;:
+            if np.any(color_val_table&lt;0):
+                print(&#39;Warning: col_min_val&lt;0 &amp; core_table contains negative values and thus cannot be color scaled logarithmically; reverting to linear color scale.&#39;)
+            else:
+                if np.any(color_val_table==0):
+                    print(&#39;Warning: core_table contains zero values; they will be ignored while assigning colors.&#39;)
+                color_val_table[color_val_table==0] = np.NaN # set to NaN and use this as a flag to ignore later
+                color_val_table = np.log(color_val_table)
+                col_min_val = np.log(col_min_val)
+                col_max_val = np.log(col_max_val)
+            
+        color_val_table = (color_val_table - col_min_val)/(col_max_val - col_min_val)
+        
+        
+        # double check values are within bounds
+        color_val_table[color_val_table&lt;0] = 0
+        color_val_table[color_val_table&gt;1] = 1
+        
+        
     
     if hline_row_indices:
         if not isinstance(hline_row_indices,list): hline_row_indices = [hline_row_indices]
@@ -5284,7 +5425,14 @@ nested inside of the ruledtabular environment used by REVTeX (D=<code>False</cod
                     line += val + &#39; &amp; &#39;
                 continue
             
+            if colormap:
+                if not np.isnan(color_val_table[ri-num_column_header_rows,ci-num_row_header_columns]): # skip zero values assigned NaN when log scaled
+                    col_rgb = cmap(color_val_table[ri-num_column_header_rows,ci-num_row_header_columns])
+                    col_hex = rgb_to_hex(col_rgb)[1:] # remove leading &#39;#&#39; character
+                    line += r&#39;\cellcolor[HTML]{&#39;+col_hex+&#39;} &#39;
+                    
             line += val + &#39; &amp; &#39;
+            
         tab_str += &#39;\t\t&#39; + line[:-2] + &#39; \\\\&#39; + &#39;\n&#39;
         
         if hline_row_indices:
@@ -5594,8 +5742,10 @@ nested inside of the ruledtabular environment used by REVTeX (D=<code>False</cod
 <ul>
 <li><code>Z</code> = GCR ion Z</li>
 <li><code>W</code> = solar modulation parameter</li>
-<li><code>E</code> = GCR ion energy (in MeV/n)
-Outputs: </li>
+<li><code>E</code> = GCR ion energy (in MeV/n)</li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<ul>
 <li><code>IOSI</code> = ion flux in (s*sr*cm^2*MeV/n)^-1</li>
 </ul></div>
 <details class="source">
@@ -5615,7 +5765,8 @@ Outputs: </li>
        - `Z` = GCR ion Z
        - `W` = solar modulation parameter
        - `E` = GCR ion energy (in MeV/n)
-    Outputs: 
+    
+    Outputs:
        - `IOSI` = ion flux in (s\*sr\*cm^2\*MeV/n)^-1
     &#39;&#39;&#39;
     
@@ -5973,7 +6124,7 @@ of the z-axis dataset.</p>
 (D=<code>'line'</code>)</li>
 <li>2-D <code>['surface','wireframe','trisurface','contour','filledcontour']</code>
 (D=<code>'trisurface'</code>)</li>
-<li>2-D_colormaps ['map_pcolormesh','map_filledcontour','map_contour']`</li>
+<li>2-D_colormaps <code>['map_pcolormesh','map_filledcontour','map_contour']</code></li>
 </ul>
 </li>
 <li><code>data_labels</code> = a list of strings to be used as data labels in the legend (D=<code>[]</code>, no legend generated) (labels do not work for contours)</li>
@@ -6143,7 +6294,7 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
       - `plot_styles` = list of (or individual) strings denoting the plot style to be used for each dataset. Options include: 
           + 1-D `[&#39;line&#39;,&#39;scatter&#39;,&#39;trisurface&#39;]`   (D=`&#39;line&#39;`)
           + 2-D `[&#39;surface&#39;,&#39;wireframe&#39;,&#39;trisurface&#39;,&#39;contour&#39;,&#39;filledcontour&#39;]`   (D=`&#39;trisurface&#39;`)
-          + 2-D_colormaps [&#39;map_pcolormesh&#39;,&#39;map_filledcontour&#39;,&#39;map_contour&#39;]`
+          + 2-D_colormaps `[&#39;map_pcolormesh&#39;,&#39;map_filledcontour&#39;,&#39;map_contour&#39;]`
       - `data_labels` = a list of strings to be used as data labels in the legend (D=`[]`, no legend generated) (labels do not work for contours)
       - `figi` = figure index (D=`1`)
       - `title_str` = string to be used as the title of the plot (D=`&#39;&#39;`)
@@ -7231,7 +7382,7 @@ It is intended to be used when plotting multiple datasets at once with a legend 
 </ul>
 <p>OR </p>
 <ul>
-<li>dictionaries (see below)</li>
+<li><code>dictionaries</code> (see below)</li>
 </ul>
 <h2 id="dictionaries">Dictionaries</h2>
 <ul>
@@ -7239,7 +7390,7 @@ It is intended to be used when plotting multiple datasets at once with a legend 
 <p><code>dictionaries</code> = a list containing dictionary objects for each dataset to be plotted (or single dictionary object).</p>
 <p>This provides an alternate way of providing this function with data to be plotted.
 If wanting to use exclusively dictionaries,
-set xdata_lists=None and ydata_lists=None; otherwise, the two modes may be used together.
+set <code>xdata_lists=None</code> and <code>ydata_lists=None</code>; otherwise, the two modes may be used together.
 The dictionaries are converted to the "standard" list of lists/strings/etc format native to this function.
 Below are listed the input keywords for these dictionaries; where not the same as the normal variables for this function,
 the equivalent name is provided in parentheses.</p>
@@ -7397,13 +7548,13 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
       
       OR 
       
-      - dictionaries (see below)
+      - `dictionaries` (see below)
     
     Dictionaries:
       - `dictionaries` = a list containing dictionary objects for each dataset to be plotted (or single dictionary object).
       
             This provides an alternate way of providing this function with data to be plotted.  If wanting to use exclusively dictionaries, 
-            set xdata_lists=None and ydata_lists=None; otherwise, the two modes may be used together.
+            set `xdata_lists=None` and `ydata_lists=None`; otherwise, the two modes may be used together.
             The dictionaries are converted to the &#34;standard&#34; list of lists/strings/etc format native to this function.
             Below are listed the input keywords for these dictionaries; where not the same as the normal variables for this function, 
             the equivalent name is provided in parentheses.
@@ -9525,7 +9676,7 @@ be uniform for all entries, a single value (or list of single values) may be pro
 </ul>
 <h2 id="outputs">Outputs</h2>
 <ul>
-<li><code>table_array</code> = an (R+num_col_heads)x(C+num_row_heads_</li>
+<li><code>table_array</code> = an (R+num_col_heads)x(C+num_row_heads) array of strings forming the table</li>
 </ul></div>
 <details class="source">
 <summary>
@@ -9563,7 +9714,7 @@ be uniform for all entries, a single value (or list of single values) may be pro
        - `float_formatting` = default formatting string for floating point numbers passed to this function (D=`&#39;{:g}&#39;`)
     
     Outputs:
-       - `table_array` = an (R+num_col_heads)x(C+num_row_heads_
+       - `table_array` = an (R+num_col_heads)x(C+num_row_heads) array of strings forming the table
     &#39;&#39;&#39;
     
     core_num_rows, core_num_cols = np.shape(core_table)
