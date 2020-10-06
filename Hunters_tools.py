@@ -572,8 +572,14 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
                 for ci in range(core_ncols):
                     color_val_table[ri,ci] = color_transform_fcn(color_val_table[ri,ci])
         
-        if color_min_val==None: col_min_val = np.min(color_val_table)
-        if color_max_val==None: col_max_val = np.max(color_val_table)
+        if color_min_val==None: 
+            col_min_val = np.min(color_val_table)
+        else:
+            col_min_val = color_min_val
+        if color_max_val==None: 
+            col_max_val = np.max(color_val_table)
+        else:
+            col_max_val = color_max_val
         
         color_val_table[color_val_table<col_min_val] = col_min_val
         color_val_table[color_val_table>col_max_val] = col_max_val
