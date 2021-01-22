@@ -24,6 +24,8 @@ The functions contained in this module and brief descriptions of their functions
 - `time_str_to_sec_multiplier`      : determine multiplier to convert a time unit to seconds
 - `seconds_to_dhms`                 : convert a time in seconds to a string of human-relatable time units
 - `seconds_to_ydhms`                : convert a time in seconds to a string of human-relatable time units (also with years)
+- `seconds_to_human_time`           : convert a time in seconds to the shortest string of human-relatable time units
+- `time_units_converter`            : convert a decimal time in one unit to a decimal time in different units
 - `SI_prefix_converter`             : returns a multiplier to convert from one SI prefix to another
 - `Element_Z_to_Sym`                : returns elemental symbol provided the atomic number Z
 - `Element_Sym_to_Z`                : returns an atomic number Z provided the elemental symbol
@@ -858,6 +860,115 @@ def seconds_to_ydhms(t_sec):
         time_str = ""
         
     return time_str
+
+def seconds_to_human_time(t_sec,time_style='mixed',abbreviation_style='shortest'):
+    '''
+    Description:
+        Provide a time in seconds and obtain a string with the time in years, days, hours, minutes, and seconds, 
+        presented in the shortest and most human-friendly/readable format
+    
+    Inputs:
+        (required)
+       
+        - `t_sec` = a time in seconds (float or int)
+        
+    Inputs:
+        (optional)
+       
+        - `time_style` = string denoting whether times are split into mixed units (`'mixed'`, default, e.g. `1d 12h`),
+                         one value in the largest units (`'single_largest'`, e.g. `1.5d`), or one value in the largest 
+                         integer units (`'single_integer'`, e.g. `36h`)
+        - `abbreviation_style` = string denoting style of abbreviation (D=`'shortest'`); select from: [`'shortest'`,`'normal'`,`'none'`], 
+                         for example: h/hr(s)/hour(s), m/min/minute(s)
+    
+    Outputs:
+        - `time_str` = string containing the time prettily formatted in the selected format
+    
+    '''
+    
+    if abbreviation_style=='shortest':
+        tu_strs = ['s','m','h','d','y']
+    elif abbreviation_style=='normal':
+        tu_strs = [' sec',' min',' hr',' day',' yr']
+    elif abbreviation_style=='none':
+        tu_strs = [' second',' minute',' hour',' day',' year']
+    else:
+        print('Check value of "abbreviation_style"; assuming "shortest" was intended.')
+        abbreviation_style = 'shortest'
+        tu_strs = ['s','m','h','d','y']
+    
+    m, s = divmod(t_sec, 60)
+    h, m = divmod(m, 60)
+    d, h = divmod(h, 24)
+    y, d = divmod(d, 365)
+    
+    if y>=4 : # if leap year occurred
+        n_leap_years = int(y/4)
+        d = d-n_leap_years
+    
+    time_str = ''
+    
+    if time_style=='single_integer':
+        divs = [60,60,24,365.25]
+        t = t_sec
+        for i in range(len(divs)):
+            t_new = t/divs[i]
+            if not t_new.is_integer():
+                time_str = "{:8.4g}{:}".format(t,tu_strs[i])
+                if t>1.0 and ((abbreviation_style=='normal' and i!=0 and i!=1) or abbreviation_style=='none'):
+                    time_str += 's'
+                break 
+            else:
+                t = t_new
+                
+    elif time_style=='single_largest':
+        divs = [365.25,24,60,60]
+        t_yr = t_sec/(60*60*24*365.25)
+        t = t_yr
+        for i in range(len(divs)+1):
+            if round(t,6)>=1.0:
+                time_str = "{:8.4g}{:}".format(t,tu_strs[4-i])
+                if t>1.0 and ((abbreviation_style=='normal' and i!=4 and i!=3) or abbreviation_style=='none'):
+                    time_str += 's'
+                break 
+            else:
+                t = t*divs[i]
+        
+    else: 
+        vals = [y,d,h,m,s]
+        for vi in range(len(vals)):
+            if vals[vi] != 0:
+                if vi==4:
+                    time_str += " {:0.2g}{:}".format(vals[vi],tu_strs[4-vi]) # 4 = number of total time units - 1
+                else:
+                    time_str += " {:0.0g}{:}".format(vals[vi],tu_strs[4-vi]) # 4 = number of total time units - 1
+                # make units plural if warranted
+                if vals[vi]>1.0 and ((abbreviation_style=='normal' and vi!=4 and vi!=3) or abbreviation_style=='none'):
+                    time_str += 's'
+    
+    if time_str=='': time_str = '0{:}'.format(tu_strs[0])
+    time_str = time_str.strip()
+    
+    return time_str
+
+def time_units_converter(t1_val,t1_units='s',t2_units='s'):
+    '''
+    Description:
+        Provide a decimal time, its current units, and the desired units to obtain a new decimal time in the desired units
+    
+    Inputs:
+        - `t1_val` = a decimal time value (float or int)
+        - `t1_units` = (optional) a time units string for the input time value (D=`'s'`); select from: `['s','m','h','d','y','ms','us','ns','ps','fs']` (str)
+        - `t2_units` = (optional) a time units string for the output time value (D=`'s'`); select from: `['s','m','h','d','y','ms','us','ns','ps','fs']` (str)
+    
+    Outputs:
+        - `t2_val` = a decimal time value in the units specified by `t2_units` (float)
+    
+    '''
+    t1_sec = t1_val*time_str_to_sec_multiplier(t1_units)
+    t2_val = t1_sec/time_str_to_sec_multiplier(t2_units)
+    
+    return t2_val
 
 def SI_prefix_converter(SI1,SI2=''):
     '''
@@ -2618,7 +2729,7 @@ def fancy_plot(
     #bg_color = '#FFFFFF' #'#E1E4E6'
     #fig.patch.set_facecolor(bg_color)
     #fig.patch.set_alpha(1.0)
-    ax = plt.subplot(spnrows, spncols, spindex)
+    ax = plt.subplot(int(spnrows), int(spncols), int(spindex))
         
     for i in range(nds):
         xdata = xdata_lists[i]
@@ -2635,7 +2746,7 @@ def fancy_plot(
                 xerr_present = True
         if len(yerr_lists[0])>0:
             yerr = yerr_lists[i]
-            if sum(yerr)==0: 
+            if np.sum(yerr)==0: 
                 yerr = None
             else:
                 yerr_present = True
@@ -2714,7 +2825,10 @@ def fancy_plot(
         if (ers=='bar-band' or ers=='band') and yerr_present:
             if color=='#FDFEFC' or color[0]=='#FDFEFC': # assume user will never actually want/input this specific white color
                 c = p[0].get_color() # need to grab whatever color was just used
-            ax.fill_between(xdata, np.array(ydata)-np.array(yerr), np.array(ydata)+np.array(yerr),color=c,alpha=ebo)
+            if len(np.shape(yerr))==1:
+                ax.fill_between(xdata, np.array(ydata)-np.array(yerr), np.array(ydata)+np.array(yerr),color=c,alpha=ebo)
+            else:
+                ax.fill_between(xdata, np.array(ydata)-np.array(yerr[0,:]), np.array(ydata)+np.array(yerr[1,:]),color=c,alpha=ebo)
             
         if draw_error_boxes:
             draw_error_box_for_this_dataset = True
