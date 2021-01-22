@@ -59,6 +59,10 @@ other scripts and/or are just generally useful and could possibly be useful in t
 : convert a time in seconds to a string of human-relatable time units</li>
 <li><code><a title="Hunters_tools.seconds_to_ydhms" href="#Hunters_tools.seconds_to_ydhms">seconds_to_ydhms()</a></code>
 : convert a time in seconds to a string of human-relatable time units (also with years)</li>
+<li><code><a title="Hunters_tools.seconds_to_human_time" href="#Hunters_tools.seconds_to_human_time">seconds_to_human_time()</a></code>
+: convert a time in seconds to the shortest string of human-relatable time units</li>
+<li><code><a title="Hunters_tools.time_units_converter" href="#Hunters_tools.time_units_converter">time_units_converter()</a></code>
+: convert a decimal time in one unit to a decimal time in different units</li>
 <li><code><a title="Hunters_tools.SI_prefix_converter" href="#Hunters_tools.SI_prefix_converter">SI_prefix_converter()</a></code>
 : returns a multiplier to convert from one SI prefix to another</li>
 <li><code><a title="Hunters_tools.Element_Z_to_Sym" href="#Hunters_tools.Element_Z_to_Sym">Element_Z_to_Sym()</a></code>
@@ -163,6 +167,8 @@ The functions contained in this module and brief descriptions of their functions
 - `time_str_to_sec_multiplier`      : determine multiplier to convert a time unit to seconds
 - `seconds_to_dhms`                 : convert a time in seconds to a string of human-relatable time units
 - `seconds_to_ydhms`                : convert a time in seconds to a string of human-relatable time units (also with years)
+- `seconds_to_human_time`           : convert a time in seconds to the shortest string of human-relatable time units
+- `time_units_converter`            : convert a decimal time in one unit to a decimal time in different units
 - `SI_prefix_converter`             : returns a multiplier to convert from one SI prefix to another
 - `Element_Z_to_Sym`                : returns elemental symbol provided the atomic number Z
 - `Element_Sym_to_Z`                : returns an atomic number Z provided the elemental symbol
@@ -711,8 +717,14 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
                 for ci in range(core_ncols):
                     color_val_table[ri,ci] = color_transform_fcn(color_val_table[ri,ci])
         
-        if color_min_val==None: col_min_val = np.min(color_val_table)
-        if color_max_val==None: col_max_val = np.max(color_val_table)
+        if color_min_val==None: 
+            col_min_val = np.min(color_val_table)
+        else:
+            col_min_val = color_min_val
+        if color_max_val==None: 
+            col_max_val = np.max(color_val_table)
+        else:
+            col_max_val = color_max_val
         
         color_val_table[color_val_table&lt;col_min_val] = col_min_val
         color_val_table[color_val_table&gt;col_max_val] = col_max_val
@@ -991,6 +1003,115 @@ def seconds_to_ydhms(t_sec):
         time_str = &#34;&#34;
         
     return time_str
+
+def seconds_to_human_time(t_sec,time_style=&#39;mixed&#39;,abbreviation_style=&#39;shortest&#39;):
+    &#39;&#39;&#39;
+    Description:
+        Provide a time in seconds and obtain a string with the time in years, days, hours, minutes, and seconds, 
+        presented in the shortest and most human-friendly/readable format
+    
+    Inputs:
+        (required)
+       
+        - `t_sec` = a time in seconds (float or int)
+        
+    Inputs:
+        (optional)
+       
+        - `time_style` = string denoting whether times are split into mixed units (`&#39;mixed&#39;`, default, e.g. `1d 12h`),
+                         one value in the largest units (`&#39;single_largest&#39;`, e.g. `1.5d`), or one value in the largest 
+                         integer units (`&#39;single_integer&#39;`, e.g. `36h`)
+        - `abbreviation_style` = string denoting style of abbreviation (D=`&#39;shortest&#39;`); select from: [`&#39;shortest&#39;`,`&#39;normal&#39;`,`&#39;none&#39;`], 
+                         for example: h/hr(s)/hour(s), m/min/minute(s)
+    
+    Outputs:
+        - `time_str` = string containing the time prettily formatted in the selected format
+    
+    &#39;&#39;&#39;
+    
+    if abbreviation_style==&#39;shortest&#39;:
+        tu_strs = [&#39;s&#39;,&#39;m&#39;,&#39;h&#39;,&#39;d&#39;,&#39;y&#39;]
+    elif abbreviation_style==&#39;normal&#39;:
+        tu_strs = [&#39; sec&#39;,&#39; min&#39;,&#39; hr&#39;,&#39; day&#39;,&#39; yr&#39;]
+    elif abbreviation_style==&#39;none&#39;:
+        tu_strs = [&#39; second&#39;,&#39; minute&#39;,&#39; hour&#39;,&#39; day&#39;,&#39; year&#39;]
+    else:
+        print(&#39;Check value of &#34;abbreviation_style&#34;; assuming &#34;shortest&#34; was intended.&#39;)
+        abbreviation_style = &#39;shortest&#39;
+        tu_strs = [&#39;s&#39;,&#39;m&#39;,&#39;h&#39;,&#39;d&#39;,&#39;y&#39;]
+    
+    m, s = divmod(t_sec, 60)
+    h, m = divmod(m, 60)
+    d, h = divmod(h, 24)
+    y, d = divmod(d, 365)
+    
+    if y&gt;=4 : # if leap year occurred
+        n_leap_years = int(y/4)
+        d = d-n_leap_years
+    
+    time_str = &#39;&#39;
+    
+    if time_style==&#39;single_integer&#39;:
+        divs = [60,60,24,365.25]
+        t = t_sec
+        for i in range(len(divs)):
+            t_new = t/divs[i]
+            if not t_new.is_integer():
+                time_str = &#34;{:8.4g}{:}&#34;.format(t,tu_strs[i])
+                if t&gt;1.0 and ((abbreviation_style==&#39;normal&#39; and i!=0 and i!=1) or abbreviation_style==&#39;none&#39;):
+                    time_str += &#39;s&#39;
+                break 
+            else:
+                t = t_new
+                
+    elif time_style==&#39;single_largest&#39;:
+        divs = [365.25,24,60,60]
+        t_yr = t_sec/(60*60*24*365.25)
+        t = t_yr
+        for i in range(len(divs)+1):
+            if round(t,6)&gt;=1.0:
+                time_str = &#34;{:8.4g}{:}&#34;.format(t,tu_strs[4-i])
+                if t&gt;1.0 and ((abbreviation_style==&#39;normal&#39; and i!=4 and i!=3) or abbreviation_style==&#39;none&#39;):
+                    time_str += &#39;s&#39;
+                break 
+            else:
+                t = t*divs[i]
+        
+    else: 
+        vals = [y,d,h,m,s]
+        for vi in range(len(vals)):
+            if vals[vi] != 0:
+                if vi==4:
+                    time_str += &#34; {:0.2g}{:}&#34;.format(vals[vi],tu_strs[4-vi]) # 4 = number of total time units - 1
+                else:
+                    time_str += &#34; {:0.0g}{:}&#34;.format(vals[vi],tu_strs[4-vi]) # 4 = number of total time units - 1
+                # make units plural if warranted
+                if vals[vi]&gt;1.0 and ((abbreviation_style==&#39;normal&#39; and vi!=4 and vi!=3) or abbreviation_style==&#39;none&#39;):
+                    time_str += &#39;s&#39;
+    
+    if time_str==&#39;&#39;: time_str = &#39;0{:}&#39;.format(tu_strs[0])
+    time_str = time_str.strip()
+    
+    return time_str
+
+def time_units_converter(t1_val,t1_units=&#39;s&#39;,t2_units=&#39;s&#39;):
+    &#39;&#39;&#39;
+    Description:
+        Provide a decimal time, its current units, and the desired units to obtain a new decimal time in the desired units
+    
+    Inputs:
+        - `t1_val` = a decimal time value (float or int)
+        - `t1_units` = (optional) a time units string for the input time value (D=`&#39;s&#39;`); select from: `[&#39;s&#39;,&#39;m&#39;,&#39;h&#39;,&#39;d&#39;,&#39;y&#39;,&#39;ms&#39;,&#39;us&#39;,&#39;ns&#39;,&#39;ps&#39;,&#39;fs&#39;]` (str)
+        - `t2_units` = (optional) a time units string for the output time value (D=`&#39;s&#39;`); select from: `[&#39;s&#39;,&#39;m&#39;,&#39;h&#39;,&#39;d&#39;,&#39;y&#39;,&#39;ms&#39;,&#39;us&#39;,&#39;ns&#39;,&#39;ps&#39;,&#39;fs&#39;]` (str)
+    
+    Outputs:
+        - `t2_val` = a decimal time value in the units specified by `t2_units` (float)
+    
+    &#39;&#39;&#39;
+    t1_sec = t1_val*time_str_to_sec_multiplier(t1_units)
+    t2_val = t1_sec/time_str_to_sec_multiplier(t2_units)
+    
+    return t2_val
 
 def SI_prefix_converter(SI1,SI2=&#39;&#39;):
     &#39;&#39;&#39;
@@ -2751,7 +2872,7 @@ def fancy_plot(
     #bg_color = &#39;#FFFFFF&#39; #&#39;#E1E4E6&#39;
     #fig.patch.set_facecolor(bg_color)
     #fig.patch.set_alpha(1.0)
-    ax = plt.subplot(spnrows, spncols, spindex)
+    ax = plt.subplot(int(spnrows), int(spncols), int(spindex))
         
     for i in range(nds):
         xdata = xdata_lists[i]
@@ -2768,7 +2889,7 @@ def fancy_plot(
                 xerr_present = True
         if len(yerr_lists[0])&gt;0:
             yerr = yerr_lists[i]
-            if sum(yerr)==0: 
+            if np.sum(yerr)==0: 
                 yerr = None
             else:
                 yerr_present = True
@@ -2847,7 +2968,10 @@ def fancy_plot(
         if (ers==&#39;bar-band&#39; or ers==&#39;band&#39;) and yerr_present:
             if color==&#39;#FDFEFC&#39; or color[0]==&#39;#FDFEFC&#39;: # assume user will never actually want/input this specific white color
                 c = p[0].get_color() # need to grab whatever color was just used
-            ax.fill_between(xdata, np.array(ydata)-np.array(yerr), np.array(ydata)+np.array(yerr),color=c,alpha=ebo)
+            if len(np.shape(yerr))==1:
+                ax.fill_between(xdata, np.array(ydata)-np.array(yerr), np.array(ydata)+np.array(yerr),color=c,alpha=ebo)
+            else:
+                ax.fill_between(xdata, np.array(ydata)-np.array(yerr[0,:]), np.array(ydata)+np.array(yerr[1,:]),color=c,alpha=ebo)
             
         if draw_error_boxes:
             draw_error_box_for_this_dataset = True
@@ -5288,8 +5412,14 @@ greater than or equal to <code>col_max_val</code> will be set to 1 in the array 
                 for ci in range(core_ncols):
                     color_val_table[ri,ci] = color_transform_fcn(color_val_table[ri,ci])
         
-        if color_min_val==None: col_min_val = np.min(color_val_table)
-        if color_max_val==None: col_max_val = np.max(color_val_table)
+        if color_min_val==None: 
+            col_min_val = np.min(color_val_table)
+        else:
+            col_min_val = color_min_val
+        if color_max_val==None: 
+            col_max_val = np.max(color_val_table)
+        else:
+            col_max_val = color_max_val
         
         color_val_table[color_val_table&lt;col_min_val] = col_min_val
         color_val_table[color_val_table&gt;col_max_val] = col_max_val
@@ -7887,7 +8017,7 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
     #bg_color = &#39;#FFFFFF&#39; #&#39;#E1E4E6&#39;
     #fig.patch.set_facecolor(bg_color)
     #fig.patch.set_alpha(1.0)
-    ax = plt.subplot(spnrows, spncols, spindex)
+    ax = plt.subplot(int(spnrows), int(spncols), int(spindex))
         
     for i in range(nds):
         xdata = xdata_lists[i]
@@ -7904,7 +8034,7 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
                 xerr_present = True
         if len(yerr_lists[0])&gt;0:
             yerr = yerr_lists[i]
-            if sum(yerr)==0: 
+            if np.sum(yerr)==0: 
                 yerr = None
             else:
                 yerr_present = True
@@ -7983,7 +8113,10 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
         if (ers==&#39;bar-band&#39; or ers==&#39;band&#39;) and yerr_present:
             if color==&#39;#FDFEFC&#39; or color[0]==&#39;#FDFEFC&#39;: # assume user will never actually want/input this specific white color
                 c = p[0].get_color() # need to grab whatever color was just used
-            ax.fill_between(xdata, np.array(ydata)-np.array(yerr), np.array(ydata)+np.array(yerr),color=c,alpha=ebo)
+            if len(np.shape(yerr))==1:
+                ax.fill_between(xdata, np.array(ydata)-np.array(yerr), np.array(ydata)+np.array(yerr),color=c,alpha=ebo)
+            else:
+                ax.fill_between(xdata, np.array(ydata)-np.array(yerr[0,:]), np.array(ydata)+np.array(yerr[1,:]),color=c,alpha=ebo)
             
         if draw_error_boxes:
             draw_error_box_for_this_dataset = True
@@ -9539,6 +9672,126 @@ Additionally, any values outside of the bounds will be reassigned to the nearest
     return time_str</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.seconds_to_human_time"><code class="name flex">
+<span>def <span class="ident">seconds_to_human_time</span></span>(<span>t_sec, time_style='mixed', abbreviation_style='shortest')</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Provide a time in seconds and obtain a string with the time in years, days, hours, minutes, and seconds,
+presented in the shortest and most human-friendly/readable format</p>
+<h2 id="inputs">Inputs</h2>
+<p>(required)</p>
+<ul>
+<li><code>t_sec</code> = a time in seconds (float or int)</li>
+</ul>
+<h2 id="inputs_1">Inputs</h2>
+<p>(optional)</p>
+<ul>
+<li><code>time_style</code> = string denoting whether times are split into mixed units (<code>'mixed'</code>, default, e.g. <code>1d 12h</code>),
+one value in the largest units (<code>'single_largest'</code>, e.g. <code>1.5d</code>), or one value in the largest
+integer units (<code>'single_integer'</code>, e.g. <code>36h</code>)</li>
+<li><code>abbreviation_style</code> = string denoting style of abbreviation (D=<code>'shortest'</code>); select from: [<code>'shortest'</code>,<code>'normal'</code>,<code>'none'</code>],
+for example: h/hr(s)/hour(s), m/min/minute(s)</li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li><code>time_str</code> = string containing the time prettily formatted in the selected format</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def seconds_to_human_time(t_sec,time_style=&#39;mixed&#39;,abbreviation_style=&#39;shortest&#39;):
+    &#39;&#39;&#39;
+    Description:
+        Provide a time in seconds and obtain a string with the time in years, days, hours, minutes, and seconds, 
+        presented in the shortest and most human-friendly/readable format
+    
+    Inputs:
+        (required)
+       
+        - `t_sec` = a time in seconds (float or int)
+        
+    Inputs:
+        (optional)
+       
+        - `time_style` = string denoting whether times are split into mixed units (`&#39;mixed&#39;`, default, e.g. `1d 12h`),
+                         one value in the largest units (`&#39;single_largest&#39;`, e.g. `1.5d`), or one value in the largest 
+                         integer units (`&#39;single_integer&#39;`, e.g. `36h`)
+        - `abbreviation_style` = string denoting style of abbreviation (D=`&#39;shortest&#39;`); select from: [`&#39;shortest&#39;`,`&#39;normal&#39;`,`&#39;none&#39;`], 
+                         for example: h/hr(s)/hour(s), m/min/minute(s)
+    
+    Outputs:
+        - `time_str` = string containing the time prettily formatted in the selected format
+    
+    &#39;&#39;&#39;
+    
+    if abbreviation_style==&#39;shortest&#39;:
+        tu_strs = [&#39;s&#39;,&#39;m&#39;,&#39;h&#39;,&#39;d&#39;,&#39;y&#39;]
+    elif abbreviation_style==&#39;normal&#39;:
+        tu_strs = [&#39; sec&#39;,&#39; min&#39;,&#39; hr&#39;,&#39; day&#39;,&#39; yr&#39;]
+    elif abbreviation_style==&#39;none&#39;:
+        tu_strs = [&#39; second&#39;,&#39; minute&#39;,&#39; hour&#39;,&#39; day&#39;,&#39; year&#39;]
+    else:
+        print(&#39;Check value of &#34;abbreviation_style&#34;; assuming &#34;shortest&#34; was intended.&#39;)
+        abbreviation_style = &#39;shortest&#39;
+        tu_strs = [&#39;s&#39;,&#39;m&#39;,&#39;h&#39;,&#39;d&#39;,&#39;y&#39;]
+    
+    m, s = divmod(t_sec, 60)
+    h, m = divmod(m, 60)
+    d, h = divmod(h, 24)
+    y, d = divmod(d, 365)
+    
+    if y&gt;=4 : # if leap year occurred
+        n_leap_years = int(y/4)
+        d = d-n_leap_years
+    
+    time_str = &#39;&#39;
+    
+    if time_style==&#39;single_integer&#39;:
+        divs = [60,60,24,365.25]
+        t = t_sec
+        for i in range(len(divs)):
+            t_new = t/divs[i]
+            if not t_new.is_integer():
+                time_str = &#34;{:8.4g}{:}&#34;.format(t,tu_strs[i])
+                if t&gt;1.0 and ((abbreviation_style==&#39;normal&#39; and i!=0 and i!=1) or abbreviation_style==&#39;none&#39;):
+                    time_str += &#39;s&#39;
+                break 
+            else:
+                t = t_new
+                
+    elif time_style==&#39;single_largest&#39;:
+        divs = [365.25,24,60,60]
+        t_yr = t_sec/(60*60*24*365.25)
+        t = t_yr
+        for i in range(len(divs)+1):
+            if round(t,6)&gt;=1.0:
+                time_str = &#34;{:8.4g}{:}&#34;.format(t,tu_strs[4-i])
+                if t&gt;1.0 and ((abbreviation_style==&#39;normal&#39; and i!=4 and i!=3) or abbreviation_style==&#39;none&#39;):
+                    time_str += &#39;s&#39;
+                break 
+            else:
+                t = t*divs[i]
+        
+    else: 
+        vals = [y,d,h,m,s]
+        for vi in range(len(vals)):
+            if vals[vi] != 0:
+                if vi==4:
+                    time_str += &#34; {:0.2g}{:}&#34;.format(vals[vi],tu_strs[4-vi]) # 4 = number of total time units - 1
+                else:
+                    time_str += &#34; {:0.0g}{:}&#34;.format(vals[vi],tu_strs[4-vi]) # 4 = number of total time units - 1
+                # make units plural if warranted
+                if vals[vi]&gt;1.0 and ((abbreviation_style==&#39;normal&#39; and vi!=4 and vi!=3) or abbreviation_style==&#39;none&#39;):
+                    time_str += &#39;s&#39;
+    
+    if time_str==&#39;&#39;: time_str = &#39;0{:}&#39;.format(tu_strs[0])
+    time_str = time_str.strip()
+    
+    return time_str</code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.seconds_to_ydhms"><code class="name flex">
 <span>def <span class="ident">seconds_to_ydhms</span></span>(<span>t_sec)</span>
 </code></dt>
@@ -9882,6 +10135,46 @@ be uniform for all entries, a single value (or list of single values) may be pro
         return None</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.time_units_converter"><code class="name flex">
+<span>def <span class="ident">time_units_converter</span></span>(<span>t1_val, t1_units='s', t2_units='s')</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Provide a decimal time, its current units, and the desired units to obtain a new decimal time in the desired units</p>
+<h2 id="inputs">Inputs</h2>
+<ul>
+<li><code>t1_val</code> = a decimal time value (float or int)</li>
+<li><code>t1_units</code> = (optional) a time units string for the input time value (D=<code>'s'</code>); select from: <code>['s','m','h','d','y','ms','us','ns','ps','fs']</code> (str)</li>
+<li><code>t2_units</code> = (optional) a time units string for the output time value (D=<code>'s'</code>); select from: <code>['s','m','h','d','y','ms','us','ns','ps','fs']</code> (str)</li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li><code>t2_val</code> = a decimal time value in the units specified by <code>t2_units</code> (float)</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def time_units_converter(t1_val,t1_units=&#39;s&#39;,t2_units=&#39;s&#39;):
+    &#39;&#39;&#39;
+    Description:
+        Provide a decimal time, its current units, and the desired units to obtain a new decimal time in the desired units
+    
+    Inputs:
+        - `t1_val` = a decimal time value (float or int)
+        - `t1_units` = (optional) a time units string for the input time value (D=`&#39;s&#39;`); select from: `[&#39;s&#39;,&#39;m&#39;,&#39;h&#39;,&#39;d&#39;,&#39;y&#39;,&#39;ms&#39;,&#39;us&#39;,&#39;ns&#39;,&#39;ps&#39;,&#39;fs&#39;]` (str)
+        - `t2_units` = (optional) a time units string for the output time value (D=`&#39;s&#39;`); select from: `[&#39;s&#39;,&#39;m&#39;,&#39;h&#39;,&#39;d&#39;,&#39;y&#39;,&#39;ms&#39;,&#39;us&#39;,&#39;ns&#39;,&#39;ps&#39;,&#39;fs&#39;]` (str)
+    
+    Outputs:
+        - `t2_val` = a decimal time value in the units specified by `t2_units` (float)
+    
+    &#39;&#39;&#39;
+    t1_sec = t1_val*time_str_to_sec_multiplier(t1_units)
+    t2_val = t1_sec/time_str_to_sec_multiplier(t2_units)
+    
+    return t2_val</code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.truncate_colormap"><code class="name flex">
 <span>def <span class="ident">truncate_colormap</span></span>(<span>cmap, min_val=0.0, max_val=1.0, n=100)</span>
 </code></dt>
@@ -10000,10 +10293,12 @@ Higher values of <code>n</code> just correspond to a higher-quality and more acc
 <li><code><a title="Hunters_tools.round_up_to_next_multiple" href="#Hunters_tools.round_up_to_next_multiple">round_up_to_next_multiple</a></code></li>
 <li><code><a title="Hunters_tools.scan_folder_for_file" href="#Hunters_tools.scan_folder_for_file">scan_folder_for_file</a></code></li>
 <li><code><a title="Hunters_tools.seconds_to_dhms" href="#Hunters_tools.seconds_to_dhms">seconds_to_dhms</a></code></li>
+<li><code><a title="Hunters_tools.seconds_to_human_time" href="#Hunters_tools.seconds_to_human_time">seconds_to_human_time</a></code></li>
 <li><code><a title="Hunters_tools.seconds_to_ydhms" href="#Hunters_tools.seconds_to_ydhms">seconds_to_ydhms</a></code></li>
 <li><code><a title="Hunters_tools.slugify" href="#Hunters_tools.slugify">slugify</a></code></li>
 <li><code><a title="Hunters_tools.table_array_generator" href="#Hunters_tools.table_array_generator">table_array_generator</a></code></li>
 <li><code><a title="Hunters_tools.time_str_to_sec_multiplier" href="#Hunters_tools.time_str_to_sec_multiplier">time_str_to_sec_multiplier</a></code></li>
+<li><code><a title="Hunters_tools.time_units_converter" href="#Hunters_tools.time_units_converter">time_units_converter</a></code></li>
 <li><code><a title="Hunters_tools.truncate_colormap" href="#Hunters_tools.truncate_colormap">truncate_colormap</a></code></li>
 </ul>
 </li>
