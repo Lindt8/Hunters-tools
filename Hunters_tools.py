@@ -33,7 +33,8 @@ The functions contained in this module and brief descriptions of their functions
 - `Element_ZorSym_to_mass`          : returns the average atomic mass of an element provided its atomic number Z or symbol
 - `nuclide_to_Latex_form`           : form a LaTeX-formatted string of a nuclide provided its information
 - `nuclide_plain_str_to_latex_str`  : convert a plaintext string for a nuclide to a LaTeX formatted raw string
-- `nuclide_plain_str_ZZZAAAM`       : convert a plaintext string for a nuclide to an integer ZZZAAAM value
+- `nuclide_plain_str_to_ZZZAAAM`    : convert a plaintext string for a nuclide to an integer ZZZAAAM value
+- `ZZZAAAM_to_nuclide_plain_str`    : convert an integer ZZZAAAM value for a nuclide to a plaintext string 
 - `relative_error_to_N`             : convert a relative uncertainty to an "N" value (analogous to number of counts)
 - `N_to_relative_error`             : convert an "N" value (analogous to number of counts) to a relative uncertainty
 - `fractional_error`                : calculate the fractional error of a test value relative to a reference value
@@ -1299,7 +1300,7 @@ def nuclide_plain_str_to_latex_str(nuc_str,include_Z=False):
     
     return tex_str
 
-def nuclide_plain_str_ZZZAAAM(nuc_str):
+def nuclide_plain_str_to_ZZZAAAM(nuc_str):
     '''
     Description:
         Converts a plaintext string of a nuclide to an integer ZZZAAAM = 10000\*Z + 10\*A + M
@@ -1426,7 +1427,44 @@ def nuclide_plain_str_ZZZAAAM(nuc_str):
     ZZZAAAM = 10000*Z + 10*A + M 
     
     return ZZZAAAM
+nuclide_plain_str_ZZZAAAM = nuclide_plain_str_to_ZZZAAAM # backwards compatibility with old version of function name
 
+
+def ZZZAAAM_to_nuclide_plain_str(ZZZAAAM,include_Z=False,ZZZAAA=False,delimiter='-'):
+    '''
+    Description:
+        Converts a plaintext string of a nuclide to an integer ZZZAAAM = 10000\*Z + 10\*A + M
+    
+    Dependencies:
+        `Element_Z_to_Sym` (function within the "Hunter's tools" package)
+    
+    Input:
+       - `ZZZAAAM` = integer equal to 10000*Z + 10*A + M, where M designates the metastable state (0=ground)
+       - `include_Z` = Boolean denoting whether the Z number should be included in the output string (D=`False`)
+       - `ZZZAAA` = Boolean denoting whether the input should be interpreted as a ZZZAAA value (1000Z+A) instead (D=`False`)
+       - `delimiter` = string which will be used to separate elements of the output string (D=`-`)
+    
+    Output:
+       - `nuc_str` = string describing the input nuclide formatted as [Z]-[Symbol]-[A][m]
+    '''
+    ZZZAAAM = int(ZZZAAAM)
+    if ZZZAAA:
+        ZZZAAAM = ZZZAAAM*10
+    m = ZZZAAAM % 10
+    A = (ZZZAAAM % 10000) // 10
+    Z = ZZZAAAM // 10000
+    symbol = Element_Z_to_Sym(Z)
+    
+    m_str = ''
+    if m>0:
+        m_str = 'm' + str(m)
+    
+    nuc_str = ''
+    if include_Z:
+        nuc_str += str(Z) + delimiter 
+    nuc_str += symbol + delimiter + str(A) + m_str
+    
+    return nuc_str
 
 
 def relative_error_to_N(relerr):
