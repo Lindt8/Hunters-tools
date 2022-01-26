@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.8.4" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>Hunters_tools API documentation</title>
 <meta name="description" content="This Python module contains a collection of my functions which I often utilize in
-other scripts and/or are just generally useful and could possibly c" />
+other scripts and/or are just generally useful and could possibly …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/github.min.css" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
 <style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
 <style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:115ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js" integrity="sha256-eOgo0OtLL4cdq7RdwRUiGKLX9XsIJ7nGhWEKbohmVAQ=" crossorigin></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
 <script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
 </head>
 <body>
@@ -107,6 +107,8 @@ other scripts and/or are just generally useful and could possibly be useful in t
 : find the circumcenter of 3 2D Cartesian points</li>
 <li><code><a title="Hunters_tools.circ_solid_angle" href="#Hunters_tools.circ_solid_angle">circ_solid_angle()</a></code>
 : calculate solid angle of a source as seen by a detector, provided coordinates for all</li>
+<li><code><a title="Hunters_tools.tally" href="#Hunters_tools.tally">tally()</a></code>
+: tally/histogram values (and their indices) falling within a desired binning structure</li>
 <li><code><a title="Hunters_tools.rebinner" href="#Hunters_tools.rebinner">rebinner()</a></code>
 : rebin a set of y-data to a new x-binning structure (edges not necessarily preserved)</li>
 <li><code><a title="Hunters_tools.calc_GCR_intensity" href="#Hunters_tools.calc_GCR_intensity">calc_GCR_intensity()</a></code>
@@ -193,6 +195,7 @@ The functions contained in this module and brief descriptions of their functions
 - `circumradius`                    : find the circumradius of 3 2D Cartesian points
 - `circumcenter`                    : find the circumcenter of 3 2D Cartesian points
 - `circ_solid_angle`                : calculate solid angle of a source as seen by a detector, provided coordinates for all
+- `tally`                           : tally/histogram values (and their indices) falling within a desired binning structure
 - `rebinner`                        : rebin a set of y-data to a new x-binning structure (edges not necessarily preserved)
 - `calc_GCR_intensity`              : calculate GCR intensity for a provided solar modulation, ion, and energy
 - `assemble_GCR_flux`               : assemble GCR spectra for desired elements/ions
@@ -1853,6 +1856,98 @@ def circ_solid_angle(pp,a,b,r):
     omega = 2*np.pi*(1-np.cos(theta))
     return omega
 
+
+def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_event_indices_histogram=False):
+    &#39;&#39;&#39;
+    Description:
+        Tally number of incidences of values falling within a desired binning structure
+    
+    Dependencies:
+        - `import unicodedata as ud`
+        - `import re`
+    
+    Inputs:
+        - `data` = list of values to be tallied/histogrammed
+        - `bin_edges` = list of N+1 bin edge values for a tally of N bins
+        - `min_bin_left_edge` = left/minimum edge value of the first bin
+        - `max_bin_right_edge` = right/maximum edge value of the last bin
+        - `nbins` = number of equally-sized bins to be created from `min_bin_left_edge` to `max_bin_right_edge`
+        - `bin_width` = constant width of bins to be created from `min_bin_left_edge` to `max_bin_right_edge`
+        - `divide_by_bin_width` = Boolean denoting whether final bin values are divided by their bin widths (D=`False`)
+        - `normalization` = determine how the resulting histogram is normalized (D=`None`), options are:
+                       `[None, &#39;unity-sum&#39;, &#39;unity-max-val&#39;]`.  If `None`, no additional normalization is done.
+                       If `unity-sum`, the data is normalized such that its sum will be 1.  If `unity-max-val`, the
+                       data is normalized such that the maximum value is 1.  The operation occurs after any bin
+                       width normalization from `divide_by_bin_width` but before any scaling from `scaling_factor`.
+        - `scaling_factor` = value which all final bins are multiplied/scaled by (D=`1`)
+        - `place_overflow_at_ends` = handling of values outside of binning range (D=`True`); if `True` extreme 
+                       values are tallied in the first/last bin, if `False` extreme values are discarded
+        - `return_event_indices_histogram` = return an extra N-length list whose elements are each a list 
+                       of the event indices corresponding to each bin (D=`False`)
+    
+    Notes:
+        Regarding the binning structure, this function only needs to be provided `bin_edges` directly (takes priority) 
+        or the information needed to calculate `bin_edges`, that is: `min_bin_left_edge` and `max_bin_right_edge` and
+        either `nbins` or `bin_width`.  (Priority is given to `nbins` if both are provided.)
+    
+    Outputs:
+        - `tallied_hist` = N-length list of tallied data
+        - `bin_edges` = list of N+1 bin edge values for a tally of N bins
+        - `tallied_event_indicies` = (optional) N-length list of, for each bin, a list of the event indices populating it
+    &#39;&#39;&#39;
+    
+    normalization_valid_entries = [None, &#39;unity-sum&#39;, &#39;unity-max-val&#39;]
+    if normalization not in normalization_valid_entries:
+        print(&#34;Entered normalization option of &#34;,normalization,&#34; is not a valid option; please select from the following: [None, &#39;unity-sum&#39;, &#39;unity-max-val&#39;]&#34;.format())
+    
+    if len(bin_edges)!=0:
+        bin_edges = np.array(bin_edges)
+    else:
+        if nbins != None:
+            bin_edges = np.linspace(min_bin_left_edge,max_bin_right_edge,num=nbins+1)
+        else:
+            bin_edges = np.arange(min_bin_left_edge,max_bin_right_edge+bin_width,step=bin_width)
+        
+    nbins = len(bin_edges) - 1
+    
+    if return_event_indices_histogram:
+        tallied_event_indicies = []
+        tallied_hist = np.zeros(nbins)
+        for i in range(nbins):
+            tallied_event_indicies.append([])
+        # events must be histogrammed manually
+        for i, val in enumerate(data):
+            if val &lt; bin_edges[0]:
+                if place_overflow_at_ends:
+                    tallied_hist[0] += 1
+                    tallied_event_indicies[0].append(i)
+                continue
+            if val &gt; bin_edges[-1]:
+                if place_overflow_at_ends:
+                    tallied_hist[-1] += 1
+                    tallied_event_indicies[-1].append(i)
+                continue
+            for j, be in enumerate(bin_edges):
+                if be &gt; val: # found right edge of bin containing val
+                    tallied_hist[j-1] += 1
+                    tallied_event_indicies[j-1].append(i)
+                    break
+        
+        if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
+        if normalization==&#39;unity-sum&#39;: tallied_hist = tallied_hist/np.sum(tallied_hist)
+        if normalization==&#39;unity-max-val&#39;: tallied_hist = tallied_hist/np.max(tallied_hist)
+        if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
+        return tallied_hist,bin_edges,tallied_event_indicies
+    
+    else:
+        tallied_hist, bins = np.histogram(data,bins=bin_edges)
+        if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
+        if normalization==&#39;unity-sum&#39;: tallied_hist = tallied_hist/np.sum(tallied_hist)
+        if normalization==&#39;unity-max-val&#39;: tallied_hist = tallied_hist/np.max(tallied_hist)
+        if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
+        return tallied_hist,bin_edges
+    
+
 def rebinner(output_xbins,input_xbins,input_ybins):
     &#34;&#34;&#34; 
     Description:
@@ -2923,7 +3018,7 @@ def fancy_plot(
         yerr_present = False
         if len(xerr_lists[0])&gt;0:
             xerr = xerr_lists[i]
-            if sum(xerr)==0: 
+            if np.sum(xerr)==0: 
                 xerr = None
             else:
                 xerr_present = True
@@ -3111,7 +3206,7 @@ def fancy_plot(
     else:
         window_title = &#39;Figure &#39; + str(figi)
     #window_title = window_title.replace(&#39;b&#39;,&#39;&#39;,1) # remove leading &#39;b&#39; character from slugify process
-    fig.canvas.set_window_title(window_title)
+    fig.canvas.manager.set_window_title(window_title)
     
     # hangle figure/legend positioning/sizing
     # First, figure size
@@ -3458,7 +3553,7 @@ def fancy_3D_plot(
     proj.projection_registry.register(Axes3D_custom)
     
     
-    use_custom_3d_axis_class = True
+    use_custom_3d_axis_class =  False # custom axes broken in newer version of matplotlib?
     
     
     
@@ -3771,11 +3866,11 @@ def fancy_3D_plot(
             if len(yvals[np.nonzero(yvals)]) != 0:
                 if min(yvals[np.nonzero(yvals)])&lt;y_min: y_min = min(yvals[np.nonzero(yvals)])
                 #if min(yvals)&lt;y_min: y_min = min(yvals)
-                if max(yvals)&gt;y_max: y_max = max(yvals)
-                if min(xvals)&lt;x_min: x_min = min(xvals)
-                if max(xvals)&gt;x_max: x_max = max(xvals)
-                if np.min(zvals)&lt;z_min: z_min = np.min(zvals)
-                if np.max(zvals)&gt;z_max: z_max = np.max(zvals)
+                if np.nanmax(yvals)&gt;y_max: y_max = np.nanmax(yvals)
+                if np.nanmin(xvals)&lt;x_min: x_min = np.nanmin(xvals)
+                if np.nanmax(xvals)&gt;x_max: x_max = np.nanmax(xvals)
+                if np.nanmin(zvals)&lt;z_min: z_min = np.nanmin(zvals)
+                if np.nanmax(zvals)&gt;z_max: z_max = np.nanmax(zvals)
         
         
         if nzdims[i]==1: # 1D list
@@ -3831,7 +3926,8 @@ def fancy_3D_plot(
                 ps1 = ax.plot_surface(xvals,yvals, zvals.T,label=label_str,
                                 color=c,cmap=cmp,facecolors=facecolors_i,alpha=alpha_i,
                                 rcount=rcount_i,ccount=ccount_i,
-                                antialiased=False)
+                                antialiased=False,
+                                vmin=z_min,vmax=z_max) # this line was once not needed
                 ps1._facecolors2d=ps1._facecolors3d
                 ps1._edgecolors2d=ps1._edgecolors3d
             
@@ -3965,7 +4061,7 @@ def fancy_3D_plot(
     else:
         window_title = &#39;Figure &#39; + str(figi)
     #window_title = window_title.replace(&#39;b&#39;,&#39;&#39;,1) # remove leading &#39;b&#39; character from slugify process
-    fig.canvas.set_window_title(window_title)
+    fig.canvas.manager.set_window_title(window_title)
     
     # hangle figure/legend positioning/sizing
     # First, figure size
@@ -4409,7 +4505,7 @@ if debugging_table_generators:
     print(y)
 
 
-debugging_fancy_3d_plot = False
+debugging_fancy_3d_plot = False 
 if debugging_fancy_3d_plot:
     figi = 0
     
@@ -4427,6 +4523,14 @@ if debugging_fancy_3d_plot:
 
     
     pls=[&#39;scatter&#39;, &#39;line&#39;, &#39;surface&#39;,&#39;trisurface&#39;,&#39;filledcontour&#39;,&#39;contour&#39;,&#39;wireframe&#39;]
+    
+    # include only some plots
+    incli = [ 0   ,  1    ,    2     ,    3       ,      4        ,    5    ,    6      ]
+    #incli = [ 2 ]
+    xdata_lists = [xdata_lists[i] for i in incli]
+    ydata_lists = [ydata_lists[i] for i in incli]
+    zdata_lists = [zdata_lists[i] for i in incli]
+    pls         = [pls[i]         for i in incli]
     
     labs = pls
     
@@ -4447,9 +4551,9 @@ if debugging_fancy_3d_plot:
                 #title_str=title_str,            # title_str = string to be used as the title of the plot (D=&#39;title&#39;)
                 #x_label_str=x_label_str,        # x_label_str = string to be used as x-axis title (D=&#39;x-axis&#39;)
                 #y_label_str=y_label_str,        # y_label_str = string to be used as y-axis title (D=&#39;y-axis&#39;)
-                #x_limits=xlims,                 # x_limits = length 2 list specifying minimum and maximum x-axis bounds [xmin,xmax] (D=[], auto-calculated based on x_data_lists)
-                #y_limits=ylims,                 # y_limits = length 2 list specifying minimum and maximum y-axis bounds [ymin,ymax] (D=[], auto-calculated based on y_data_lists)
-                #z_limits=zlims,                 # z_limits = length 2 list specifying minimum and maximum z-axis bounds [zmin,zmax] (D=[], auto-calculated based on z_data_lists)
+                x_limits=xlims,                 # x_limits = length 2 list specifying minimum and maximum x-axis bounds [xmin,xmax] (D=[], auto-calculated based on x_data_lists)
+                y_limits=ylims,                 # y_limits = length 2 list specifying minimum and maximum y-axis bounds [ymin,ymax] (D=[], auto-calculated based on y_data_lists)
+                z_limits=zlims,                 # z_limits = length 2 list specifying minimum and maximum z-axis bounds [zmin,zmax] (D=[], auto-calculated based on z_data_lists)
                 use_mpl_limits=True,           # use_mpl_limits = use Matplotlib axis limits (True) or specially calculated limits (False) for log scale when limits aren&#39;t specified
                 title_fs=16,                    # title_fs = title font size (D=16)
                 axis_fs=14,                     # axis_fs = axis label font size (D=14)
@@ -4474,6 +4578,8 @@ if debugging_fancy_3d_plot:
                 markeredgecolor=&#39;r&#39;, 
                 markeredgewidth=2,
                 alpha = 0.5,
+                
+                #OoB_z_handling = None, #&#39;limits&#39;,
             
             # OPTIONAL (advanced) KEYWORD ARGUMENTS
                 fig = None,                      # figure handles from existing figure to draw on (D=None, fig=None should always be used for initial subplot unless a figure canvas has already been generated)
@@ -6689,7 +6795,7 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
     proj.projection_registry.register(Axes3D_custom)
     
     
-    use_custom_3d_axis_class = True
+    use_custom_3d_axis_class =  False # custom axes broken in newer version of matplotlib?
     
     
     
@@ -7002,11 +7108,11 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
             if len(yvals[np.nonzero(yvals)]) != 0:
                 if min(yvals[np.nonzero(yvals)])&lt;y_min: y_min = min(yvals[np.nonzero(yvals)])
                 #if min(yvals)&lt;y_min: y_min = min(yvals)
-                if max(yvals)&gt;y_max: y_max = max(yvals)
-                if min(xvals)&lt;x_min: x_min = min(xvals)
-                if max(xvals)&gt;x_max: x_max = max(xvals)
-                if np.min(zvals)&lt;z_min: z_min = np.min(zvals)
-                if np.max(zvals)&gt;z_max: z_max = np.max(zvals)
+                if np.nanmax(yvals)&gt;y_max: y_max = np.nanmax(yvals)
+                if np.nanmin(xvals)&lt;x_min: x_min = np.nanmin(xvals)
+                if np.nanmax(xvals)&gt;x_max: x_max = np.nanmax(xvals)
+                if np.nanmin(zvals)&lt;z_min: z_min = np.nanmin(zvals)
+                if np.nanmax(zvals)&gt;z_max: z_max = np.nanmax(zvals)
         
         
         if nzdims[i]==1: # 1D list
@@ -7062,7 +7168,8 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
                 ps1 = ax.plot_surface(xvals,yvals, zvals.T,label=label_str,
                                 color=c,cmap=cmp,facecolors=facecolors_i,alpha=alpha_i,
                                 rcount=rcount_i,ccount=ccount_i,
-                                antialiased=False)
+                                antialiased=False,
+                                vmin=z_min,vmax=z_max) # this line was once not needed
                 ps1._facecolors2d=ps1._facecolors3d
                 ps1._edgecolors2d=ps1._edgecolors3d
             
@@ -7196,7 +7303,7 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
     else:
         window_title = &#39;Figure &#39; + str(figi)
     #window_title = window_title.replace(&#39;b&#39;,&#39;&#39;,1) # remove leading &#39;b&#39; character from slugify process
-    fig.canvas.set_window_title(window_title)
+    fig.canvas.manager.set_window_title(window_title)
     
     # hangle figure/legend positioning/sizing
     # First, figure size
@@ -8128,7 +8235,7 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
         yerr_present = False
         if len(xerr_lists[0])&gt;0:
             xerr = xerr_lists[i]
-            if sum(xerr)==0: 
+            if np.sum(xerr)==0: 
                 xerr = None
             else:
                 xerr_present = True
@@ -8316,7 +8423,7 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
     else:
         window_title = &#39;Figure &#39; + str(figi)
     #window_title = window_title.replace(&#39;b&#39;,&#39;&#39;,1) # remove leading &#39;b&#39; character from slugify process
-    fig.canvas.set_window_title(window_title)
+    fig.canvas.manager.set_window_title(window_title)
     
     # hangle figure/legend positioning/sizing
     # First, figure size
@@ -10337,6 +10444,146 @@ be uniform for all entries, a single value (or list of single values) may be pro
     return table_array</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.tally"><code class="name flex">
+<span>def <span class="ident">tally</span></span>(<span>data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_event_indices_histogram=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Tally number of incidences of values falling within a desired binning structure</p>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li><code>import unicodedata as ud</code></li>
+<li><code>import re</code></li>
+</ul>
+<h2 id="inputs">Inputs</h2>
+<ul>
+<li><code>data</code> = list of values to be tallied/histogrammed</li>
+<li><code>bin_edges</code> = list of N+1 bin edge values for a tally of N bins</li>
+<li><code>min_bin_left_edge</code> = left/minimum edge value of the first bin</li>
+<li><code>max_bin_right_edge</code> = right/maximum edge value of the last bin</li>
+<li><code>nbins</code> = number of equally-sized bins to be created from <code>min_bin_left_edge</code> to <code>max_bin_right_edge</code></li>
+<li><code>bin_width</code> = constant width of bins to be created from <code>min_bin_left_edge</code> to <code>max_bin_right_edge</code></li>
+<li><code>divide_by_bin_width</code> = Boolean denoting whether final bin values are divided by their bin widths (D=<code>False</code>)</li>
+<li><code>normalization</code> = determine how the resulting histogram is normalized (D=<code>None</code>), options are:
+<code>[None, 'unity-sum', 'unity-max-val']</code>.
+If <code>None</code>, no additional normalization is done.
+If <code>unity-sum</code>, the data is normalized such that its sum will be 1.
+If <code>unity-max-val</code>, the
+data is normalized such that the maximum value is 1.
+The operation occurs after any bin
+width normalization from <code>divide_by_bin_width</code> but before any scaling from <code>scaling_factor</code>.</li>
+<li><code>scaling_factor</code> = value which all final bins are multiplied/scaled by (D=<code>1</code>)</li>
+<li><code>place_overflow_at_ends</code> = handling of values outside of binning range (D=<code>True</code>); if <code>True</code> extreme
+values are tallied in the first/last bin, if <code>False</code> extreme values are discarded</li>
+<li><code>return_event_indices_histogram</code> = return an extra N-length list whose elements are each a list
+of the event indices corresponding to each bin (D=<code>False</code>)</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<p>Regarding the binning structure, this function only needs to be provided <code>bin_edges</code> directly (takes priority)
+or the information needed to calculate <code>bin_edges</code>, that is: <code>min_bin_left_edge</code> and <code>max_bin_right_edge</code> and
+either <code>nbins</code> or <code>bin_width</code>.
+(Priority is given to <code>nbins</code> if both are provided.)</p>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li><code>tallied_hist</code> = N-length list of tallied data</li>
+<li><code>bin_edges</code> = list of N+1 bin edge values for a tally of N bins</li>
+<li><code>tallied_event_indicies</code> = (optional) N-length list of, for each bin, a list of the event indices populating it</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_event_indices_histogram=False):
+    &#39;&#39;&#39;
+    Description:
+        Tally number of incidences of values falling within a desired binning structure
+    
+    Dependencies:
+        - `import unicodedata as ud`
+        - `import re`
+    
+    Inputs:
+        - `data` = list of values to be tallied/histogrammed
+        - `bin_edges` = list of N+1 bin edge values for a tally of N bins
+        - `min_bin_left_edge` = left/minimum edge value of the first bin
+        - `max_bin_right_edge` = right/maximum edge value of the last bin
+        - `nbins` = number of equally-sized bins to be created from `min_bin_left_edge` to `max_bin_right_edge`
+        - `bin_width` = constant width of bins to be created from `min_bin_left_edge` to `max_bin_right_edge`
+        - `divide_by_bin_width` = Boolean denoting whether final bin values are divided by their bin widths (D=`False`)
+        - `normalization` = determine how the resulting histogram is normalized (D=`None`), options are:
+                       `[None, &#39;unity-sum&#39;, &#39;unity-max-val&#39;]`.  If `None`, no additional normalization is done.
+                       If `unity-sum`, the data is normalized such that its sum will be 1.  If `unity-max-val`, the
+                       data is normalized such that the maximum value is 1.  The operation occurs after any bin
+                       width normalization from `divide_by_bin_width` but before any scaling from `scaling_factor`.
+        - `scaling_factor` = value which all final bins are multiplied/scaled by (D=`1`)
+        - `place_overflow_at_ends` = handling of values outside of binning range (D=`True`); if `True` extreme 
+                       values are tallied in the first/last bin, if `False` extreme values are discarded
+        - `return_event_indices_histogram` = return an extra N-length list whose elements are each a list 
+                       of the event indices corresponding to each bin (D=`False`)
+    
+    Notes:
+        Regarding the binning structure, this function only needs to be provided `bin_edges` directly (takes priority) 
+        or the information needed to calculate `bin_edges`, that is: `min_bin_left_edge` and `max_bin_right_edge` and
+        either `nbins` or `bin_width`.  (Priority is given to `nbins` if both are provided.)
+    
+    Outputs:
+        - `tallied_hist` = N-length list of tallied data
+        - `bin_edges` = list of N+1 bin edge values for a tally of N bins
+        - `tallied_event_indicies` = (optional) N-length list of, for each bin, a list of the event indices populating it
+    &#39;&#39;&#39;
+    
+    normalization_valid_entries = [None, &#39;unity-sum&#39;, &#39;unity-max-val&#39;]
+    if normalization not in normalization_valid_entries:
+        print(&#34;Entered normalization option of &#34;,normalization,&#34; is not a valid option; please select from the following: [None, &#39;unity-sum&#39;, &#39;unity-max-val&#39;]&#34;.format())
+    
+    if len(bin_edges)!=0:
+        bin_edges = np.array(bin_edges)
+    else:
+        if nbins != None:
+            bin_edges = np.linspace(min_bin_left_edge,max_bin_right_edge,num=nbins+1)
+        else:
+            bin_edges = np.arange(min_bin_left_edge,max_bin_right_edge+bin_width,step=bin_width)
+        
+    nbins = len(bin_edges) - 1
+    
+    if return_event_indices_histogram:
+        tallied_event_indicies = []
+        tallied_hist = np.zeros(nbins)
+        for i in range(nbins):
+            tallied_event_indicies.append([])
+        # events must be histogrammed manually
+        for i, val in enumerate(data):
+            if val &lt; bin_edges[0]:
+                if place_overflow_at_ends:
+                    tallied_hist[0] += 1
+                    tallied_event_indicies[0].append(i)
+                continue
+            if val &gt; bin_edges[-1]:
+                if place_overflow_at_ends:
+                    tallied_hist[-1] += 1
+                    tallied_event_indicies[-1].append(i)
+                continue
+            for j, be in enumerate(bin_edges):
+                if be &gt; val: # found right edge of bin containing val
+                    tallied_hist[j-1] += 1
+                    tallied_event_indicies[j-1].append(i)
+                    break
+        
+        if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
+        if normalization==&#39;unity-sum&#39;: tallied_hist = tallied_hist/np.sum(tallied_hist)
+        if normalization==&#39;unity-max-val&#39;: tallied_hist = tallied_hist/np.max(tallied_hist)
+        if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
+        return tallied_hist,bin_edges,tallied_event_indicies
+    
+    else:
+        tallied_hist, bins = np.histogram(data,bins=bin_edges)
+        if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
+        if normalization==&#39;unity-sum&#39;: tallied_hist = tallied_hist/np.sum(tallied_hist)
+        if normalization==&#39;unity-max-val&#39;: tallied_hist = tallied_hist/np.max(tallied_hist)
+        if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
+        return tallied_hist,bin_edges</code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.time_str_to_sec_multiplier"><code class="name flex">
 <span>def <span class="ident">time_str_to_sec_multiplier</span></span>(<span>time_str)</span>
 </code></dt>
@@ -10558,6 +10805,7 @@ Higher values of <code>n</code> just correspond to a higher-quality and more acc
 <li><code><a title="Hunters_tools.seconds_to_ydhms" href="#Hunters_tools.seconds_to_ydhms">seconds_to_ydhms</a></code></li>
 <li><code><a title="Hunters_tools.slugify" href="#Hunters_tools.slugify">slugify</a></code></li>
 <li><code><a title="Hunters_tools.table_array_generator" href="#Hunters_tools.table_array_generator">table_array_generator</a></code></li>
+<li><code><a title="Hunters_tools.tally" href="#Hunters_tools.tally">tally</a></code></li>
 <li><code><a title="Hunters_tools.time_str_to_sec_multiplier" href="#Hunters_tools.time_str_to_sec_multiplier">time_str_to_sec_multiplier</a></code></li>
 <li><code><a title="Hunters_tools.time_units_converter" href="#Hunters_tools.time_units_converter">time_units_converter</a></code></li>
 <li><code><a title="Hunters_tools.truncate_colormap" href="#Hunters_tools.truncate_colormap">truncate_colormap</a></code></li>
@@ -10567,7 +10815,7 @@ Higher values of <code>n</code> just correspond to a higher-quality and more acc
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.8.4</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>
