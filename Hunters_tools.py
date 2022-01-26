@@ -48,6 +48,7 @@ The functions contained in this module and brief descriptions of their functions
 - `circumradius`                    : find the circumradius of 3 2D Cartesian points
 - `circumcenter`                    : find the circumcenter of 3 2D Cartesian points
 - `circ_solid_angle`                : calculate solid angle of a source as seen by a detector, provided coordinates for all
+- `tally`                           : tally/histogram values (and their indices) falling within a desired binning structure
 - `rebinner`                        : rebin a set of y-data to a new x-binning structure (edges not necessarily preserved)
 - `calc_GCR_intensity`              : calculate GCR intensity for a provided solar modulation, ion, and energy
 - `assemble_GCR_flux`               : assemble GCR spectra for desired elements/ions
@@ -1708,6 +1709,98 @@ def circ_solid_angle(pp,a,b,r):
     omega = 2*np.pi*(1-np.cos(theta))
     return omega
 
+
+def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_event_indices_histogram=False):
+    '''
+    Description:
+        Tally number of incidences of values falling within a desired binning structure
+    
+    Dependencies:
+        - `import unicodedata as ud`
+        - `import re`
+    
+    Inputs:
+        - `data` = list of values to be tallied/histogrammed
+        - `bin_edges` = list of N+1 bin edge values for a tally of N bins
+        - `min_bin_left_edge` = left/minimum edge value of the first bin
+        - `max_bin_right_edge` = right/maximum edge value of the last bin
+        - `nbins` = number of equally-sized bins to be created from `min_bin_left_edge` to `max_bin_right_edge`
+        - `bin_width` = constant width of bins to be created from `min_bin_left_edge` to `max_bin_right_edge`
+        - `divide_by_bin_width` = Boolean denoting whether final bin values are divided by their bin widths (D=`False`)
+        - `normalization` = determine how the resulting histogram is normalized (D=`None`), options are:
+                       `[None, 'unity-sum', 'unity-max-val']`.  If `None`, no additional normalization is done.
+                       If `unity-sum`, the data is normalized such that its sum will be 1.  If `unity-max-val`, the
+                       data is normalized such that the maximum value is 1.  The operation occurs after any bin
+                       width normalization from `divide_by_bin_width` but before any scaling from `scaling_factor`.
+        - `scaling_factor` = value which all final bins are multiplied/scaled by (D=`1`)
+        - `place_overflow_at_ends` = handling of values outside of binning range (D=`True`); if `True` extreme 
+                       values are tallied in the first/last bin, if `False` extreme values are discarded
+        - `return_event_indices_histogram` = return an extra N-length list whose elements are each a list 
+                       of the event indices corresponding to each bin (D=`False`)
+    
+    Notes:
+        Regarding the binning structure, this function only needs to be provided `bin_edges` directly (takes priority) 
+        or the information needed to calculate `bin_edges`, that is: `min_bin_left_edge` and `max_bin_right_edge` and
+        either `nbins` or `bin_width`.  (Priority is given to `nbins` if both are provided.)
+    
+    Outputs:
+        - `tallied_hist` = N-length list of tallied data
+        - `bin_edges` = list of N+1 bin edge values for a tally of N bins
+        - `tallied_event_indicies` = (optional) N-length list of, for each bin, a list of the event indices populating it
+    '''
+    
+    normalization_valid_entries = [None, 'unity-sum', 'unity-max-val']
+    if normalization not in normalization_valid_entries:
+        print("Entered normalization option of ",normalization," is not a valid option; please select from the following: [None, 'unity-sum', 'unity-max-val']".format())
+    
+    if len(bin_edges)!=0:
+        bin_edges = np.array(bin_edges)
+    else:
+        if nbins != None:
+            bin_edges = np.linspace(min_bin_left_edge,max_bin_right_edge,num=nbins+1)
+        else:
+            bin_edges = np.arange(min_bin_left_edge,max_bin_right_edge+bin_width,step=bin_width)
+        
+    nbins = len(bin_edges) - 1
+    
+    if return_event_indices_histogram:
+        tallied_event_indicies = []
+        tallied_hist = np.zeros(nbins)
+        for i in range(nbins):
+            tallied_event_indicies.append([])
+        # events must be histogrammed manually
+        for i, val in enumerate(data):
+            if val < bin_edges[0]:
+                if place_overflow_at_ends:
+                    tallied_hist[0] += 1
+                    tallied_event_indicies[0].append(i)
+                continue
+            if val > bin_edges[-1]:
+                if place_overflow_at_ends:
+                    tallied_hist[-1] += 1
+                    tallied_event_indicies[-1].append(i)
+                continue
+            for j, be in enumerate(bin_edges):
+                if be > val: # found right edge of bin containing val
+                    tallied_hist[j-1] += 1
+                    tallied_event_indicies[j-1].append(i)
+                    break
+        
+        if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
+        if normalization=='unity-sum': tallied_hist = tallied_hist/np.sum(tallied_hist)
+        if normalization=='unity-max-val': tallied_hist = tallied_hist/np.max(tallied_hist)
+        if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
+        return tallied_hist,bin_edges,tallied_event_indicies
+    
+    else:
+        tallied_hist, bins = np.histogram(data,bins=bin_edges)
+        if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
+        if normalization=='unity-sum': tallied_hist = tallied_hist/np.sum(tallied_hist)
+        if normalization=='unity-max-val': tallied_hist = tallied_hist/np.max(tallied_hist)
+        if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
+        return tallied_hist,bin_edges
+    
+
 def rebinner(output_xbins,input_xbins,input_ybins):
     """ 
     Description:
@@ -2778,7 +2871,7 @@ def fancy_plot(
         yerr_present = False
         if len(xerr_lists[0])>0:
             xerr = xerr_lists[i]
-            if sum(xerr)==0: 
+            if np.sum(xerr)==0: 
                 xerr = None
             else:
                 xerr_present = True
@@ -2966,7 +3059,7 @@ def fancy_plot(
     else:
         window_title = 'Figure ' + str(figi)
     #window_title = window_title.replace('b','',1) # remove leading 'b' character from slugify process
-    fig.canvas.set_window_title(window_title)
+    fig.canvas.manager.set_window_title(window_title)
     
     # hangle figure/legend positioning/sizing
     # First, figure size
@@ -3313,7 +3406,7 @@ def fancy_3D_plot(
     proj.projection_registry.register(Axes3D_custom)
     
     
-    use_custom_3d_axis_class = True
+    use_custom_3d_axis_class =  False # custom axes broken in newer version of matplotlib?
     
     
     
@@ -3626,11 +3719,11 @@ def fancy_3D_plot(
             if len(yvals[np.nonzero(yvals)]) != 0:
                 if min(yvals[np.nonzero(yvals)])<y_min: y_min = min(yvals[np.nonzero(yvals)])
                 #if min(yvals)<y_min: y_min = min(yvals)
-                if max(yvals)>y_max: y_max = max(yvals)
-                if min(xvals)<x_min: x_min = min(xvals)
-                if max(xvals)>x_max: x_max = max(xvals)
-                if np.min(zvals)<z_min: z_min = np.min(zvals)
-                if np.max(zvals)>z_max: z_max = np.max(zvals)
+                if np.nanmax(yvals)>y_max: y_max = np.nanmax(yvals)
+                if np.nanmin(xvals)<x_min: x_min = np.nanmin(xvals)
+                if np.nanmax(xvals)>x_max: x_max = np.nanmax(xvals)
+                if np.nanmin(zvals)<z_min: z_min = np.nanmin(zvals)
+                if np.nanmax(zvals)>z_max: z_max = np.nanmax(zvals)
         
         
         if nzdims[i]==1: # 1D list
@@ -3686,7 +3779,8 @@ def fancy_3D_plot(
                 ps1 = ax.plot_surface(xvals,yvals, zvals.T,label=label_str,
                                 color=c,cmap=cmp,facecolors=facecolors_i,alpha=alpha_i,
                                 rcount=rcount_i,ccount=ccount_i,
-                                antialiased=False)
+                                antialiased=False,
+                                vmin=z_min,vmax=z_max) # this line was once not needed
                 ps1._facecolors2d=ps1._facecolors3d
                 ps1._edgecolors2d=ps1._edgecolors3d
             
@@ -3820,7 +3914,7 @@ def fancy_3D_plot(
     else:
         window_title = 'Figure ' + str(figi)
     #window_title = window_title.replace('b','',1) # remove leading 'b' character from slugify process
-    fig.canvas.set_window_title(window_title)
+    fig.canvas.manager.set_window_title(window_title)
     
     # hangle figure/legend positioning/sizing
     # First, figure size
@@ -4264,7 +4358,7 @@ if debugging_table_generators:
     print(y)
 
 
-debugging_fancy_3d_plot = False
+debugging_fancy_3d_plot = False 
 if debugging_fancy_3d_plot:
     figi = 0
     
@@ -4282,6 +4376,14 @@ if debugging_fancy_3d_plot:
 
     
     pls=['scatter', 'line', 'surface','trisurface','filledcontour','contour','wireframe']
+    
+    # include only some plots
+    incli = [ 0   ,  1    ,    2     ,    3       ,      4        ,    5    ,    6      ]
+    #incli = [ 2 ]
+    xdata_lists = [xdata_lists[i] for i in incli]
+    ydata_lists = [ydata_lists[i] for i in incli]
+    zdata_lists = [zdata_lists[i] for i in incli]
+    pls         = [pls[i]         for i in incli]
     
     labs = pls
     
@@ -4302,9 +4404,9 @@ if debugging_fancy_3d_plot:
                 #title_str=title_str,            # title_str = string to be used as the title of the plot (D='title')
                 #x_label_str=x_label_str,        # x_label_str = string to be used as x-axis title (D='x-axis')
                 #y_label_str=y_label_str,        # y_label_str = string to be used as y-axis title (D='y-axis')
-                #x_limits=xlims,                 # x_limits = length 2 list specifying minimum and maximum x-axis bounds [xmin,xmax] (D=[], auto-calculated based on x_data_lists)
-                #y_limits=ylims,                 # y_limits = length 2 list specifying minimum and maximum y-axis bounds [ymin,ymax] (D=[], auto-calculated based on y_data_lists)
-                #z_limits=zlims,                 # z_limits = length 2 list specifying minimum and maximum z-axis bounds [zmin,zmax] (D=[], auto-calculated based on z_data_lists)
+                x_limits=xlims,                 # x_limits = length 2 list specifying minimum and maximum x-axis bounds [xmin,xmax] (D=[], auto-calculated based on x_data_lists)
+                y_limits=ylims,                 # y_limits = length 2 list specifying minimum and maximum y-axis bounds [ymin,ymax] (D=[], auto-calculated based on y_data_lists)
+                z_limits=zlims,                 # z_limits = length 2 list specifying minimum and maximum z-axis bounds [zmin,zmax] (D=[], auto-calculated based on z_data_lists)
                 use_mpl_limits=True,           # use_mpl_limits = use Matplotlib axis limits (True) or specially calculated limits (False) for log scale when limits aren't specified
                 title_fs=16,                    # title_fs = title font size (D=16)
                 axis_fs=14,                     # axis_fs = axis label font size (D=14)
@@ -4329,6 +4431,8 @@ if debugging_fancy_3d_plot:
                 markeredgecolor='r', 
                 markeredgewidth=2,
                 alpha = 0.5,
+                
+                #OoB_z_handling = None, #'limits',
             
             # OPTIONAL (advanced) KEYWORD ARGUMENTS
                 fig = None,                      # figure handles from existing figure to draw on (D=None, fig=None should always be used for initial subplot unless a figure canvas has already been generated)
