@@ -48,6 +48,9 @@ The functions contained in this module and brief descriptions of their functions
 - `circumradius`                    : find the circumradius of 3 2D Cartesian points
 - `circumcenter`                    : find the circumcenter of 3 2D Cartesian points
 - `circ_solid_angle`                : calculate solid angle of a source as seen by a detector, provided coordinates for all
+- `eval_distribution`               : evaluate y values of named distribution with provided x and fit parameters
+- `fit_distribution`                : determine best fit parameters for a distribution based on initial guesses
+- `r_squared`                       : calculate R-squared value between two arrays of y values, experimental and fitted
 - `tally`                           : tally/histogram values (and their indices) falling within a desired binning structure
 - `rebinner`                        : rebin a set of y-data to a new x-binning structure (edges not necessarily preserved)
 - `calc_GCR_intensity`              : calculate GCR intensity for a provided solar modulation, ion, and energy
@@ -105,6 +108,9 @@ import matplotlib.projections as proj
 from matplotlib.colors import colorConverter, LinearSegmentedColormap
 import matplotlib.ticker as ticker
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+from munch import *
+from scipy.optimize import curve_fit
 
 
 '''
@@ -1710,14 +1716,182 @@ def circ_solid_angle(pp,a,b,r):
     return omega
 
 
+def eval_distribution(x,dist_name='gauss',a=1,mu=0,sigma=0.3):
+    '''
+    Description:
+        Evaluates a provided array of x values (or single value) for a desired distribution provided its defining parameters.
+    
+    Dependencies:
+        `from munch import *`
+    
+    Inputs:
+        - `x` = list/array of x values or single x value
+        - `dist_name` = string denoting the distribution used (D=`Gaussian`), options include:
+                       `['gauss','normal','Logistic','sech']`, Read more here on the [Gaussian/normal](https://en.wikipedia.org/wiki/Normal_distribution), 
+                       [Logistic](https://en.wikipedia.org/wiki/Logistic_distribution), and 
+                       [Hyperbolic secant](https://en.wikipedia.org/wiki/Hyperbolic_secant_distribution) distributions.
+        - `a` = distribution amplitude/height parameter
+        - `mu` = distribution mean/center parameter
+        - `sigma` = distribution width parameter
+    
+    Notes:
+        At present, this function is only designed with "bell-shaped" distributions describable with three parameters related to
+        amplitude/height, x position/centering, and width.
+    
+    Outputs:
+        - `y_eval` = list/array of evaluated y values or single y value
+        - `dist_info` = dictionary object containing the distribution `short_name` and `full_name`; assigned fit parameters `a`, `mu`, and `sigma`; 
+                      Python string of the function `fcn_py_str`; and LaTex string of the function `fcn_tex_str`
+    '''
+    dist_names_list = ['gauss','normal','Logistic','sech']
+    dist_name = dist_name.lower()
+    if dist_name not in dist_names_list:
+        print('Selected distribution name, ',dist_name,' is not in the list of allowed distribution names: ',dist_names_list,'\n exiting function... Please pick from this list and try again.')
+        return None 
+    if type(x) is list: x = np.array(x)
+    
+    if dist_name=='gauss' or dist_name=='normal':
+        y_eval = a*np.exp(-(x-mu)**2/(2*sigma**2))
+        fcn_py_str = 'f = a*np.exp(-(x-mu)**2/(2*sigma**2))'
+        fcn_tex_str = r'f(x) = A$\cdot$exp$(\frac{-(x-\mu)^2}{2\sigma^2})$'
+        if dist_name=='gauss':
+            dist_full_name = 'Gaussian'
+        else:
+            dist_full_name = 'Normal'
+    elif dist_name=='logistic':
+        y_eval = (a/(4*sigma))*(1/np.cosh((x-mu)/(2*sigma)))**2
+        fcn_py_str = 'f = (a/(4*sigma))*(1/np.cosh((x-mu)/(2*sigma)))**2'
+        fcn_tex_str = r'f(x) = $\frac{A}{4\sigma}$sech$^2(\frac{x-\mu}{2\sigma})$'
+        dist_full_name = 'Logistic'
+    else: #if dist_name=='sech'
+        y_eval = (a/(4*sigma))*(1/np.cosh((x-mu)/(2*sigma)))
+        fcn_py_str = 'f = (a/(4*sigma))*(1/np.cosh((x-mu)/(2*sigma)))'
+        fcn_tex_str = r'f(x) = $\frac{A}{4\sigma}$sech$(\frac{x-\mu}{2\sigma})$'
+        dist_full_name = 'Hyperbolic secant'
+    
+    dist_info = {'short_name':dist_name,
+                 'full_name':dist_full_name,
+                 'a':a,
+                 'mu':mu,
+                 'sigma':sigma,
+                 'fcn_py_str':fcn_py_str,
+                 'fcn_tex_str':fcn_tex_str}
+    
+    try:
+        dist_info = Munch(dist_info)
+    except:
+        print("Munch failed.  Returned object is a conventional dictionary rather than a munch object.")
+    
+    return y_eval,  dist_info
+
+
+def fit_distribution(x,y,dist_name='gauss',a0=None,mu0=None,sigma0=None):
+    '''
+    Description:
+        Determine best fit parameters and quality of fit provided test x and y values, the name of the ditribution to be fit, and initial guesses of its parameters.  
+        If initial guesses are omitted, they will try to be automatically assessed (your mileage may vary).
+    
+    Dependencies:
+        `from munch import *`
+        `from scipy.optimize import curve_fit`
+    
+    Inputs:
+        - `x` = list/array of x values to be fit
+        - `y` = list/array of y values to be fit
+        - `dist_name` = string denoting the distribution used (D=`Gaussian`), options include:
+                       `['gauss','normal','Logistic','sech']`, Read more here on the [Gaussian/normal](https://en.wikipedia.org/wiki/Normal_distribution), 
+                       [Logistic](https://en.wikipedia.org/wiki/Logistic_distribution), and 
+                       [Hyperbolic secant](https://en.wikipedia.org/wiki/Hyperbolic_secant_distribution) distributions.
+        - `a0` = initial guess of the distribution amplitude/height parameter
+        - `mu0` = initial guess of the distribution mean/center parameter
+        - `sigma0` = initial guess of the distribution width parameter
+    
+    Notes:
+        At present, this function is only designed with "bell-shaped" distributions describable with three parameters related to
+        amplitude/height, x position/centering, and width.
+    
+    Outputs:
+        - `y_fit` = list/array of evaluated y values using the optimally found fit parameters
+        - `dist_info` = dictionary object containing the distribution `short_name` and `full_name`; optimized fit parameters `a`, `mu`, and `sigma`; 
+                      calculated `FWHM` and `r2`/`r_squared` R^2 values; Python string of the function `fcn_py_str`; and LaTex string of the function `fcn_tex_str`
+    '''
+    dist_names_list = ['gauss','normal','Logistic','sech']
+    dist_name = dist_name.lower()
+    if dist_name not in dist_names_list:
+        print('Selected distribution name, ',dist_name,' is not in the list of allowed distribution names: ',dist_names_list,'\n exiting function... Please pick from this list and try again.')
+        return None 
+    if type(x) is list: x = np.array(x)
+    if type(y) is list: y = np.array(y)
+    
+    
+    def gaus(x,a,mu,sigma):
+        f = a*np.exp(-(x-mu)**2/(2*sigma**2))
+        return f
+    def logistic_dist(x,a,mu,sigma):
+        f = (a/(4*sigma))*(1/np.cosh((x-mu)/(2*sigma)))**2
+        return f
+    def hyperbolic_secant_dist(x,a,mu,sigma):
+        f = (a/(4*sigma))*(1/np.cosh((x-mu)/(2*sigma)))
+        return f
+    
+    if dist_name=='gauss' or dist_name=='normal':
+        fit_fcn = gaus
+    elif dist_name=='logistic':
+        fit_fcn = logistic_dist
+    else: #if dist_name=='sech'
+        fit_fcn = hyperbolic_secant_dist
+    
+    
+    n = len(x)
+    ymax=max(y)
+    mean = sum(x*y/ymax)/n
+    sigma = sum((y/ymax)*(x-mean)**2)/n
+    
+    if a0==None: a0 = ymax
+    if mu0==None: mu0 = mean
+    if sigma0==None: sigma0 = sigma
+    popt,pcov = curve_fit(fit_fcn,x,y,p0=[a0,mu0,sigma0])
+    a, mu, sigma = popt[0], popt[1], popt[2]
+    FWHM_fit = 2*np.sqrt(2*np.log(2))*sigma
+    
+    y_fit, dist_info = eval_distribution(x, dist_name=dist_name, a=a, mu=mu, sigma=sigma)
+    r2 = r_squared(y,y_fit)
+    
+    dist_info.update({
+        'FWHM':FWHM_fit,
+        'r2':r2,
+        'r_squared':r2
+        })
+    
+    return y_fit, dist_info
+
+
+def r_squared(y,y_fit):
+    '''
+    Description:
+        Calculate R^2 (R-squared) value between two sets of data, an experimental "y" and fitted "y_fit"
+    
+    Inputs:
+        - `y` = list/array of y values (experimental)
+        - `y_fit` = list/array of fitted y values to be compared against y
+    
+    Outputs:
+        - `r_squared` = calculated R-squared value
+    '''
+    # Calculate R^2
+    # residual sum of squares
+    ss_res = np.sum((y-y_fit)**2)
+    # total sum of squares
+    ss_tot = np.sum((y-np.mean(y))**2)
+    # r-squared
+    r2 = 1-(ss_res/ss_tot)
+    return r2
+
+
 def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_event_indices_histogram=False):
     '''
     Description:
         Tally number of incidences of values falling within a desired binning structure
-    
-    Dependencies:
-        - `import unicodedata as ud`
-        - `import re`
     
     Inputs:
         - `data` = list of values to be tallied/histogrammed
