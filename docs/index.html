@@ -107,12 +107,16 @@ other scripts and/or are just generally useful and could possibly be useful in t
 : find the circumcenter of 3 2D Cartesian points</li>
 <li><code><a title="Hunters_tools.circ_solid_angle" href="#Hunters_tools.circ_solid_angle">circ_solid_angle()</a></code>
 : calculate solid angle of a source as seen by a detector, provided coordinates for all</li>
+<li><code><a title="Hunters_tools.energy_resolution_of_peak" href="#Hunters_tools.energy_resolution_of_peak">energy_resolution_of_peak()</a></code>
+: calculate energy resolution (&amp; related values) from a spectrum and range of channels</li>
 <li><code><a title="Hunters_tools.eval_distribution" href="#Hunters_tools.eval_distribution">eval_distribution()</a></code>
 : evaluate y values of named distribution with provided x and fit parameters</li>
 <li><code><a title="Hunters_tools.fit_distribution" href="#Hunters_tools.fit_distribution">fit_distribution()</a></code>
 : determine best fit parameters for a distribution based on initial guesses</li>
 <li><code><a title="Hunters_tools.r_squared" href="#Hunters_tools.r_squared">r_squared()</a></code>
 : calculate R-squared value between two arrays of y values, experimental and fitted</li>
+<li><code><a title="Hunters_tools.chi_squared" href="#Hunters_tools.chi_squared">chi_squared()</a></code>
+: calculate chi-squared value between two arrays of y values, experimental and fitted</li>
 <li><code><a title="Hunters_tools.tally" href="#Hunters_tools.tally">tally()</a></code>
 : tally/histogram values (and their indices) falling within a desired binning structure</li>
 <li><code><a title="Hunters_tools.rebinner" href="#Hunters_tools.rebinner">rebinner()</a></code>
@@ -123,8 +127,17 @@ other scripts and/or are just generally useful and could possibly be useful in t
 : assemble GCR spectra for desired elements/ions</li>
 <li><code><a title="Hunters_tools.ICRP116_effective_dose_coeff" href="#Hunters_tools.ICRP116_effective_dose_coeff">ICRP116_effective_dose_coeff()</a></code>
 : returns effective dose of a mono-energetic particle of some species and some geometry</li>
+</ul>
+<h3 id="monte-carlo-transport-code-functions-phitsmcnp">Monte Carlo transport code Functions (PHITS/MCNP)</h3>
+<ul>
 <li><code><a title="Hunters_tools.fetch_MC_material" href="#Hunters_tools.fetch_MC_material">fetch_MC_material()</a></code>
 : returns a string of a formatted material for MCNP or PHITS</li>
+<li><code><a title="Hunters_tools.parse_ttrack_file" href="#Hunters_tools.parse_ttrack_file">parse_ttrack_file()</a></code>
+: parser for the [T-Track] output file from PHITS </li>
+<li><code><a title="Hunters_tools.parse_tdeposit_file" href="#Hunters_tools.parse_tdeposit_file">parse_tdeposit_file()</a></code>
+: parser for the [T-Deposit] output file from PHITS </li>
+<li><code><a title="Hunters_tools.parse_dyld_files" href="#Hunters_tools.parse_dyld_files">parse_dyld_files()</a></code>
+: parser for the *.dyld files from PHITS meant for DCHAIN</li>
 </ul>
 <h3 id="plotting-related-functions">Plotting-related Functions</h3>
 <ul>
@@ -136,6 +149,10 @@ other scripts and/or are just generally useful and could possibly be useful in t
 : return 1 of 12 color values from ColorBrewer</li>
 <li><code><a title="Hunters_tools.colors_list_10" href="#Hunters_tools.colors_list_10">colors_list_10()</a></code>
 : return 1 of 10 color values from the new matplotlib default from v3 1 1</li>
+<li><code><a title="Hunters_tools.colors_list_20" href="#Hunters_tools.colors_list_20">colors_list_20()</a></code>
+: return 1 of 20 color values from a blog post by Sasha Trubetskoy</li>
+<li><code><a title="Hunters_tools.colors_list_64" href="#Hunters_tools.colors_list_64">colors_list_64()</a></code>
+: return 1 of 64 color values from a StackOverflow comment by user Tatarize</li>
 <li><code><a title="Hunters_tools.get_colormap" href="#Hunters_tools.get_colormap">get_colormap()</a></code>
 : retrieve a matplotlib colormap using just its string name</li>
 <li><code><a title="Hunters_tools.truncate_colormap" href="#Hunters_tools.truncate_colormap">truncate_colormap()</a></code>
@@ -201,16 +218,23 @@ The functions contained in this module and brief descriptions of their functions
 - `circumradius`                    : find the circumradius of 3 2D Cartesian points
 - `circumcenter`                    : find the circumcenter of 3 2D Cartesian points
 - `circ_solid_angle`                : calculate solid angle of a source as seen by a detector, provided coordinates for all
+- `energy_resolution_of_peak`       : calculate energy resolution (&amp; related values) from a spectrum and range of channels
 - `eval_distribution`               : evaluate y values of named distribution with provided x and fit parameters
 - `fit_distribution`                : determine best fit parameters for a distribution based on initial guesses
 - `r_squared`                       : calculate R-squared value between two arrays of y values, experimental and fitted
+- `chi_squared`                     : calculate chi-squared value between two arrays of y values, experimental and fitted
 - `tally`                           : tally/histogram values (and their indices) falling within a desired binning structure
 - `rebinner`                        : rebin a set of y-data to a new x-binning structure (edges not necessarily preserved)
 - `calc_GCR_intensity`              : calculate GCR intensity for a provided solar modulation, ion, and energy
 - `assemble_GCR_flux`               : assemble GCR spectra for desired elements/ions
 - `ICRP116_effective_dose_coeff`    : returns effective dose of a mono-energetic particle of some species and some geometry
-- `fetch_MC_material`               : returns a string of a formatted material for MCNP or PHITS
 
+### Monte Carlo transport code Functions (PHITS/MCNP)
+
+- `fetch_MC_material`               : returns a string of a formatted material for MCNP or PHITS
+- `parse_ttrack_file`               : parser for the [T-Track] output file from PHITS 
+- `parse_tdeposit_file`             : parser for the [T-Deposit] output file from PHITS 
+- `parse_dyld_files`                : parser for the *.dyld files from PHITS meant for DCHAIN
 
 ### Plotting-related Functions 
 
@@ -218,6 +242,8 @@ The functions contained in this module and brief descriptions of their functions
 - `colors_list_6`                   : return 1 of 6 color values from ColorBrewer
 - `colors_list_12`                  : return 1 of 12 color values from ColorBrewer
 - `colors_list_10`                  : return 1 of 10 color values from the new matplotlib default from v3 1 1
+- `colors_list_20`                  : return 1 of 20 color values from a blog post by Sasha Trubetskoy
+- `colors_list_64`                  : return 1 of 64 color values from a StackOverflow comment by user Tatarize
 - `get_colormap`                    : retrieve a matplotlib colormap using just its string name
 - `truncate_colormap`               : truncate a colormap to new upper/lower bounds to a subset of the original colormap
 - `makeErrorBoxes`                  : draw uncertainties as a box surrounding a point (can be used with/instead of crosshair-style error bars)
@@ -264,6 +290,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 from munch import *
 from scipy.optimize import curve_fit
+from scipy.stats import chisquare
 
 
 &#39;&#39;&#39;
@@ -1869,6 +1896,31 @@ def circ_solid_angle(pp,a,b,r):
     return omega
 
 
+def energy_resolution_of_peak(y,x,):
+    &#39;&#39;&#39;
+    Description:
+        Provided a spectrum of counts (or equivalent) and it&#39;s bin centers or edges, and optionally the range of bins to evaluate, determine the
+        energy resolution FWHM/H0 (also sigma/H0) of peak with average value H0.
+    
+    Inputs:
+        - `y` = list/array of y values (length N)
+        - `x` = list/array of x bin centers (length N) or bin edges (length N+1) corresponding to y
+        - `peak_guess_location` = single value (float/int) denoting an initial guess of the peak&#39;s x location
+        - `peak_search_range` = length-2 list of x values (not indices) between which the peak will be searched for
+    
+    Notes:
+        At present, this function is only designed with &#34;bell-shaped&#34; distributions describable with three parameters related to
+        amplitude/height, x position/centering, and width.
+    
+    Outputs:
+        - `y_fit` = list/array of evaluated y values using the optimally found fit parameters
+        - `dist_info` = dictionary object containing the distribution `short_name` and `full_name`; optimized fit parameters `a`, `mu`, and `sigma`; 
+                      calculated `FWHM`, `r2`/`r_squared` R^2, and `chi2`/`chi_squared` values; Python string of the function `fcn_py_str`; and LaTex string of the function `fcn_tex_str`
+    &#39;&#39;&#39;
+    
+    return None 
+
+
 def eval_distribution(x,dist_name=&#39;gauss&#39;,a=1,mu=0,sigma=0.3):
     &#39;&#39;&#39;
     Description:
@@ -1879,7 +1931,7 @@ def eval_distribution(x,dist_name=&#39;gauss&#39;,a=1,mu=0,sigma=0.3):
     
     Inputs:
         - `x` = list/array of x values or single x value
-        - `dist_name` = string denoting the distribution used (D=`Gaussian`), options include:
+        - `dist_name` = string denoting the distribution used (D=`&#39;Gaussian&#39;`), options include:
                        `[&#39;gauss&#39;,&#39;normal&#39;,&#39;Logistic&#39;,&#39;sech&#39;]`, Read more here on the [Gaussian/normal](https://en.wikipedia.org/wiki/Normal_distribution), 
                        [Logistic](https://en.wikipedia.org/wiki/Logistic_distribution), and 
                        [Hyperbolic secant](https://en.wikipedia.org/wiki/Hyperbolic_secant_distribution) distributions.
@@ -1951,7 +2003,7 @@ def fit_distribution(x,y,dist_name=&#39;gauss&#39;,a0=None,mu0=None,sigma0=None)
     Inputs:
         - `x` = list/array of x values to be fit
         - `y` = list/array of y values to be fit
-        - `dist_name` = string denoting the distribution used (D=`Gaussian`), options include:
+        - `dist_name` = string denoting the distribution used (D=`&#39;Gaussian&#39;`), options include:
                        `[&#39;gauss&#39;,&#39;normal&#39;,&#39;Logistic&#39;,&#39;sech&#39;]`, Read more here on the [Gaussian/normal](https://en.wikipedia.org/wiki/Normal_distribution), 
                        [Logistic](https://en.wikipedia.org/wiki/Logistic_distribution), and 
                        [Hyperbolic secant](https://en.wikipedia.org/wiki/Hyperbolic_secant_distribution) distributions.
@@ -1966,7 +2018,7 @@ def fit_distribution(x,y,dist_name=&#39;gauss&#39;,a0=None,mu0=None,sigma0=None)
     Outputs:
         - `y_fit` = list/array of evaluated y values using the optimally found fit parameters
         - `dist_info` = dictionary object containing the distribution `short_name` and `full_name`; optimized fit parameters `a`, `mu`, and `sigma`; 
-                      calculated `FWHM` and `r2`/`r_squared` R^2 values; Python string of the function `fcn_py_str`; and LaTex string of the function `fcn_tex_str`
+                      calculated `FWHM`, `r2`/`r_squared` R^2, and `chi2`/`chi_squared` values; Python string of the function `fcn_py_str`; and LaTex string of the function `fcn_tex_str`
     &#39;&#39;&#39;
     dist_names_list = [&#39;gauss&#39;,&#39;normal&#39;,&#39;Logistic&#39;,&#39;sech&#39;]
     dist_name = dist_name.lower()
@@ -2010,14 +2062,31 @@ def fit_distribution(x,y,dist_name=&#39;gauss&#39;,a0=None,mu0=None,sigma0=None)
     y_fit, dist_info = eval_distribution(x, dist_name=dist_name, a=a, mu=mu, sigma=sigma)
     r2 = r_squared(y,y_fit)
     
+    #chi2,red_chi2 = chi_squared(y,y_fit,num_fit_params=3)
+    num_fit_params=3
+    chi2,p_chi2,ndf_chi2 = chi_squared(y,y_fit,num_fit_params=num_fit_params)
+    # How to write chi2 results: https://www.socscistatistics.com/tutorials/chisquare/default.aspx 
+    if p_chi2&lt;0.001:
+        chi_p_str = &#39;p&lt;0.001&#39;
+    else:
+        chi_p_str = &#39;p = {:4g}&#39;
+    chi2_tex_str = r&#39;$\chi^2$&#39;+&#39;({:},N={:})={:.3g}, {}&#39;.format(num_fit_params,n,chi2,chi_p_str)
+    
     dist_info.update({
         &#39;FWHM&#39;:FWHM_fit,
         &#39;r2&#39;:r2,
-        &#39;r_squared&#39;:r2
+        &#39;r_squared&#39;:r2,
+        &#39;chi2&#39;:chi2,
+        &#39;chi_squared&#39;:chi2,
+        &#39;p_chi2&#39;:p_chi2,
+        &#39;ndf_chi2&#39;:ndf_chi2,
+        &#39;chi2_tex_str&#39;:chi2_tex_str
+        #&#39;red_chi2&#39;:red_chi2,
+        #&#39;red_chi_squared&#39;:red_chi2,
         })
     
     return y_fit, dist_info
-
+    
 
 def r_squared(y,y_fit):
     &#39;&#39;&#39;
@@ -2041,7 +2110,37 @@ def r_squared(y,y_fit):
     return r2
 
 
-def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_event_indices_histogram=False):
+def chi_squared(y,y_fit,num_fit_params=0):
+    &#39;&#39;&#39;
+    Description:
+        Calculate chi^2 (chi-squared) value between two sets of data, an experimental &#34;y&#34; and fitted &#34;y_fit&#34;    
+    
+    Dependencies:
+        `from scipy.stats import chisquare`
+    
+    Inputs:
+        - `y` = list/array of y values (experimental)
+        - `y_fit` = list/array of fitted y values to be compared against y
+        - `num_deg_freedom` = number of degrees of freedom (DoF) in fit function (number of optimized parameters) (D=`0`)
+    
+    Outputs:
+        - `chi_squared` = calculated chi-squared value
+        - `reduced_chi_squared` = calculated reduced chi-squared value (chi^2 / DoF)
+    &#39;&#39;&#39;
+    # This normalization shouldn&#39;t be necessary, but a past build of scipy broke the chisquare function from working without it
+    y_fit = y_fit*sum(y)/sum(y_fit)
+    chi2,p = chisquare(y,f_exp=y_fit,ddof=num_fit_params)
+    ndf = len(y) - num_fit_params
+    # Hand calc
+    #O_k = y     # observed, from measurement 
+    #E_k = y_fit # expected, from some distribution e.g. Gaussian
+    #chi2 = np.sum( ((O_k-E_k)**2)/E_k )
+    #num_deg_freedom = len(O_k) - num_fit_params
+    #red_chi2 = chi2/num_deg_freedom
+    return chi2, p, ndf
+
+
+def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_uncertainties=False, return_event_indices_histogram=False):
     &#39;&#39;&#39;
     Description:
         Tally number of incidences of values falling within a desired binning structure
@@ -2062,8 +2161,10 @@ def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, n
         - `scaling_factor` = value which all final bins are multiplied/scaled by (D=`1`)
         - `place_overflow_at_ends` = handling of values outside of binning range (D=`True`); if `True` extreme 
                        values are tallied in the first/last bin, if `False` extreme values are discarded
-        - `return_event_indices_histogram` = return an extra N-length list whose elements are each a list 
-                       of the event indices corresponding to each bin (D=`False`)
+        - `return_uncertainties` = Boolean denoting if should return an extra N-length list whose elements  
+                       are the statistical uncertainties (square root w/ normalizations) of the tally bins (D=`False`)
+        - `return_event_indices_histogram` = Boolean denoting if should return an extra N-length list whose elements  
+                       are each a list of the event indices corresponding to each bin (D=`False`)
     
     Notes:
         Regarding the binning structure, this function only needs to be provided `bin_edges` directly (takes priority) 
@@ -2073,6 +2174,7 @@ def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, n
     Outputs:
         - `tallied_hist` = N-length list of tallied data
         - `bin_edges` = list of N+1 bin edge values for a tally of N bins
+        - `tallied_hist_err` = (optional) N-length list of statistical uncertainties of tallied data
         - `tallied_event_indicies` = (optional) N-length list of, for each bin, a list of the event indices populating it
     &#39;&#39;&#39;
     
@@ -2113,19 +2215,36 @@ def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, n
                     tallied_event_indicies[j-1].append(i)
                     break
         
-        if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
-        if normalization==&#39;unity-sum&#39;: tallied_hist = tallied_hist/np.sum(tallied_hist)
-        if normalization==&#39;unity-max-val&#39;: tallied_hist = tallied_hist/np.max(tallied_hist)
-        if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
-        return tallied_hist,bin_edges,tallied_event_indicies
-    
+        
+        
     else:
         tallied_hist, bins = np.histogram(data,bins=bin_edges)
-        if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
-        if normalization==&#39;unity-sum&#39;: tallied_hist = tallied_hist/np.sum(tallied_hist)
-        if normalization==&#39;unity-max-val&#39;: tallied_hist = tallied_hist/np.max(tallied_hist)
-        if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
-        return tallied_hist,bin_edges
+    
+    if return_uncertainties: 
+        tallied_hist_err = np.sqrt(tallied_hist)
+        if divide_by_bin_width: tallied_hist_err = tallied_hist_err/(bin_edges[1:]-bin_edges[:-1])
+        if normalization==&#39;unity-sum&#39;: tallied_hist_err = tallied_hist_err/np.sum(tallied_hist)
+        if normalization==&#39;unity-max-val&#39;: tallied_hist_err = tallied_hist_err/np.max(tallied_hist)
+        if scaling_factor != 1: tallied_hist_err = tallied_hist_err*scaling_factor
+        
+    if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
+    if normalization==&#39;unity-sum&#39;: tallied_hist = tallied_hist/np.sum(tallied_hist)
+    if normalization==&#39;unity-max-val&#39;: tallied_hist = tallied_hist/np.max(tallied_hist)
+    if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
+        
+    if return_event_indices_histogram:
+        if return_uncertainties: 
+            return tallied_hist,bin_edges,tallied_hist_err,tallied_event_indicies
+        else:
+            return tallied_hist,bin_edges,tallied_event_indicies
+    else:
+        if return_uncertainties: 
+            return tallied_hist,bin_edges,tallied_hist_err
+        else:
+            return tallied_hist,bin_edges
+    
+
+        
     
 
 def rebinner(output_xbins,input_xbins,input_ybins):
@@ -2479,6 +2598,14 @@ def ICRP116_effective_dose_coeff(E=1.0,particle=&#39;photon&#39;,geometry=&#39;A
     return f
 
 
+
+&#39;&#39;&#39;
+**************************************************************************************************
+------------------------------- MC-TRANSPORT-CODE-RELATED FUNCTIONS ------------------------------
+**************************************************************************************************
+&#39;&#39;&#39;
+
+
 def fetch_MC_material(matid=None,matname=None,matsource=None,concentration_type=None,particle=None):
     &#39;&#39;&#39;
     Description:
@@ -2642,6 +2769,586 @@ def fetch_MC_material(matid=None,matname=None,matsource=None,concentration_type=
     return entry_text
 
 
+
+def parse_ttrack_file(path_to_dtrk_file,return_metadata=False):
+    &#39;&#39;&#39;
+    Description:
+        Parses the output file of a T-Track tally generated by PHITS.  Note that this specific function assumes that the T-Track 
+        tally was one automatically generated by and corresponding to a T-Dchain tally but in principle works with any T-Track tally.
+        This works for region, xyz, and tetrahedral mesh geometries in either the original or reduced format.
+        It is currently only designed for tallies tracking a single particle (or &#34;all&#34;).
+        
+    Inputs:
+        - `path_to_dtrk_file` = path to the T-Track tally output file to be parsed
+        - `return_metadata` = Boolean indicating whether additional information is outputted with the flux (D=`False`)
+        
+    Outputs:
+        - `flux` = a RxEx4 array containing regionwise fluxes [x-lower/x-upper/flux/abs_error]
+        - `dtrk_metadata` (only returned if `return_metadata=True`) = list of length two
+               - `dtrk_metadata[0]` = string denoting axis type &#39;eng&#39; (old full format) or &#39;dchain&#39; (new reduced format)
+               - `dtrk_metadata[1]` = string denoting mesh type as either &#39;reg&#39;, &#39;xyz&#39;, or &#39;tet&#39;
+    &#39;&#39;&#39;
+    
+    # Extract text from file
+    f = open(path_to_dtrk_file)
+    file_text = f.read()
+    lines = file_text.split(&#39;\n&#39;)
+    f.close()
+    
+    # Determine geometry type (mesh = reg, xyz, or tet)
+    for line in lines:
+        if &#39;mesh =&#39; in line:
+            meshtype = line.replace(&#39;mesh =&#39;,&#39;&#39;).strip().split()[0]
+            break 
+    
+    # Determine if original or reduced format (axis = eng or axis = dchain or axis=x/y/z)
+    for line in lines:
+        if &#39;axis =&#39; in line:
+            axistype = line.replace(&#39;axis =&#39;,&#39;&#39;).strip().split()[0]
+            break 
+    
+    if meshtype==&#39;xyz&#39;:
+        nx, ny, nz = 0, 0, 0
+        for line in lines:
+            if &#39;nx =&#39; in line:
+                nx = int(line.replace(&#39;nx =&#39;,&#39;&#39;).strip().split()[0])
+                break
+        for line in lines:
+            if &#39;ny =&#39; in line:
+                ny = int(line.replace(&#39;ny =&#39;,&#39;&#39;).strip().split()[0])
+                break
+        for line in lines:
+            if &#39;nz =&#39; in line:
+                nz = int(line.replace(&#39;nz =&#39;,&#39;&#39;).strip().split()[0])
+                break
+        nreg = nx*ny*nz
+    
+    
+    dtrk_metadata = [axistype,meshtype]
+    
+    # Determine number of regions
+    if axistype==&#39;eng&#39;:
+        nreg = file_text.count(&#39;#   no. =&#39;)
+    elif axistype in [&#39;x&#39;,&#39;y&#39;,&#39;z&#39;]:
+        #nreg = nx*ny*nz
+        if axistype==&#39;x&#39;: nbins = nx
+        if axistype==&#39;y&#39;: nbins = ny
+        if axistype==&#39;z&#39;: nbins = nz
+    elif axistype==&#39;dchain&#39;:
+        for li, line in reversed(list(enumerate(lines))):
+            #print(line)
+            if &#39;0    0   0.0000E+00  0.0000&#39; in line:
+                nreg = int(lines[li-1].split()[0])
+                break 
+        
+    if axistype==&#39;dchain&#39;:
+        nEbins = 1968
+    else:
+        for line in lines:
+            if &#39;ne =&#39; in line:
+                nEbins = int(line.replace(&#39;ne =&#39;,&#39;&#39;).strip().split()[0])
+                break
+    
+    if meshtype==&#39;xyz&#39;:
+        flux = np.zeros((nx,ny,nz,nEbins,4))
+    else:
+        flux = np.zeros((nreg,nEbins,4))
+    
+    if axistype==&#39;eng&#39;:
+        in_flux_lines = False
+        ei = 0
+        ri = -1
+        
+        for line in lines:
+            if &#39;#   no. =&#39; in line:
+                ri += 1
+            if &#39;#  e-lower      e-upper &#39; in line:
+                in_flux_lines = True 
+                continue 
+            if in_flux_lines:
+                flux[ri,ei,:] = [float(x) for x in line.split()]
+                flux[ri,ei,3] = flux[ri,ei,3]*flux[ri,ei,2] # convert relative error to absolute error
+                ei += 1
+                if ei == nEbins:
+                    in_flux_lines = False 
+                    ei = 0
+                    
+    elif axistype in [&#39;x&#39;,&#39;y&#39;,&#39;z&#39;]:
+        xi, yi, zi, ei = 0, 0, 0, 0
+        ie_edges, ix_edges, iy_edges, iz_edges = [],[],[],[]
+        in_flux_lines = False
+        for line in lines:
+            if &#39;#   no. =&#39; in line:
+                parts = line.split()
+                if &#39;ie&#39; in parts: ei = int(parts[2+parts.index(&#39;ie&#39;)])-1
+                if &#39;ix&#39; in parts: xi = int(parts[2+parts.index(&#39;ix&#39;)])-1
+                if &#39;iy&#39; in parts: yi = int(parts[2+parts.index(&#39;iy&#39;)])-1
+                if &#39;iz&#39; in parts: zi = int(parts[2+parts.index(&#39;iz&#39;)])-1
+            if &#39;#   e =&#39; in line:
+                parts = line.split()
+                ie_edges.append([float(parts[4]),float(parts[6])])
+            if &#39;#   x =&#39; in line:
+                parts = line.split()
+                ix_edges.append([float(parts[4]),float(parts[6])])
+            if &#39;#   y =&#39; in line:
+                parts = line.split()
+                iy_edges.append([float(parts[4]),float(parts[6])])
+            if &#39;#   z =&#39; in line:
+                parts = line.split()
+                iz_edges.append([float(parts[4]),float(parts[6])])
+                
+            if &#39;#  {}-lower      {}-upper &#39;.format(axistype,axistype) in line:
+                in_flux_lines = True 
+                continue 
+            
+            if in_flux_lines:
+                flux[xi,yi,zi,ei,:] = [float(x) for x in line.split()]
+                flux[xi,yi,zi,ei,3] = flux[xi,yi,zi,ei,3]*flux[xi,yi,zi,ei,2] # convert relative error to absolute error
+                if axistype==&#39;x&#39;: 
+                    xi += 1
+                    if xi==nbins:
+                        in_flux_lines = False 
+                        xi=0
+                if axistype==&#39;y&#39;: 
+                    yi += 1
+                    if yi==nbins:
+                        in_flux_lines = False 
+                        yi=0
+                if axistype==&#39;z&#39;: 
+                    zi += 1
+                    if zi==nbins:
+                        in_flux_lines = False 
+                        zi=0
+        
+            
+                    
+    elif axistype==&#39;dchain&#39;:
+        ebins = [20.0,
+        1.964033E+01,1.947734E+01,1.931570E+01,1.915541E+01,1.899644E+01,1.883880E+01,1.868246E+01,1.852742E+01,1.837367E+01,1.822119E+01,1.806998E+01,1.792002E+01,1.777131E+01,1.762383E+01,1.747757E+01,1.733253E+01,1.718869E+01,1.704605E+01,1.690459E+01,1.676430E+01,1.662518E+01,
+        1.648721E+01,1.635039E+01,1.621470E+01,1.608014E+01,1.594670E+01,1.581436E+01,1.568312E+01,1.555297E+01,1.542390E+01,1.529590E+01,1.516897E+01,1.504309E+01,1.491825E+01,1.479444E+01,1.467167E+01,1.454991E+01,1.442917E+01,1.430943E+01,1.419068E+01,1.407291E+01,
+        1.395612E+01,1.384031E+01,1.372545E+01,1.361155E+01,1.349859E+01,1.338657E+01,1.327548E+01,1.316531E+01,1.305605E+01,1.294770E+01,1.284025E+01,1.273370E+01,1.262802E+01,1.252323E+01,1.241930E+01,1.231624E+01,1.221403E+01,1.211267E+01,1.201215E+01,1.191246E+01,
+        1.181360E+01,1.171557E+01,1.161834E+01,1.152193E+01,1.142631E+01,1.133148E+01,1.123745E+01,1.114419E+01,1.105171E+01,1.095999E+01,1.086904E+01,1.077884E+01,1.068939E+01,1.060068E+01,1.051271E+01,1.042547E+01,1.033895E+01,1.025315E+01,1.016806E+01,1.008368E+01,
+        1.000000E+01,9.917013E+00,9.834715E+00,9.753099E+00,9.672161E+00,9.591895E+00,9.512294E+00,9.433354E+00,9.355070E+00,9.277435E+00,9.200444E+00,9.124092E+00,9.048374E+00,8.973284E+00,8.898818E+00,8.824969E+00,8.751733E+00,8.679105E+00,8.607080E+00,8.535652E+00,
+        8.464817E+00,8.394570E+00,8.324906E+00,8.255820E+00,8.187308E+00,8.119363E+00,8.051983E+00,7.985162E+00,7.918896E+00,7.853179E+00,7.788008E+00,7.723377E+00,7.659283E+00,7.595721E+00,7.532687E+00,7.470175E+00,7.408182E+00,7.346704E+00,7.285736E+00,7.225274E+00,
+        7.165313E+00,7.105850E+00,7.046881E+00,6.988401E+00,6.930406E+00,6.872893E+00,6.815857E+00,6.759294E+00,6.703200E+00,6.647573E+00,6.592406E+00,6.537698E+00,6.483443E+00,6.429639E+00,6.376282E+00,6.323367E+00,6.270891E+00,6.218851E+00,6.167242E+00,6.116062E+00,
+        6.065307E+00,6.014972E+00,5.965056E+00,5.915554E+00,5.866462E+00,5.817778E+00,5.769498E+00,5.721619E+00,5.674137E+00,5.627049E+00,5.580351E+00,5.534042E+00,5.488116E+00,5.442572E+00,5.397406E+00,5.352614E+00,5.308195E+00,5.264143E+00,5.220458E+00,5.177135E+00,
+        5.134171E+00,5.091564E+00,5.049311E+00,5.007408E+00,4.965853E+00,4.924643E+00,4.883775E+00,4.843246E+00,4.803053E+00,4.763194E+00,4.723666E+00,4.684465E+00,4.645590E+00,4.607038E+00,4.568805E+00,4.530890E+00,4.493290E+00,4.456001E+00,4.419022E+00,4.382350E+00,
+        4.345982E+00,4.309916E+00,4.274149E+00,4.238679E+00,4.203504E+00,4.168620E+00,4.134026E+00,4.099719E+00,4.065697E+00,4.031957E+00,3.998497E+00,3.965314E+00,3.932407E+00,3.899773E+00,3.867410E+00,3.835316E+00,3.803488E+00,3.771924E+00,3.740621E+00,3.709579E+00,
+        3.678794E+00,3.648265E+00,3.617989E+00,3.587965E+00,3.558189E+00,3.528661E+00,3.499377E+00,3.470337E+00,3.441538E+00,3.412978E+00,3.384654E+00,3.356566E+00,3.328711E+00,3.301087E+00,3.273692E+00,3.246525E+00,3.219583E+00,3.192864E+00,3.166368E+00,3.140091E+00,
+        3.114032E+00,3.088190E+00,3.062562E+00,3.037147E+00,3.011942E+00,2.986947E+00,2.962159E+00,2.937577E+00,2.913199E+00,2.889023E+00,2.865048E+00,2.841272E+00,2.817693E+00,2.794310E+00,2.771121E+00,2.748124E+00,2.725318E+00,2.702701E+00,2.680272E+00,2.658030E+00,
+        2.635971E+00,2.614096E+00,2.592403E+00,2.570889E+00,2.549554E+00,2.528396E+00,2.507414E+00,2.486605E+00,2.465970E+00,2.445505E+00,2.425211E+00,2.405085E+00,2.385126E+00,2.365332E+00,2.345703E+00,2.326237E+00,2.306932E+00,2.287787E+00,2.268802E+00,2.249973E+00,
+        2.231302E+00,2.212785E+00,2.194421E+00,2.176211E+00,2.158151E+00,2.140241E+00,2.122480E+00,2.104866E+00,2.087398E+00,2.070076E+00,2.052897E+00,2.035860E+00,2.018965E+00,2.002210E+00,1.985595E+00,1.969117E+00,1.952776E+00,1.936570E+00,1.920499E+00,1.904561E+00,
+        1.888756E+00,1.873082E+00,1.857538E+00,1.842122E+00,1.826835E+00,1.811675E+00,1.796640E+00,1.781731E+00,1.766944E+00,1.752281E+00,1.737739E+00,1.723318E+00,1.709017E+00,1.694834E+00,1.680770E+00,1.666821E+00,1.652989E+00,1.639271E+00,1.625667E+00,1.612176E+00,
+        1.598797E+00,1.585530E+00,1.572372E+00,1.559323E+00,1.546383E+00,1.533550E+00,1.520823E+00,1.508202E+00,1.495686E+00,1.483274E+00,1.470965E+00,1.458758E+00,1.446652E+00,1.434646E+00,1.422741E+00,1.410934E+00,1.399225E+00,1.387613E+00,1.376098E+00,1.364678E+00,
+        1.353353E+00,1.342122E+00,1.330984E+00,1.319938E+00,1.308985E+00,1.298122E+00,1.287349E+00,1.276666E+00,1.266071E+00,1.255564E+00,1.245145E+00,1.234812E+00,1.224564E+00,1.214402E+00,1.204324E+00,1.194330E+00,1.184418E+00,1.174589E+00,1.164842E+00,1.155175E+00,
+        1.145588E+00,1.136082E+00,1.126654E+00,1.117304E+00,1.108032E+00,1.098836E+00,1.089717E+00,1.080674E+00,1.071706E+00,1.062812E+00,1.053992E+00,1.045245E+00,1.036571E+00,1.027969E+00,1.019438E+00,1.010978E+00,1.002588E+00,9.942682E-01,9.860171E-01,9.778344E-01,
+        9.697197E-01,9.616723E-01,9.536916E-01,9.457772E-01,9.379285E-01,9.301449E-01,9.224259E-01,9.147709E-01,9.071795E-01,8.996511E-01,8.921852E-01,8.847812E-01,8.774387E-01,8.701570E-01,8.629359E-01,8.557746E-01,8.486728E-01,8.416299E-01,8.346455E-01,8.277190E-01,
+        8.208500E-01,8.140380E-01,8.072825E-01,8.005831E-01,7.939393E-01,7.873507E-01,7.808167E-01,7.743369E-01,7.679109E-01,7.615382E-01,7.552184E-01,7.489511E-01,7.427358E-01,7.365720E-01,7.304594E-01,7.243976E-01,7.183860E-01,7.124243E-01,7.065121E-01,7.006490E-01,
+        6.948345E-01,6.890683E-01,6.833499E-01,6.776790E-01,6.720551E-01,6.664779E-01,6.609470E-01,6.554620E-01,6.500225E-01,6.446282E-01,6.392786E-01,6.339734E-01,6.287123E-01,6.234948E-01,6.183206E-01,6.131893E-01,6.081006E-01,6.030542E-01,5.980496E-01,5.930866E-01,
+        5.881647E-01,5.832837E-01,5.784432E-01,5.736429E-01,5.688824E-01,5.641614E-01,5.594796E-01,5.548366E-01,5.502322E-01,5.456660E-01,5.411377E-01,5.366469E-01,5.321934E-01,5.277769E-01,5.233971E-01,5.190535E-01,5.147461E-01,5.104743E-01,5.062381E-01,5.020369E-01,
+        4.978707E-01,4.937390E-01,4.896416E-01,4.855782E-01,4.815485E-01,4.775523E-01,4.735892E-01,4.696591E-01,4.657615E-01,4.618963E-01,4.580631E-01,4.542618E-01,4.504920E-01,4.467535E-01,4.430460E-01,4.393693E-01,4.357231E-01,4.321072E-01,4.285213E-01,4.249651E-01,
+        4.214384E-01,4.179410E-01,4.144727E-01,4.110331E-01,4.076220E-01,4.042393E-01,4.008846E-01,3.975578E-01,3.942586E-01,3.909868E-01,3.877421E-01,3.845243E-01,3.813333E-01,3.781687E-01,3.750304E-01,3.719181E-01,3.688317E-01,3.657708E-01,3.627354E-01,3.597252E-01,
+        3.567399E-01,3.537795E-01,3.508435E-01,3.479320E-01,3.450446E-01,3.421812E-01,3.393415E-01,3.365254E-01,3.337327E-01,3.309631E-01,3.282166E-01,3.254928E-01,3.227916E-01,3.201129E-01,3.174564E-01,3.148219E-01,3.122093E-01,3.096183E-01,3.070489E-01,3.045008E-01,
+        3.019738E-01,2.994678E-01,2.985000E-01,2.972000E-01,2.969826E-01,2.945181E-01,2.920740E-01,2.896501E-01,2.872464E-01,2.848626E-01,2.824986E-01,2.801543E-01,2.778293E-01,2.755237E-01,2.732372E-01,2.709697E-01,2.687210E-01,2.664910E-01,2.642794E-01,2.620863E-01,
+        2.599113E-01,2.577544E-01,2.556153E-01,2.534941E-01,2.513904E-01,2.493042E-01,2.472353E-01,2.451835E-01,2.431488E-01,2.411310E-01,2.391299E-01,2.371455E-01,2.351775E-01,2.332258E-01,2.312903E-01,2.293709E-01,2.274674E-01,2.255797E-01,2.237077E-01,2.218512E-01,
+        2.200102E-01,2.181844E-01,2.163737E-01,2.145781E-01,2.127974E-01,2.110314E-01,2.092801E-01,2.075434E-01,2.058210E-01,2.041130E-01,2.024191E-01,2.007393E-01,1.990734E-01,1.974214E-01,1.957830E-01,1.941583E-01,1.925470E-01,1.909491E-01,1.893645E-01,1.877930E-01,
+        1.862346E-01,1.846891E-01,1.831564E-01,1.816364E-01,1.801291E-01,1.786342E-01,1.771518E-01,1.756817E-01,1.742237E-01,1.727779E-01,1.713441E-01,1.699221E-01,1.685120E-01,1.671136E-01,1.657268E-01,1.643514E-01,1.629875E-01,1.616349E-01,1.602936E-01,1.589634E-01,
+        1.576442E-01,1.563359E-01,1.550385E-01,1.537519E-01,1.524760E-01,1.512106E-01,1.499558E-01,1.487113E-01,1.474772E-01,1.462533E-01,1.450396E-01,1.438360E-01,1.426423E-01,1.414586E-01,1.402847E-01,1.391205E-01,1.379660E-01,1.368210E-01,1.356856E-01,1.345596E-01,
+        1.334429E-01,1.323355E-01,1.312373E-01,1.301482E-01,1.290681E-01,1.279970E-01,1.269348E-01,1.258814E-01,1.248368E-01,1.238008E-01,1.227734E-01,1.217545E-01,1.207441E-01,1.197421E-01,1.187484E-01,1.177629E-01,1.167857E-01,1.158165E-01,1.148554E-01,1.139022E-01,
+        1.129570E-01,1.120196E-01,1.110900E-01,1.101681E-01,1.092538E-01,1.083471E-01,1.074480E-01,1.065563E-01,1.056720E-01,1.047951E-01,1.039254E-01,1.030630E-01,1.022077E-01,1.013595E-01,1.005184E-01,9.968419E-02,9.885694E-02,9.803655E-02,9.722297E-02,9.641615E-02,
+        9.561602E-02,9.482253E-02,9.403563E-02,9.325525E-02,9.248135E-02,9.171388E-02,9.095277E-02,9.019798E-02,8.944945E-02,8.870714E-02,8.797098E-02,8.724094E-02,8.651695E-02,8.579897E-02,8.508695E-02,8.438084E-02,8.368059E-02,8.298615E-02,8.250000E-02,8.229747E-02,
+        8.161451E-02,8.093721E-02,8.026554E-02,7.959944E-02,7.950000E-02,7.893887E-02,7.828378E-02,7.763412E-02,7.698986E-02,7.635094E-02,7.571733E-02,7.508897E-02,7.446583E-02,7.384786E-02,7.323502E-02,7.262726E-02,7.202455E-02,7.142684E-02,7.083409E-02,7.024626E-02,
+        6.966330E-02,6.908519E-02,6.851187E-02,6.794331E-02,6.737947E-02,6.682031E-02,6.626579E-02,6.571586E-02,6.517051E-02,6.462968E-02,6.409333E-02,6.356144E-02,6.303396E-02,6.251086E-02,6.199211E-02,6.147765E-02,6.096747E-02,6.046151E-02,5.995976E-02,5.946217E-02,
+        5.896871E-02,5.847935E-02,5.799405E-02,5.751277E-02,5.703549E-02,5.656217E-02,5.609278E-02,5.562728E-02,5.516564E-02,5.470784E-02,5.425384E-02,5.380360E-02,5.335710E-02,5.291430E-02,5.247518E-02,5.203971E-02,5.160785E-02,5.117957E-02,5.075484E-02,5.033364E-02,
+        4.991594E-02,4.950170E-02,4.909090E-02,4.868351E-02,4.827950E-02,4.787884E-02,4.748151E-02,4.708747E-02,4.669671E-02,4.630919E-02,4.592488E-02,4.554376E-02,4.516581E-02,4.479099E-02,4.441928E-02,4.405066E-02,4.368510E-02,4.332257E-02,4.296305E-02,4.260651E-02,
+        4.225293E-02,4.190229E-02,4.155455E-02,4.120970E-02,4.086771E-02,4.052857E-02,4.019223E-02,3.985869E-02,3.952791E-02,3.919988E-02,3.887457E-02,3.855196E-02,3.823203E-02,3.791476E-02,3.760011E-02,3.728808E-02,3.697864E-02,3.667176E-02,3.636743E-02,3.606563E-02,
+        3.576633E-02,3.546952E-02,3.517517E-02,3.488326E-02,3.459377E-02,3.430669E-02,3.402199E-02,3.373965E-02,3.345965E-02,3.318198E-02,3.290662E-02,3.263353E-02,3.236272E-02,3.209415E-02,3.182781E-02,3.156368E-02,3.130174E-02,3.104198E-02,3.078437E-02,3.052890E-02,
+        3.027555E-02,3.002430E-02,2.977514E-02,2.952804E-02,2.928300E-02,2.903999E-02,2.879899E-02,2.856000E-02,2.850000E-02,2.832299E-02,2.808794E-02,2.785485E-02,2.762369E-02,2.739445E-02,2.716711E-02,2.700000E-02,2.694166E-02,2.671808E-02,2.649635E-02,2.627647E-02,
+        2.605841E-02,2.584215E-02,2.562770E-02,2.541502E-02,2.520411E-02,2.499495E-02,2.478752E-02,2.458182E-02,2.437782E-02,2.417552E-02,2.397489E-02,2.377593E-02,2.357862E-02,2.338295E-02,2.318890E-02,2.299646E-02,2.280562E-02,2.261636E-02,2.242868E-02,2.224255E-02,
+        2.205796E-02,2.187491E-02,2.169338E-02,2.151335E-02,2.133482E-02,2.115777E-02,2.098218E-02,2.080806E-02,2.063538E-02,2.046413E-02,2.029431E-02,2.012589E-02,1.995887E-02,1.979324E-02,1.962898E-02,1.946608E-02,1.930454E-02,1.914434E-02,1.898547E-02,1.882791E-02,
+        1.867166E-02,1.851671E-02,1.836305E-02,1.821066E-02,1.805953E-02,1.790966E-02,1.776104E-02,1.761364E-02,1.746747E-02,1.732251E-02,1.717876E-02,1.703620E-02,1.689482E-02,1.675461E-02,1.661557E-02,1.647768E-02,1.634094E-02,1.620533E-02,1.607085E-02,1.593748E-02,
+        1.580522E-02,1.567406E-02,1.554398E-02,1.541499E-02,1.528706E-02,1.516020E-02,1.503439E-02,1.490963E-02,1.478590E-02,1.466319E-02,1.454151E-02,1.442083E-02,1.430116E-02,1.418247E-02,1.406478E-02,1.394806E-02,1.383231E-02,1.371752E-02,1.360368E-02,1.349079E-02,
+        1.337883E-02,1.326780E-02,1.315770E-02,1.304851E-02,1.294022E-02,1.283283E-02,1.272634E-02,1.262073E-02,1.251599E-02,1.241212E-02,1.230912E-02,1.220697E-02,1.210567E-02,1.200521E-02,1.190558E-02,1.180678E-02,1.170880E-02,1.161163E-02,1.151527E-02,1.141970E-02,
+        1.132494E-02,1.123095E-02,1.113775E-02,1.104532E-02,1.095366E-02,1.086276E-02,1.077261E-02,1.068321E-02,1.059456E-02,1.050664E-02,1.041944E-02,1.033298E-02,1.024723E-02,1.016219E-02,1.007785E-02,9.994221E-03,9.911282E-03,9.829031E-03,9.747463E-03,9.666572E-03,
+        9.586352E-03,9.506797E-03,9.427903E-03,9.349664E-03,9.272074E-03,9.195127E-03,9.118820E-03,9.043145E-03,8.968099E-03,8.893675E-03,8.819869E-03,8.746676E-03,8.674090E-03,8.602106E-03,8.530719E-03,8.459926E-03,8.389719E-03,8.320095E-03,8.251049E-03,8.182576E-03,
+        8.114671E-03,8.047330E-03,7.980548E-03,7.914319E-03,7.848641E-03,7.783507E-03,7.718914E-03,7.654857E-03,7.591332E-03,7.528334E-03,7.465858E-03,7.403901E-03,7.342458E-03,7.281525E-03,7.221098E-03,7.161172E-03,7.101744E-03,7.042809E-03,6.984362E-03,6.926401E-03,
+        6.868921E-03,6.811918E-03,6.755388E-03,6.699327E-03,6.643731E-03,6.588597E-03,6.533920E-03,6.479697E-03,6.425924E-03,6.372597E-03,6.319712E-03,6.267267E-03,6.215257E-03,6.163678E-03,6.112528E-03,6.061802E-03,6.011496E-03,5.961609E-03,5.912135E-03,5.863072E-03,
+        5.814416E-03,5.766164E-03,5.718312E-03,5.670858E-03,5.623797E-03,5.577127E-03,5.530844E-03,5.484945E-03,5.439427E-03,5.394287E-03,5.349521E-03,5.305127E-03,5.261101E-03,5.217441E-03,5.174143E-03,5.131204E-03,5.088622E-03,5.046393E-03,5.004514E-03,4.962983E-03,
+        4.921797E-03,4.880952E-03,4.840447E-03,4.800277E-03,4.760441E-03,4.720936E-03,4.681758E-03,4.642906E-03,4.604375E-03,4.566165E-03,4.528272E-03,4.490693E-03,4.453426E-03,4.416468E-03,4.379817E-03,4.343471E-03,4.307425E-03,4.271679E-03,4.236230E-03,4.201075E-03,
+        4.166211E-03,4.131637E-03,4.097350E-03,4.063347E-03,4.029627E-03,3.996186E-03,3.963023E-03,3.930135E-03,3.897520E-03,3.865175E-03,3.833099E-03,3.801290E-03,3.769744E-03,3.738460E-03,3.707435E-03,3.676668E-03,3.646157E-03,3.615898E-03,3.585891E-03,3.556133E-03,
+        3.526622E-03,3.497355E-03,3.468332E-03,3.439549E-03,3.411005E-03,3.382698E-03,3.354626E-03,3.326787E-03,3.299179E-03,3.271800E-03,3.244649E-03,3.217722E-03,3.191019E-03,3.164538E-03,3.138276E-03,3.112233E-03,3.086405E-03,3.060792E-03,3.035391E-03,3.010202E-03,
+        2.985221E-03,2.960447E-03,2.935879E-03,2.911515E-03,2.887354E-03,2.863392E-03,2.839630E-03,2.816065E-03,2.792695E-03,2.769519E-03,2.746536E-03,2.723743E-03,2.701139E-03,2.678723E-03,2.656494E-03,2.634448E-03,2.612586E-03,2.590904E-03,2.569403E-03,2.548081E-03,
+        2.526935E-03,2.505965E-03,2.485168E-03,2.464545E-03,2.444092E-03,2.423809E-03,2.403695E-03,2.383747E-03,2.363965E-03,2.344347E-03,2.324892E-03,2.305599E-03,2.286465E-03,2.267490E-03,2.248673E-03,2.230012E-03,2.211506E-03,2.193153E-03,2.174953E-03,2.156904E-03,
+        2.139004E-03,2.121253E-03,2.103650E-03,2.086192E-03,2.068879E-03,2.051710E-03,2.034684E-03,2.017798E-03,2.001053E-03,1.984447E-03,1.967979E-03,1.951647E-03,1.935451E-03,1.919389E-03,1.903461E-03,1.887665E-03,1.871999E-03,1.856464E-03,1.841058E-03,1.825780E-03,
+        1.810628E-03,1.795602E-03,1.780701E-03,1.765923E-03,1.751268E-03,1.736735E-03,1.722323E-03,1.708030E-03,1.693855E-03,1.679798E-03,1.665858E-03,1.652034E-03,1.638324E-03,1.624728E-03,1.611245E-03,1.597874E-03,1.584613E-03,1.571463E-03,1.558422E-03,1.545489E-03,
+        1.532663E-03,1.519944E-03,1.507331E-03,1.494822E-03,1.482417E-03,1.470115E-03,1.457915E-03,1.445816E-03,1.433817E-03,1.421919E-03,1.410118E-03,1.398416E-03,1.386811E-03,1.375303E-03,1.363889E-03,1.352571E-03,1.341346E-03,1.330215E-03,1.319176E-03,1.308228E-03,
+        1.297372E-03,1.286605E-03,1.275928E-03,1.265339E-03,1.254839E-03,1.244425E-03,1.234098E-03,1.223857E-03,1.213700E-03,1.203628E-03,1.193639E-03,1.183734E-03,1.173910E-03,1.164168E-03,1.154507E-03,1.144926E-03,1.135425E-03,1.126002E-03,1.116658E-03,1.107391E-03,
+        1.098201E-03,1.089088E-03,1.080050E-03,1.071087E-03,1.062198E-03,1.053383E-03,1.044641E-03,1.035972E-03,1.027375E-03,1.018849E-03,1.010394E-03,1.002009E-03,9.936937E-04,9.854473E-04,9.772694E-04,9.691593E-04,9.611165E-04,9.531405E-04,9.452307E-04,9.373865E-04,
+        9.296074E-04,9.218928E-04,9.142423E-04,9.066553E-04,8.991312E-04,8.916696E-04,8.842699E-04,8.769316E-04,8.696542E-04,8.624372E-04,8.552801E-04,8.481824E-04,8.411435E-04,8.341631E-04,8.272407E-04,8.203756E-04,8.135676E-04,8.068160E-04,8.001205E-04,7.934805E-04,
+        7.868957E-04,7.803654E-04,7.738894E-04,7.674671E-04,7.610981E-04,7.547820E-04,7.485183E-04,7.423066E-04,7.361464E-04,7.300373E-04,7.239790E-04,7.179709E-04,7.120126E-04,7.061038E-04,7.002441E-04,6.944330E-04,6.886701E-04,6.829550E-04,6.772874E-04,6.716668E-04,
+        6.660928E-04,6.605651E-04,6.550832E-04,6.496469E-04,6.442557E-04,6.389092E-04,6.336071E-04,6.283489E-04,6.231345E-04,6.179633E-04,6.128350E-04,6.077492E-04,6.027057E-04,5.977040E-04,5.927438E-04,5.878248E-04,5.829466E-04,5.781089E-04,5.733114E-04,5.685536E-04,
+        5.638354E-04,5.591563E-04,5.545160E-04,5.499142E-04,5.453506E-04,5.408249E-04,5.363368E-04,5.318859E-04,5.274719E-04,5.230946E-04,5.187536E-04,5.144486E-04,5.101793E-04,5.059455E-04,5.017468E-04,4.975830E-04,4.934537E-04,4.893587E-04,4.852976E-04,4.812703E-04,
+        4.772763E-04,4.733156E-04,4.693877E-04,4.654923E-04,4.616294E-04,4.577984E-04,4.539993E-04,4.502317E-04,4.464953E-04,4.427900E-04,4.391154E-04,4.354713E-04,4.318575E-04,4.282736E-04,4.247195E-04,4.211949E-04,4.176995E-04,4.142332E-04,4.107955E-04,4.073865E-04,
+        4.040057E-04,4.006530E-04,3.973281E-04,3.940308E-04,3.907608E-04,3.875180E-04,3.843021E-04,3.811129E-04,3.779502E-04,3.748137E-04,3.717032E-04,3.686185E-04,3.655595E-04,3.625258E-04,3.595173E-04,3.565338E-04,3.535750E-04,3.506408E-04,3.477309E-04,3.448452E-04,
+        3.419834E-04,3.391454E-04,3.363309E-04,3.335398E-04,3.307719E-04,3.280269E-04,3.253047E-04,3.226051E-04,3.199279E-04,3.172729E-04,3.146399E-04,3.120288E-04,3.094394E-04,3.068715E-04,3.043248E-04,3.017993E-04,2.992948E-04,2.968110E-04,2.943479E-04,2.919052E-04,
+        2.894827E-04,2.870804E-04,2.846980E-04,2.823354E-04,2.799924E-04,2.776688E-04,2.753645E-04,2.730793E-04,2.708131E-04,2.685657E-04,2.663370E-04,2.641267E-04,2.619348E-04,2.597611E-04,2.576054E-04,2.554676E-04,2.533476E-04,2.512451E-04,2.491601E-04,2.470924E-04,
+        2.450418E-04,2.430083E-04,2.409917E-04,2.389917E-04,2.370084E-04,2.350416E-04,2.330910E-04,2.311567E-04,2.292384E-04,2.273360E-04,2.254494E-04,2.235784E-04,2.217230E-04,2.198830E-04,2.180583E-04,2.162487E-04,2.144541E-04,2.126744E-04,2.109095E-04,2.091592E-04,
+        2.074234E-04,2.057021E-04,2.039950E-04,2.023021E-04,2.006233E-04,1.989584E-04,1.973073E-04,1.956699E-04,1.940461E-04,1.924358E-04,1.908388E-04,1.892551E-04,1.876845E-04,1.861269E-04,1.845823E-04,1.830505E-04,1.815315E-04,1.800250E-04,1.785310E-04,1.770494E-04,
+        1.755802E-04,1.741231E-04,1.726781E-04,1.712451E-04,1.698239E-04,1.684146E-04,1.670170E-04,1.656310E-04,1.642565E-04,1.628933E-04,1.615415E-04,1.602010E-04,1.588715E-04,1.575531E-04,1.562456E-04,1.549489E-04,1.536631E-04,1.523879E-04,1.511232E-04,1.498691E-04,
+        1.486254E-04,1.473920E-04,1.461688E-04,1.449558E-04,1.437529E-04,1.425599E-04,1.413768E-04,1.402036E-04,1.390401E-04,1.378862E-04,1.367420E-04,1.356072E-04,1.344818E-04,1.333658E-04,1.322590E-04,1.311615E-04,1.300730E-04,1.289935E-04,1.279231E-04,1.268615E-04,
+        1.258087E-04,1.247646E-04,1.237292E-04,1.227024E-04,1.216842E-04,1.206744E-04,1.196729E-04,1.186798E-04,1.176949E-04,1.167182E-04,1.157496E-04,1.147890E-04,1.138364E-04,1.128917E-04,1.119548E-04,1.110258E-04,1.101044E-04,1.091907E-04,1.082845E-04,1.073859E-04,
+        1.064947E-04,1.056110E-04,1.047345E-04,1.038654E-04,1.030034E-04,1.021486E-04,1.013009E-04,1.004603E-04,9.962658E-05,9.879981E-05,9.797990E-05,9.716679E-05,9.636043E-05,9.556076E-05,9.476773E-05,9.398128E-05,9.320136E-05,9.242791E-05,9.166088E-05,9.090021E-05,
+        9.014586E-05,8.939776E-05,8.865588E-05,8.792015E-05,8.719052E-05,8.646695E-05,8.574939E-05,8.503778E-05,8.433208E-05,8.363223E-05,8.293819E-05,8.224991E-05,8.156734E-05,8.089044E-05,8.021915E-05,7.955344E-05,7.889325E-05,7.823854E-05,7.758926E-05,7.694537E-05,
+        7.630682E-05,7.567357E-05,7.504558E-05,7.442280E-05,7.380518E-05,7.319270E-05,7.258529E-05,7.198293E-05,7.138556E-05,7.079316E-05,7.020566E-05,6.962305E-05,6.904527E-05,6.847228E-05,6.790405E-05,6.734053E-05,6.678169E-05,6.622749E-05,6.567789E-05,6.513285E-05,
+        6.459233E-05,6.405630E-05,6.352471E-05,6.299754E-05,6.247474E-05,6.195628E-05,6.144212E-05,6.093223E-05,6.042657E-05,5.992511E-05,5.942781E-05,5.893464E-05,5.844556E-05,5.796053E-05,5.747954E-05,5.700253E-05,5.652948E-05,5.606036E-05,5.559513E-05,5.513376E-05,
+        5.467623E-05,5.422248E-05,5.377251E-05,5.332626E-05,5.288373E-05,5.244486E-05,5.200963E-05,5.157802E-05,5.114999E-05,5.072551E-05,5.030456E-05,4.988709E-05,4.947309E-05,4.906253E-05,4.865538E-05,4.825160E-05,4.785117E-05,4.745407E-05,4.706026E-05,4.666972E-05,
+        4.628243E-05,4.589834E-05,4.551744E-05,4.513971E-05,4.476511E-05,4.439361E-05,4.402521E-05,4.365985E-05,4.329753E-05,4.293822E-05,4.258189E-05,4.222851E-05,4.187807E-05,4.153054E-05,4.118589E-05,4.084410E-05,4.050514E-05,4.016900E-05,3.983565E-05,3.950507E-05,
+        3.917723E-05,3.885211E-05,3.852969E-05,3.820994E-05,3.789285E-05,3.757838E-05,3.726653E-05,3.695727E-05,3.665057E-05,3.634642E-05,3.604479E-05,3.574566E-05,3.544902E-05,3.515484E-05,3.486310E-05,3.457378E-05,3.428686E-05,3.400233E-05,3.372015E-05,3.344032E-05,
+        3.316281E-05,3.288760E-05,3.261467E-05,3.234401E-05,3.207560E-05,3.180942E-05,3.154544E-05,3.128365E-05,3.102404E-05,3.076658E-05,3.051126E-05,3.025805E-05,3.000695E-05,2.975793E-05,2.951098E-05,2.926607E-05,2.902320E-05,2.878235E-05,2.854349E-05,2.830662E-05,
+        2.807171E-05,2.783875E-05,2.760773E-05,2.737862E-05,2.715141E-05,2.692609E-05,2.670264E-05,2.648104E-05,2.626128E-05,2.604335E-05,2.582722E-05,2.561289E-05,2.540033E-05,2.518954E-05,2.498050E-05,2.477320E-05,2.456761E-05,2.436373E-05,2.416154E-05,2.396104E-05,
+        2.376219E-05,2.356499E-05,2.336944E-05,2.317550E-05,2.298317E-05,2.279244E-05,2.260329E-05,2.241572E-05,2.222969E-05,2.204522E-05,2.186227E-05,2.168084E-05,2.150092E-05,2.132249E-05,2.114554E-05,2.097006E-05,2.079603E-05,2.062345E-05,2.045231E-05,2.028258E-05,
+        2.011426E-05,1.994734E-05,1.978180E-05,1.961764E-05,1.945484E-05,1.929339E-05,1.913328E-05,1.897449E-05,1.881703E-05,1.866087E-05,1.850601E-05,1.835244E-05,1.820013E-05,1.804910E-05,1.789931E-05,1.775077E-05,1.760346E-05,1.745738E-05,1.731250E-05,1.716883E-05,
+        1.702635E-05,1.688506E-05,1.674493E-05,1.660597E-05,1.646816E-05,1.633150E-05,1.619597E-05,1.606156E-05,1.592827E-05,1.579609E-05,1.566500E-05,1.553500E-05,1.540608E-05,1.527823E-05,1.515144E-05,1.502570E-05,1.490101E-05,1.477735E-05,1.465472E-05,1.453310E-05,
+        1.441250E-05,1.429289E-05,1.417428E-05,1.405665E-05,1.394000E-05,1.382431E-05,1.370959E-05,1.359582E-05,1.348299E-05,1.337110E-05,1.326014E-05,1.315010E-05,1.304097E-05,1.293274E-05,1.282542E-05,1.271898E-05,1.261343E-05,1.250876E-05,1.240495E-05,1.230201E-05,
+        1.219991E-05,1.209867E-05,1.199827E-05,1.189870E-05,1.179995E-05,1.170203E-05,1.160492E-05,1.150861E-05,1.141311E-05,1.131839E-05,1.122446E-05,1.113132E-05,1.103894E-05,1.094733E-05,1.085648E-05,1.076639E-05,1.067704E-05,1.058843E-05,1.050056E-05,1.041342E-05,
+        1.032701E-05,1.024130E-05,1.015631E-05,1.007203E-05,9.988446E-06,9.905554E-06,9.823351E-06,9.741830E-06,9.660985E-06,9.580812E-06,9.501303E-06,9.422455E-06,9.344261E-06,9.266715E-06,9.189814E-06,9.113550E-06,9.037919E-06,8.962916E-06,8.888536E-06,8.814772E-06,
+        8.741621E-06,8.669077E-06,8.597135E-06,8.525790E-06,8.455037E-06,8.384871E-06,8.315287E-06,8.246281E-06,8.177848E-06,8.109982E-06,8.042680E-06,7.975936E-06,7.909746E-06,7.844105E-06,7.779009E-06,7.714454E-06,7.650434E-06,7.586945E-06,7.523983E-06,7.461544E-06,
+        7.399622E-06,7.338215E-06,7.277317E-06,7.216925E-06,7.157034E-06,7.097640E-06,7.038739E-06,6.980326E-06,6.922399E-06,6.864952E-06,6.807981E-06,6.751484E-06,6.695455E-06,6.639892E-06,6.584789E-06,6.530144E-06,6.475952E-06,6.422210E-06,6.368914E-06,6.316060E-06,
+        6.263645E-06,6.211665E-06,6.160116E-06,6.108995E-06,6.058298E-06,6.008022E-06,5.958164E-06,5.908719E-06,5.859684E-06,5.811056E-06,5.762832E-06,5.715008E-06,5.667581E-06,5.620547E-06,5.573904E-06,5.527647E-06,5.481775E-06,5.436284E-06,5.391169E-06,5.346430E-06,
+        5.302061E-06,5.258061E-06,5.214426E-06,5.171153E-06,5.128239E-06,5.085681E-06,5.043477E-06,4.918953E-06,4.797503E-06,4.679053E-06,4.563526E-06,4.450853E-06,4.340961E-06,4.233782E-06,4.129250E-06,4.000000E-06,3.927860E-06,3.830880E-06,3.736300E-06,3.644050E-06,
+        3.554080E-06,3.466330E-06,3.380750E-06,3.300000E-06,3.217630E-06,3.137330E-06,3.059020E-06,2.983490E-06,2.909830E-06,2.837990E-06,2.767920E-06,2.720000E-06,2.659320E-06,2.600000E-06,2.550000E-06,2.485030E-06,2.421710E-06,2.382370E-06,2.360000E-06,2.300270E-06,
+        2.242050E-06,2.185310E-06,2.130000E-06,2.100000E-06,2.059610E-06,2.020000E-06,1.974490E-06,1.930000E-06,1.884460E-06,1.855390E-06,1.840000E-06,1.797000E-06,1.755000E-06,1.711970E-06,1.670000E-06,1.629510E-06,1.590000E-06,1.544340E-06,1.500000E-06,1.475000E-06,
+        1.440000E-06,1.404560E-06,1.370000E-06,1.337500E-06,1.300000E-06,1.267080E-06,1.235000E-06,1.202060E-06,1.170000E-06,1.150000E-06,1.123000E-06,1.110000E-06,1.097000E-06,1.080000E-06,1.071000E-06,1.045000E-06,1.035000E-06,1.020000E-06,9.960000E-07,9.860000E-07,
+        9.720000E-07,9.500000E-07,9.300000E-07,9.100000E-07,8.764250E-07,8.600000E-07,8.500000E-07,8.194500E-07,7.900000E-07,7.800000E-07,7.415500E-07,7.050000E-07,6.825600E-07,6.531500E-07,6.250000E-07,5.952800E-07,5.669600E-07,5.400000E-07,5.315800E-07,5.196200E-07,
+        5.000000E-07,4.850000E-07,4.670100E-07,4.496800E-07,4.330000E-07,4.139900E-07,4.000000E-07,3.910000E-07,3.699300E-07,3.500000E-07,3.346600E-07,3.200000E-07,3.145000E-07,3.000000E-07,2.800000E-07,2.635100E-07,2.480000E-07,2.335800E-07,2.200000E-07,2.091400E-07,
+        1.988100E-07,1.890000E-07,1.800000E-07,1.697100E-07,1.600000E-07,1.530300E-07,1.463700E-07,1.400000E-07,1.340000E-07,1.150000E-07,1.000000E-07,9.500000E-08,8.000000E-08,7.700000E-08,6.700000E-08,5.800000E-08,5.000000E-08,4.200000E-08,3.500000E-08,3.000000E-08,
+        2.500000E-08,2.000000E-08,1.500000E-08,1.000000E-08,6.900000E-09,5.000000E-09,3.000000E-09,1.000010E-11
+        ]
+        ebins = ebins[::-1]
+        in_flux_lines = False
+        for line in lines:
+            if &#39;# num ie flux r.err&#39; in line:
+                in_flux_lines = True 
+                continue 
+            if &#39;0    0   0.0000E+00  0.0000&#39; in line:
+                in_flux_lines = False
+                break 
+            if in_flux_lines:
+                vals = line.split() 
+                ri = int(vals[0])-1
+                ei = int(vals[1])-1
+                fval = np.float(vals[2])
+                ferr = np.float(vals[3])
+                
+                flux[ri,ei,0] = ebins[ei]
+                flux[ri,ei,1] = ebins[ei+1]
+                flux[ri,ei,2] = fval
+                flux[ri,ei,3] = fval*ferr 
+                
+    if return_metadata:
+        return flux, dtrk_metadata
+    else:
+        return flux
+
+
+
+def parse_tdeposit_file(path_to_tdeposit_file,return_metadata=False):
+    &#39;&#39;&#39;
+    Description:
+        Parses the output file of a T-Deposit tally generated by PHITS.  This works for region, xyz, and tetrahedral mesh geometries.
+        It has only been tested for output=deposit, axis=eng.  It is currently only designed for tallies tracking a single particle (or &#34;all&#34;).
+        
+    Inputs:
+        - `path_to_tdeposit_file` = path to the T-Deposit tally output file to be parsed
+        - `return_metadata` = Boolean indicating whether additional information is outputted with the flux (D=`False`)
+        
+    Outputs:
+        - `deposit` = a RxEx4 array containing regionwise T-Deposit tally output [Elower/Eupper/deposit/abs_error]
+        - `deposit_metadata` (only returned if `return_metadata=True`) = list of length two
+               - `deposit_metadata[0]` = string denoting axis type &#39;eng&#39; (old full format) or &#39;dchain&#39; (new reduced format)
+               - `deposit_metadata[1]` = string denoting mesh type as either &#39;reg&#39;, &#39;xyz&#39;, or &#39;tet&#39;
+    &#39;&#39;&#39;
+    
+    # Extract text from file
+    f = open(path_to_tdeposit_file)
+    file_text = f.read()
+    lines = file_text.split(&#39;\n&#39;)
+    f.close()
+    
+    # Determine geometry type (mesh = reg, xyz, or tet)
+    for line in lines:
+        if &#39;mesh =&#39; in line:
+            meshtype = line.replace(&#39;mesh =&#39;,&#39;&#39;).strip().split()[0]
+            break 
+    
+    # Determine if original or reduced format (axis = eng or axis = dchain)
+    for line in lines:
+        if &#39;axis =&#39; in line:
+            axistype = line.replace(&#39;axis =&#39;,&#39;&#39;).strip().split()[0]
+            break 
+    # Double check 
+    for li, line in enumerate(lines):
+        if li&gt;500: break
+        if &#39;#  e-lower      e-upper      neutron     r.err &#39; in line: 
+            axistype=&#39;eng&#39;
+            break
+    
+    deposit_metadata = [axistype,meshtype]
+    
+    # Determine number of regions
+    nreg = file_text.count(&#39;#   no. =&#39;)
+    
+    for line in lines:
+        if &#39;ne =&#39; in line:
+            nEbins = int(line.replace(&#39;ne =&#39;,&#39;&#39;).strip().split()[0])
+            break
+    
+    deposit = np.zeros((nreg,nEbins,4))
+    
+    in_deposit_lines = False
+    ei = 0
+    ri = -1
+    
+    for line in lines:
+        if &#39;#   no. =&#39; in line:
+            ri += 1
+        if &#39;#  e-lower      e-upper  &#39; in line:
+            in_deposit_lines = True 
+            continue 
+        if in_deposit_lines:
+            deposit[ri,ei,:] = [float(x) for x in line.split()]
+            deposit[ri,ei,3] = deposit[ri,ei,3]*deposit[ri,ei,2] # convert relative error to absolute error
+            ei += 1
+            if ei == nEbins:
+                in_deposit_lines = False 
+                ei = 0
+                
+    if return_metadata:
+        return deposit, deposit_metadata
+    else:
+        return deposit
+
+
+def parse_dyld_files(path_to_dyld_file,iredufmt=None):
+    &#39;&#39;&#39;
+    Description:
+        Parses the output files of a T-Yield tally generated by PHITS with axis=dchain.  This function assumes
+        that the T-Yield tally was one automatically generated by and corresponding to a T-Dchain tally (axis=dchain).
+        This works for region, xyz, and tetrahedral mesh geometries in either the original or reduced format.
+        
+    Inputs:
+        - `path_to_dyld_file` = path to the T-Yield tally output file to be parsed 
+                           (the *_err.dyld file of the same name is automatically searched for and read, if present)
+        - `iredufmt` = (DEPRICATED; this is now determined automatically)
+                   integer 1 or 0 specifying how the xyz meshes are ordered relative to the internal region numbers.
+                   In the new format (1), region indices are incremented as x-&gt;y-&gt;z (x=innermost loop); this is reversed in the old format (0).
+                   Ultimately, this corresponds to the same iredufmt parameter in PHITS/DCHAIN, 1=&#39;new&#39; and 0=&#39;old&#39;.
+                   This variable is only used for xyz meshes where this ordering matters.
+        
+    Outputs:
+        - `yields` = a RxNx2 array containing regionwise yields (and their absolute uncertainties) for all nuclides produced in T-Yield
+        - `nuclide_names_yld` = a length N list of all nuclide names in order
+    &#39;&#39;&#39;
+    
+    def ZAM_to_Dname(ZAM):
+        &#39;&#39;&#39;
+        Description:
+            Converts a ZZZAAAM number to a DCHAIN-formatted nuclide name
+           
+        Inputs:
+            - `ZZZAAAM` = nuclide identification ineger, calculated as 10000\*Z + 10\*A + m
+            
+        Outputs:
+            - `Dname` = nuclide identification string in DCHAIN format 
+        &#39;&#39;&#39;
+        elms = [&#34;n &#34;,\
+                &#34;H &#34;,&#34;He&#34;,&#34;Li&#34;,&#34;Be&#34;,&#34;B &#34;,&#34;C &#34;,&#34;N &#34;,&#34;O &#34;,&#34;F &#34;,&#34;Ne&#34;,\
+                &#34;Na&#34;,&#34;Mg&#34;,&#34;Al&#34;,&#34;Si&#34;,&#34;P &#34;,&#34;S &#34;,&#34;Cl&#34;,&#34;Ar&#34;,&#34;K &#34;,&#34;Ca&#34;,\
+                &#34;Sc&#34;,&#34;Ti&#34;,&#34;V &#34;,&#34;Cr&#34;,&#34;Mn&#34;,&#34;Fe&#34;,&#34;Co&#34;,&#34;Ni&#34;,&#34;Cu&#34;,&#34;Zn&#34;,\
+                &#34;Ga&#34;,&#34;Ge&#34;,&#34;As&#34;,&#34;Se&#34;,&#34;Br&#34;,&#34;Kr&#34;,&#34;Rb&#34;,&#34;Sr&#34;,&#34;Y &#34;,&#34;Zr&#34;,\
+                &#34;Nb&#34;,&#34;Mo&#34;,&#34;Tc&#34;,&#34;Ru&#34;,&#34;Rh&#34;,&#34;Pd&#34;,&#34;Ag&#34;,&#34;Cd&#34;,&#34;In&#34;,&#34;Sn&#34;,\
+                &#34;Sb&#34;,&#34;Te&#34;,&#34;I &#34;,&#34;Xe&#34;,&#34;Cs&#34;,&#34;Ba&#34;,&#34;La&#34;,&#34;Ce&#34;,&#34;Pr&#34;,&#34;Nd&#34;,\
+                &#34;Pm&#34;,&#34;Sm&#34;,&#34;Eu&#34;,&#34;Gd&#34;,&#34;Tb&#34;,&#34;Dy&#34;,&#34;Ho&#34;,&#34;Er&#34;,&#34;Tm&#34;,&#34;Yb&#34;,\
+                &#34;Lu&#34;,&#34;Hf&#34;,&#34;Ta&#34;,&#34;W &#34;,&#34;Re&#34;,&#34;Os&#34;,&#34;Ir&#34;,&#34;Pt&#34;,&#34;Au&#34;,&#34;Hg&#34;,\
+                &#34;Tl&#34;,&#34;Pb&#34;,&#34;Bi&#34;,&#34;Po&#34;,&#34;At&#34;,&#34;Rn&#34;,&#34;Fr&#34;,&#34;Ra&#34;,&#34;Ac&#34;,&#34;Th&#34;,\
+                &#34;Pa&#34;,&#34;U &#34;,&#34;Np&#34;,&#34;Pu&#34;,&#34;Am&#34;,&#34;Cm&#34;,&#34;Bk&#34;,&#34;Cf&#34;,&#34;Es&#34;,&#34;Fm&#34;,\
+                &#34;Md&#34;,&#34;No&#34;,&#34;Lr&#34;,&#34;Rf&#34;,&#34;Db&#34;,&#34;Sg&#34;,&#34;Bh&#34;,&#34;Hs&#34;,&#34;Mt&#34;,&#34;Ds&#34;,\
+                &#34;Rg&#34;,&#34;Cn&#34;,&#34;Nh&#34;,&#34;Fl&#34;,&#34;Mc&#34;,&#34;Lv&#34;,&#34;Ts&#34;,&#34;Og&#34;]
+        m = int(str(ZAM)[-1])
+        A = int(str(ZAM)[-4:-1])
+        Z = int(str(ZAM)[:-4])
+        sym = elms[Z]
+        A_str = &#39;{:&gt;3}&#39;.format(A)
+        m_str_list = [&#39; &#39;,&#39;m&#39;,&#39;n&#39;]
+        m_str = m_str_list[m]
+        Dname = sym + A_str + m_str
+        return Dname
+    
+    # Extract text from file
+    f = open(path_to_dyld_file)
+    file_text = f.read()
+    lines = file_text.split(&#39;\n&#39;)
+    f.close()
+    
+    # determine if in reduced format
+    iredufmt=0
+    for li, line in enumerate(lines):
+        if &#34;# num nucleusID yield r.err&#34; in line:
+            iredufmt=1
+            break
+        if &#34;isotope production #&#34; in line:
+            iredufmt=0
+            break
+    
+    
+    # Get error data if available
+    if iredufmt==0:
+        try:
+            f_err = open(path_to_dyld_file.replace(&#39;.dyld&#39;,&#39;_err.dyld&#39;))
+            file_text_err = f_err.read()
+            lines_err = file_text_err.split(&#39;\n&#39;)
+            f_err.close()
+            err_dyld_found = True
+        except:
+            file_text_err = None
+            lines_err = None
+            err_dyld_found = False
+    
+    # Determine geometry type (mesh = reg, xyz, or tet)
+    for line in lines:
+        if &#39;mesh =&#39; in line:
+            meshtype = line.replace(&#39;mesh =&#39;,&#39;&#39;).strip().split()[0]
+            break 
+    
+    # If xyz mesh, need to find mesh dimensions:
+    if meshtype==&#39;xyz&#39;:
+        for line in lines:
+            if &#39;nx =&#39; in line:
+                nx = int(line.replace(&#39;nx =&#39;,&#39;&#39;).strip().split()[0])
+            elif &#39;ny =&#39; in line:
+                ny = int(line.replace(&#39;ny =&#39;,&#39;&#39;).strip().split()[0])
+            elif &#39;nz =&#39; in line:
+                nz = int(line.replace(&#39;nz =&#39;,&#39;&#39;).strip().split()[0])
+                break 
+    
+    # Find starting line
+    for li, line in enumerate(lines):
+        if &#39;nuclear yield (or production)&#39; in line:
+            li_start = li 
+            break 
+    
+    if iredufmt==1:
+        # Count number of nuclides present in whole file
+        nreg = 0 
+        nuc_id_list = []
+        for li, line in enumerate(lines):
+            if li &lt;= li_start+3: continue # in header
+            vals = line.strip().split()
+            if int(vals[0])==0: break # reached end
+            if int(vals[0])&gt;nreg: nreg = int(vals[0])
+            zzzaaam = int(vals[1])
+            if zzzaaam not in nuc_id_list: nuc_id_list.append(zzzaaam)
+        
+        nnuc = len(nuc_id_list)
+        yields = np.zeros((nreg,nnuc,2))
+        nuclide_names_yld = []
+        
+        # Get names
+        nuc_id_list = sorted(nuc_id_list)
+        for id in nuc_id_list:
+            nuclide_names_yld.append(ZAM_to_Dname(id)) 
+        
+        # Get values
+        for li, line in enumerate(lines):
+            if li &lt;= li_start+3: continue # in header
+            vals = line.strip().split()
+            if int(vals[0])==0: break # reached end
+            ri = int(vals[0]) - 1
+            zzzaaam = int(vals[1])
+            ni = nuc_id_list.index(zzzaaam)
+            yields[ri,ni,0] = np.float(vals[2])
+            yields[ri,ni,1] = np.float(vals[3])*np.float(vals[2])
+              
+    else: # old &#39;&#39;traditional&#39;&#39; format
+        # Count number of nuclides present in whole file
+        nnuc = 0
+        for li, line in enumerate(lines):
+            if li &lt;= li_start+2: continue # skip header lines
+            if &#39;isotope production&#39; in line: 
+                N_bounds = line.strip().split(&#39;=&#39;)[-1].split()
+                N_bounds = [int(i) for i in N_bounds]
+                nnuc += N_bounds[1] - N_bounds[0] + 1
+        
+        # Determine number of regions
+        nreg = 0
+        for li, line in enumerate(lines):
+            if li &lt;= li_start+4: continue # skip header lines
+            if len(line) &lt; 2: break # reached end of first element block 
+            nreg += 1
+        
+        yields = np.zeros((nreg,nnuc,2))
+        nuclide_names_yld = []
+        
+        # Extract yield data
+        ni = 0 # nuclide index
+        ni_newstart = 0
+        ri = 0 # region index
+        for li, line in enumerate(lines):
+            if li &lt;= li_start+2: continue # skip header lines
+            if len(line) &lt; 2: continue # skip line breaks
+            
+            if &#39;isotope production&#39; in line: 
+                # extract Z and A info
+                Z = int(line.strip().split(&#39;-&#39;)[0])
+                N_bounds = line.strip().split(&#39;=&#39;)[-1].split()
+                N_bounds = [int(i) for i in N_bounds]
+                N_list = []
+                for i in range(N_bounds[1]-N_bounds[0]+1):
+                    N_list.append(N_bounds[0]+i)
+                nisotopes = len(N_list)
+                A_list = [N+Z for N in N_list]
+                ni_newstart = len(nuclide_names_yld)
+                for A in A_list:
+                    ZAM = 10*A + 10000*Z
+                    nuclide_names_yld.append(ZAM_to_Dname(ZAM)) 
+                on_buffer_line = True
+                continue 
+            
+            if on_buffer_line:
+                ri = 0
+                on_buffer_line = False 
+                continue 
+                  
+            if &#39;# Information for Restart Calculation&#39; in line: break # reached end of useful info
+            
+            # Only lines making it to this point will be ones with region and yield data
+            vals = line.strip().split()
+            if meshtype==&#39;xyz&#39;:
+                yvals = vals[3:]
+                if err_dyld_found: yvals_rerr = lines_err[li].strip().split()[3:]
+                jx,jy,jz = int(vals[0]),int(vals[1]),int(vals[2])
+                rii = jz + (jy-1)*nz + (jx-1)*(nz*ny)
+                #if iredufmt==1:
+                #    rii = jx + (jy-1)*nx + (jz-1)*(nx*ny) 
+                #else:
+                #    rii = jz + (jy-1)*nz + (jx-1)*(nz*ny)
+            else:
+                yvals = vals[1:]
+                if err_dyld_found: yvals_rerr = lines_err[li].split()[1:]
+                rii = ri 
+            
+            for i in range(nisotopes):
+                yields[rii,ni_newstart+i,0] = np.float(yvals[i])
+                if err_dyld_found: yields[rii,ni_newstart+i,1] = np.float(yvals_rerr[i])*yields[rii,ni_newstart+i,0]
+                
+            ri += 1
+        
+    return yields, nuclide_names_yld
+
+
+
+
+
 &#39;&#39;&#39;
 **************************************************************************************************
 ----------------------------------- PLOTTING-RELATED FUNCTIONS -----------------------------------
@@ -2649,7 +3356,7 @@ def fetch_MC_material(matid=None,matname=None,matsource=None,concentration_type=
 &#39;&#39;&#39;
 
 
-def generate_line_bar_coordinates(xbins,yvals):
+def generate_line_bar_coordinates(xbins,yvals,yerrs=[]):
     &#34;&#34;&#34;
     Description:
         Converts a set of bin boundaries and bin contents to coordinates mapping a bar plot if drawn with a line
@@ -2657,10 +3364,12 @@ def generate_line_bar_coordinates(xbins,yvals):
     Inputs:
       - `xbins` = list of length N+1 bin boundary values
       - `yvals` = list of length N bin content values 
+      - `yerrs` = (optional) list of length N absolute uncertainties of bin content values 
     
     Outputs:
       - `newx` = list of length 2N + 2 of x-coordinates mapping a &#39;bar plot&#39; of the input histogram data
       - `newy` = list of length 2N + 2 of y-coordinates mapping a &#39;bar plot&#39; of the input histogram data
+      - `newyerr` = (optional) list of length 2N + 2 of y-coordinates mapping a &#39;bar plot&#39; of the input histogram data
     &#34;&#34;&#34;
     if len(yvals) != (len(xbins)-1):
         pstr = &#39;xbins should be a list of bin edges of length one more than yvals, the values associated with the contents of each bin&#39; + &#39;\n&#39;
@@ -2669,16 +3378,25 @@ def generate_line_bar_coordinates(xbins,yvals):
         return 0
     newx = [xbins[0],xbins[0]]
     newy = [0,yvals[0]]
+    if len(yerrs)!=0: newyerr = [0,yvals[0]]
     for i in range(len(xbins)-2):
         newx.append(xbins[i+1])
         newx.append(xbins[i+1])
         newy.append(yvals[i])
         newy.append(yvals[i+1])
+        if len(yerrs)!=0: 
+            newyerr.append(yerrs[i])
+            newyerr.append(yerrs[i+1])
     newx.append(xbins[-1])
     newx.append(xbins[-1])
     newy.append(yvals[-1])
     newy.append(0)
-    return newx, newy
+    if len(yerrs)!=0: 
+        newyerr.append(yerrs[-1])
+        newyerr.append(0)
+        return newx, newy, newyerr
+    else:
+        return newx, newy
 
 def colors_list_6(di):
     &#39;&#39;&#39;
@@ -2710,6 +3428,22 @@ def colors_list_10(di):
     &#39;&#39;&#39;
     colors_list = [&#39;#1f77b4&#39;, &#39;#ff7f0e&#39;, &#39;#2ca02c&#39;, &#39;#d62728&#39;, &#39;#9467bd&#39;, &#39;#8c564b&#39;, &#39;#e377c2&#39;, &#39;#7f7f7f&#39;, &#39;#bcbd22&#39;, &#39;#17becf&#39;]
     return colors_list[di%10]
+
+def colors_list_20(di):
+    &#39;&#39;&#39;
+    List of 20 &#39;distinct&#39; colors   
+    See: https://sashamaps.net/docs/resources/20-colors/
+    &#39;&#39;&#39;
+    colors_list = [&#39;#e6194B&#39;, &#39;#3cb44b&#39;, &#39;#ffe119&#39;, &#39;#4363d8&#39;, &#39;#f58231&#39;, &#39;#911eb4&#39;, &#39;#42d4f4&#39;, &#39;#f032e6&#39;, &#39;#bfef45&#39;, &#39;#fabed4&#39;, &#39;#469990&#39;, &#39;#dcbeff&#39;, &#39;#9A6324&#39;, &#39;#fffac8&#39;, &#39;#800000&#39;, &#39;#aaffc3&#39;, &#39;#808000&#39;, &#39;#ffd8b1&#39;, &#39;#000075&#39;, &#39;#a9a9a9&#39;]
+    return colors_list[di%20]
+
+def colors_list_64(di):
+    &#39;&#39;&#39;
+    List of 64 &#39;distinct&#39; colors   
+    See: https://stackoverflow.com/a/20298027
+    &#39;&#39;&#39;
+    colors_list = [&#39;#00FF00&#39;,&#39;#0000FF&#39;,&#39;#FF0000&#39;,&#39;#01FFFE&#39;,&#39;#FFA6FE&#39;,&#39;#FFDB66&#39;,&#39;#006401&#39;,&#39;#010067&#39;,&#39;#95003A&#39;,&#39;#007DB5&#39;,&#39;#FF00F6&#39;,&#39;#FFEEE8&#39;,&#39;#774D00&#39;,&#39;#90FB92&#39;,&#39;#0076FF&#39;,&#39;#D5FF00&#39;,&#39;#FF937E&#39;,&#39;#6A826C&#39;,&#39;#FF029D&#39;,&#39;#FE8900&#39;,&#39;#7A4782&#39;,&#39;#7E2DD2&#39;,&#39;#85A900&#39;,&#39;#FF0056&#39;,&#39;#A42400&#39;,&#39;#00AE7E&#39;,&#39;#683D3B&#39;,&#39;#BDC6FF&#39;,&#39;#263400&#39;,&#39;#BDD393&#39;,&#39;#00B917&#39;,&#39;#9E008E&#39;,&#39;#001544&#39;,&#39;#C28C9F&#39;,&#39;#FF74A3&#39;,&#39;#01D0FF&#39;,&#39;#004754&#39;,&#39;#E56FFE&#39;,&#39;#788231&#39;,&#39;#0E4CA1&#39;,&#39;#91D0CB&#39;,&#39;#BE9970&#39;,&#39;#968AE8&#39;,&#39;#BB8800&#39;,&#39;#43002C&#39;,&#39;#DEFF74&#39;,&#39;#00FFC6&#39;,&#39;#FFE502&#39;,&#39;#620E00&#39;,&#39;#008F9C&#39;,&#39;#98FF52&#39;,&#39;#7544B1&#39;,&#39;#B500FF&#39;,&#39;#00FF78&#39;,&#39;#FF6E41&#39;,&#39;#005F39&#39;,&#39;#6B6882&#39;,&#39;#5FAD4E&#39;,&#39;#A75740&#39;,&#39;#A5FFD2&#39;,&#39;#FFB167&#39;,&#39;#009BFF&#39;,&#39;#E85EBE&#39;,&#39;#000000&#39;]
+    return colors_list[di%64]
 
 def get_colormap(cmap_str):
     &#39;&#39;&#39;
@@ -3451,10 +4185,10 @@ def fancy_plot(
     w0 = 1 - x0 - (l_w0_in/fig_x_in) - (del_l_in/fig_x_in)   # width of plot area, set to be full width minus space needed for y-label and potentially an outside right legend
     
     if man_sp_placement:
-        x0 = spx0
-        y0 = spy0
-        h0 = sph0
-        w0 = spw0
+        if spx0!=None: x0 = spx0
+        if spy0!=None: y0 = spy0
+        if sph0!=None: h0 = sph0
+        if spw0!=None: w0 = spw0
     
     # Set size and location of the plot on the canvas
     box = ax.get_position()
@@ -4222,7 +4956,7 @@ def fancy_3D_plot(
                     if y_meaning==&#39;max&#39;: 
                         dy = np.vstack((np.tile(dy[[0],:], 1), dy))
                         yvals = yvals - 0.5*dy
-                        print(yvals)
+                        #print(yvals)
                     
                 if pls==&#39;map_contour&#39;:
                     pcm2d = ax.contour(xvals,yvals, zvals.T,
@@ -6315,6 +7049,60 @@ greater than or equal to <code>col_max_val</code> will be set to 1 in the array 
     return IOSI</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.chi_squared"><code class="name flex">
+<span>def <span class="ident">chi_squared</span></span>(<span>y, y_fit, num_fit_params=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Calculate chi^2 (chi-squared) value between two sets of data, an experimental "y" and fitted "y_fit"
+</p>
+<h2 id="dependencies">Dependencies</h2>
+<p><code>from scipy.stats import chisquare</code></p>
+<h2 id="inputs">Inputs</h2>
+<ul>
+<li><code>y</code> = list/array of y values (experimental)</li>
+<li><code>y_fit</code> = list/array of fitted y values to be compared against y</li>
+<li><code>num_deg_freedom</code> = number of degrees of freedom (DoF) in fit function (number of optimized parameters) (D=<code>0</code>)</li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li><code><a title="Hunters_tools.chi_squared" href="#Hunters_tools.chi_squared">chi_squared()</a></code> = calculated chi-squared value</li>
+<li><code>reduced_chi_squared</code> = calculated reduced chi-squared value (chi^2 / DoF)</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def chi_squared(y,y_fit,num_fit_params=0):
+    &#39;&#39;&#39;
+    Description:
+        Calculate chi^2 (chi-squared) value between two sets of data, an experimental &#34;y&#34; and fitted &#34;y_fit&#34;    
+    
+    Dependencies:
+        `from scipy.stats import chisquare`
+    
+    Inputs:
+        - `y` = list/array of y values (experimental)
+        - `y_fit` = list/array of fitted y values to be compared against y
+        - `num_deg_freedom` = number of degrees of freedom (DoF) in fit function (number of optimized parameters) (D=`0`)
+    
+    Outputs:
+        - `chi_squared` = calculated chi-squared value
+        - `reduced_chi_squared` = calculated reduced chi-squared value (chi^2 / DoF)
+    &#39;&#39;&#39;
+    # This normalization shouldn&#39;t be necessary, but a past build of scipy broke the chisquare function from working without it
+    y_fit = y_fit*sum(y)/sum(y_fit)
+    chi2,p = chisquare(y,f_exp=y_fit,ddof=num_fit_params)
+    ndf = len(y) - num_fit_params
+    # Hand calc
+    #O_k = y     # observed, from measurement 
+    #E_k = y_fit # expected, from some distribution e.g. Gaussian
+    #chi2 = np.sum( ((O_k-E_k)**2)/E_k )
+    #num_deg_freedom = len(O_k) - num_fit_params
+    #red_chi2 = chi2/num_deg_freedom
+    return chi2, p, ndf</code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.circ_solid_angle"><code class="name flex">
 <span>def <span class="ident">circ_solid_angle</span></span>(<span>pp, a, b, r)</span>
 </code></dt>
@@ -6482,6 +7270,25 @@ See: <a href="https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6
     return colors_list[di%12]</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.colors_list_20"><code class="name flex">
+<span>def <span class="ident">colors_list_20</span></span>(<span>di)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>List of 20 'distinct' colors <br>
+See: <a href="https://sashamaps.net/docs/resources/20-colors/">https://sashamaps.net/docs/resources/20-colors/</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def colors_list_20(di):
+    &#39;&#39;&#39;
+    List of 20 &#39;distinct&#39; colors   
+    See: https://sashamaps.net/docs/resources/20-colors/
+    &#39;&#39;&#39;
+    colors_list = [&#39;#e6194B&#39;, &#39;#3cb44b&#39;, &#39;#ffe119&#39;, &#39;#4363d8&#39;, &#39;#f58231&#39;, &#39;#911eb4&#39;, &#39;#42d4f4&#39;, &#39;#f032e6&#39;, &#39;#bfef45&#39;, &#39;#fabed4&#39;, &#39;#469990&#39;, &#39;#dcbeff&#39;, &#39;#9A6324&#39;, &#39;#fffac8&#39;, &#39;#800000&#39;, &#39;#aaffc3&#39;, &#39;#808000&#39;, &#39;#ffd8b1&#39;, &#39;#000075&#39;, &#39;#a9a9a9&#39;]
+    return colors_list[di%20]</code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.colors_list_6"><code class="name flex">
 <span>def <span class="ident">colors_list_6</span></span>(<span>di)</span>
 </code></dt>
@@ -6506,6 +7313,25 @@ See: <a href="https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6
     #colors_list = [&#39;#1b9e77&#39;,&#39;#d95f02&#39;,&#39;#7570b3&#39;,&#39;#e7298a&#39;,&#39;#66a61e&#39;,&#39;#e6ab02&#39;] # qualitative dark 1
     colors_list = [&#39;#e41a1c&#39;,&#39;#377eb8&#39;,&#39;#4daf4a&#39;,&#39;#984ea3&#39;,&#39;#ff7f00&#39;,&#39;#a65628&#39;] # qualitative dark 2
     return colors_list[di%6]</code></pre>
+</details>
+</dd>
+<dt id="Hunters_tools.colors_list_64"><code class="name flex">
+<span>def <span class="ident">colors_list_64</span></span>(<span>di)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>List of 64 'distinct' colors <br>
+See: <a href="https://stackoverflow.com/a/20298027">https://stackoverflow.com/a/20298027</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def colors_list_64(di):
+    &#39;&#39;&#39;
+    List of 64 &#39;distinct&#39; colors   
+    See: https://stackoverflow.com/a/20298027
+    &#39;&#39;&#39;
+    colors_list = [&#39;#00FF00&#39;,&#39;#0000FF&#39;,&#39;#FF0000&#39;,&#39;#01FFFE&#39;,&#39;#FFA6FE&#39;,&#39;#FFDB66&#39;,&#39;#006401&#39;,&#39;#010067&#39;,&#39;#95003A&#39;,&#39;#007DB5&#39;,&#39;#FF00F6&#39;,&#39;#FFEEE8&#39;,&#39;#774D00&#39;,&#39;#90FB92&#39;,&#39;#0076FF&#39;,&#39;#D5FF00&#39;,&#39;#FF937E&#39;,&#39;#6A826C&#39;,&#39;#FF029D&#39;,&#39;#FE8900&#39;,&#39;#7A4782&#39;,&#39;#7E2DD2&#39;,&#39;#85A900&#39;,&#39;#FF0056&#39;,&#39;#A42400&#39;,&#39;#00AE7E&#39;,&#39;#683D3B&#39;,&#39;#BDC6FF&#39;,&#39;#263400&#39;,&#39;#BDD393&#39;,&#39;#00B917&#39;,&#39;#9E008E&#39;,&#39;#001544&#39;,&#39;#C28C9F&#39;,&#39;#FF74A3&#39;,&#39;#01D0FF&#39;,&#39;#004754&#39;,&#39;#E56FFE&#39;,&#39;#788231&#39;,&#39;#0E4CA1&#39;,&#39;#91D0CB&#39;,&#39;#BE9970&#39;,&#39;#968AE8&#39;,&#39;#BB8800&#39;,&#39;#43002C&#39;,&#39;#DEFF74&#39;,&#39;#00FFC6&#39;,&#39;#FFE502&#39;,&#39;#620E00&#39;,&#39;#008F9C&#39;,&#39;#98FF52&#39;,&#39;#7544B1&#39;,&#39;#B500FF&#39;,&#39;#00FF78&#39;,&#39;#FF6E41&#39;,&#39;#005F39&#39;,&#39;#6B6882&#39;,&#39;#5FAD4E&#39;,&#39;#A75740&#39;,&#39;#A5FFD2&#39;,&#39;#FFB167&#39;,&#39;#009BFF&#39;,&#39;#E85EBE&#39;,&#39;#000000&#39;]
+    return colors_list[di%64]</code></pre>
 </details>
 </dd>
 <dt id="Hunters_tools.curvature"><code class="name flex">
@@ -6599,6 +7425,58 @@ See: <a href="https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6
     return d</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.energy_resolution_of_peak"><code class="name flex">
+<span>def <span class="ident">energy_resolution_of_peak</span></span>(<span>y, x)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Provided a spectrum of counts (or equivalent) and it's bin centers or edges, and optionally the range of bins to evaluate, determine the
+energy resolution FWHM/H0 (also sigma/H0) of peak with average value H0.</p>
+<h2 id="inputs">Inputs</h2>
+<ul>
+<li><code>y</code> = list/array of y values (length N)</li>
+<li><code>x</code> = list/array of x bin centers (length N) or bin edges (length N+1) corresponding to y</li>
+<li><code>peak_guess_location</code> = single value (float/int) denoting an initial guess of the peak's x location</li>
+<li><code>peak_search_range</code> = length-2 list of x values (not indices) between which the peak will be searched for</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<p>At present, this function is only designed with "bell-shaped" distributions describable with three parameters related to
+amplitude/height, x position/centering, and width.</p>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li><code>y_fit</code> = list/array of evaluated y values using the optimally found fit parameters</li>
+<li><code>dist_info</code> = dictionary object containing the distribution <code>short_name</code> and <code>full_name</code>; optimized fit parameters <code>a</code>, <code>mu</code>, and <code>sigma</code>;
+calculated <code>FWHM</code>, <code>r2</code>/<code><a title="Hunters_tools.r_squared" href="#Hunters_tools.r_squared">r_squared()</a></code> R^2, and <code>chi2</code>/<code><a title="Hunters_tools.chi_squared" href="#Hunters_tools.chi_squared">chi_squared()</a></code> values; Python string of the function <code>fcn_py_str</code>; and LaTex string of the function <code>fcn_tex_str</code></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def energy_resolution_of_peak(y,x,):
+    &#39;&#39;&#39;
+    Description:
+        Provided a spectrum of counts (or equivalent) and it&#39;s bin centers or edges, and optionally the range of bins to evaluate, determine the
+        energy resolution FWHM/H0 (also sigma/H0) of peak with average value H0.
+    
+    Inputs:
+        - `y` = list/array of y values (length N)
+        - `x` = list/array of x bin centers (length N) or bin edges (length N+1) corresponding to y
+        - `peak_guess_location` = single value (float/int) denoting an initial guess of the peak&#39;s x location
+        - `peak_search_range` = length-2 list of x values (not indices) between which the peak will be searched for
+    
+    Notes:
+        At present, this function is only designed with &#34;bell-shaped&#34; distributions describable with three parameters related to
+        amplitude/height, x position/centering, and width.
+    
+    Outputs:
+        - `y_fit` = list/array of evaluated y values using the optimally found fit parameters
+        - `dist_info` = dictionary object containing the distribution `short_name` and `full_name`; optimized fit parameters `a`, `mu`, and `sigma`; 
+                      calculated `FWHM`, `r2`/`r_squared` R^2, and `chi2`/`chi_squared` values; Python string of the function `fcn_py_str`; and LaTex string of the function `fcn_tex_str`
+    &#39;&#39;&#39;
+    
+    return None </code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.eval_distribution"><code class="name flex">
 <span>def <span class="ident">eval_distribution</span></span>(<span>x, dist_name='gauss', a=1, mu=0, sigma=0.3)</span>
 </code></dt>
@@ -6610,7 +7488,7 @@ See: <a href="https://colorbrewer2.org/#type=qualitative&amp;scheme=Set1&amp;n=6
 <h2 id="inputs">Inputs</h2>
 <ul>
 <li><code>x</code> = list/array of x values or single x value</li>
-<li><code>dist_name</code> = string denoting the distribution used (D=<code>Gaussian</code>), options include:
+<li><code>dist_name</code> = string denoting the distribution used (D=<code>'Gaussian'</code>), options include:
 <code>['gauss','normal','Logistic','sech']</code>, Read more here on the <a href="https://en.wikipedia.org/wiki/Normal_distribution">Gaussian/normal</a>,
 <a href="https://en.wikipedia.org/wiki/Logistic_distribution">Logistic</a>, and
 <a href="https://en.wikipedia.org/wiki/Hyperbolic_secant_distribution">Hyperbolic secant</a> distributions.</li>
@@ -6641,7 +7519,7 @@ Python string of the function <code>fcn_py_str</code>; and LaTex string of the f
     
     Inputs:
         - `x` = list/array of x values or single x value
-        - `dist_name` = string denoting the distribution used (D=`Gaussian`), options include:
+        - `dist_name` = string denoting the distribution used (D=`&#39;Gaussian&#39;`), options include:
                        `[&#39;gauss&#39;,&#39;normal&#39;,&#39;Logistic&#39;,&#39;sech&#39;]`, Read more here on the [Gaussian/normal](https://en.wikipedia.org/wiki/Normal_distribution), 
                        [Logistic](https://en.wikipedia.org/wiki/Logistic_distribution), and 
                        [Hyperbolic secant](https://en.wikipedia.org/wiki/Hyperbolic_secant_distribution) distributions.
@@ -7565,7 +8443,7 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
                     if y_meaning==&#39;max&#39;: 
                         dy = np.vstack((np.tile(dy[[0],:], 1), dy))
                         yvals = yvals - 0.5*dy
-                        print(yvals)
+                        #print(yvals)
                     
                 if pls==&#39;map_contour&#39;:
                     pcm2d = ax.contour(xvals,yvals, zvals.T,
@@ -8769,10 +9647,10 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
     w0 = 1 - x0 - (l_w0_in/fig_x_in) - (del_l_in/fig_x_in)   # width of plot area, set to be full width minus space needed for y-label and potentially an outside right legend
     
     if man_sp_placement:
-        x0 = spx0
-        y0 = spy0
-        h0 = sph0
-        w0 = spw0
+        if spx0!=None: x0 = spx0
+        if spy0!=None: y0 = spy0
+        if sph0!=None: h0 = sph0
+        if spw0!=None: w0 = spw0
     
     # Set size and location of the plot on the canvas
     box = ax.get_position()
@@ -9067,7 +9945,7 @@ If initial guesses are omitted, they will try to be automatically assessed (your
 <ul>
 <li><code>x</code> = list/array of x values to be fit</li>
 <li><code>y</code> = list/array of y values to be fit</li>
-<li><code>dist_name</code> = string denoting the distribution used (D=<code>Gaussian</code>), options include:
+<li><code>dist_name</code> = string denoting the distribution used (D=<code>'Gaussian'</code>), options include:
 <code>['gauss','normal','Logistic','sech']</code>, Read more here on the <a href="https://en.wikipedia.org/wiki/Normal_distribution">Gaussian/normal</a>,
 <a href="https://en.wikipedia.org/wiki/Logistic_distribution">Logistic</a>, and
 <a href="https://en.wikipedia.org/wiki/Hyperbolic_secant_distribution">Hyperbolic secant</a> distributions.</li>
@@ -9082,7 +9960,7 @@ amplitude/height, x position/centering, and width.</p>
 <ul>
 <li><code>y_fit</code> = list/array of evaluated y values using the optimally found fit parameters</li>
 <li><code>dist_info</code> = dictionary object containing the distribution <code>short_name</code> and <code>full_name</code>; optimized fit parameters <code>a</code>, <code>mu</code>, and <code>sigma</code>;
-calculated <code>FWHM</code> and <code>r2</code>/<code><a title="Hunters_tools.r_squared" href="#Hunters_tools.r_squared">r_squared()</a></code> R^2 values; Python string of the function <code>fcn_py_str</code>; and LaTex string of the function <code>fcn_tex_str</code></li>
+calculated <code>FWHM</code>, <code>r2</code>/<code><a title="Hunters_tools.r_squared" href="#Hunters_tools.r_squared">r_squared()</a></code> R^2, and <code>chi2</code>/<code><a title="Hunters_tools.chi_squared" href="#Hunters_tools.chi_squared">chi_squared()</a></code> values; Python string of the function <code>fcn_py_str</code>; and LaTex string of the function <code>fcn_tex_str</code></li>
 </ul></div>
 <details class="source">
 <summary>
@@ -9101,7 +9979,7 @@ calculated <code>FWHM</code> and <code>r2</code>/<code><a title="Hunters_tools.r
     Inputs:
         - `x` = list/array of x values to be fit
         - `y` = list/array of y values to be fit
-        - `dist_name` = string denoting the distribution used (D=`Gaussian`), options include:
+        - `dist_name` = string denoting the distribution used (D=`&#39;Gaussian&#39;`), options include:
                        `[&#39;gauss&#39;,&#39;normal&#39;,&#39;Logistic&#39;,&#39;sech&#39;]`, Read more here on the [Gaussian/normal](https://en.wikipedia.org/wiki/Normal_distribution), 
                        [Logistic](https://en.wikipedia.org/wiki/Logistic_distribution), and 
                        [Hyperbolic secant](https://en.wikipedia.org/wiki/Hyperbolic_secant_distribution) distributions.
@@ -9116,7 +9994,7 @@ calculated <code>FWHM</code> and <code>r2</code>/<code><a title="Hunters_tools.r
     Outputs:
         - `y_fit` = list/array of evaluated y values using the optimally found fit parameters
         - `dist_info` = dictionary object containing the distribution `short_name` and `full_name`; optimized fit parameters `a`, `mu`, and `sigma`; 
-                      calculated `FWHM` and `r2`/`r_squared` R^2 values; Python string of the function `fcn_py_str`; and LaTex string of the function `fcn_tex_str`
+                      calculated `FWHM`, `r2`/`r_squared` R^2, and `chi2`/`chi_squared` values; Python string of the function `fcn_py_str`; and LaTex string of the function `fcn_tex_str`
     &#39;&#39;&#39;
     dist_names_list = [&#39;gauss&#39;,&#39;normal&#39;,&#39;Logistic&#39;,&#39;sech&#39;]
     dist_name = dist_name.lower()
@@ -9160,10 +10038,27 @@ calculated <code>FWHM</code> and <code>r2</code>/<code><a title="Hunters_tools.r
     y_fit, dist_info = eval_distribution(x, dist_name=dist_name, a=a, mu=mu, sigma=sigma)
     r2 = r_squared(y,y_fit)
     
+    #chi2,red_chi2 = chi_squared(y,y_fit,num_fit_params=3)
+    num_fit_params=3
+    chi2,p_chi2,ndf_chi2 = chi_squared(y,y_fit,num_fit_params=num_fit_params)
+    # How to write chi2 results: https://www.socscistatistics.com/tutorials/chisquare/default.aspx 
+    if p_chi2&lt;0.001:
+        chi_p_str = &#39;p&lt;0.001&#39;
+    else:
+        chi_p_str = &#39;p = {:4g}&#39;
+    chi2_tex_str = r&#39;$\chi^2$&#39;+&#39;({:},N={:})={:.3g}, {}&#39;.format(num_fit_params,n,chi2,chi_p_str)
+    
     dist_info.update({
         &#39;FWHM&#39;:FWHM_fit,
         &#39;r2&#39;:r2,
-        &#39;r_squared&#39;:r2
+        &#39;r_squared&#39;:r2,
+        &#39;chi2&#39;:chi2,
+        &#39;chi_squared&#39;:chi2,
+        &#39;p_chi2&#39;:p_chi2,
+        &#39;ndf_chi2&#39;:ndf_chi2,
+        &#39;chi2_tex_str&#39;:chi2_tex_str
+        #&#39;red_chi2&#39;:red_chi2,
+        #&#39;red_chi_squared&#39;:red_chi2,
         })
     
     return y_fit, dist_info</code></pre>
@@ -9249,7 +10144,7 @@ calculated <code>FWHM</code> and <code>r2</code>/<code><a title="Hunters_tools.r
 </details>
 </dd>
 <dt id="Hunters_tools.generate_line_bar_coordinates"><code class="name flex">
-<span>def <span class="ident">generate_line_bar_coordinates</span></span>(<span>xbins, yvals)</span>
+<span>def <span class="ident">generate_line_bar_coordinates</span></span>(<span>xbins, yvals, yerrs=[])</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="description">Description</h2>
@@ -9258,17 +10153,19 @@ calculated <code>FWHM</code> and <code>r2</code>/<code><a title="Hunters_tools.r
 <ul>
 <li><code>xbins</code> = list of length N+1 bin boundary values</li>
 <li><code>yvals</code> = list of length N bin content values </li>
+<li><code>yerrs</code> = (optional) list of length N absolute uncertainties of bin content values </li>
 </ul>
 <h2 id="outputs">Outputs</h2>
 <ul>
 <li><code>newx</code> = list of length 2N + 2 of x-coordinates mapping a 'bar plot' of the input histogram data</li>
 <li><code>newy</code> = list of length 2N + 2 of y-coordinates mapping a 'bar plot' of the input histogram data</li>
+<li><code>newyerr</code> = (optional) list of length 2N + 2 of y-coordinates mapping a 'bar plot' of the input histogram data</li>
 </ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def generate_line_bar_coordinates(xbins,yvals):
+<pre><code class="python">def generate_line_bar_coordinates(xbins,yvals,yerrs=[]):
     &#34;&#34;&#34;
     Description:
         Converts a set of bin boundaries and bin contents to coordinates mapping a bar plot if drawn with a line
@@ -9276,10 +10173,12 @@ calculated <code>FWHM</code> and <code>r2</code>/<code><a title="Hunters_tools.r
     Inputs:
       - `xbins` = list of length N+1 bin boundary values
       - `yvals` = list of length N bin content values 
+      - `yerrs` = (optional) list of length N absolute uncertainties of bin content values 
     
     Outputs:
       - `newx` = list of length 2N + 2 of x-coordinates mapping a &#39;bar plot&#39; of the input histogram data
       - `newy` = list of length 2N + 2 of y-coordinates mapping a &#39;bar plot&#39; of the input histogram data
+      - `newyerr` = (optional) list of length 2N + 2 of y-coordinates mapping a &#39;bar plot&#39; of the input histogram data
     &#34;&#34;&#34;
     if len(yvals) != (len(xbins)-1):
         pstr = &#39;xbins should be a list of bin edges of length one more than yvals, the values associated with the contents of each bin&#39; + &#39;\n&#39;
@@ -9288,16 +10187,25 @@ calculated <code>FWHM</code> and <code>r2</code>/<code><a title="Hunters_tools.r
         return 0
     newx = [xbins[0],xbins[0]]
     newy = [0,yvals[0]]
+    if len(yerrs)!=0: newyerr = [0,yvals[0]]
     for i in range(len(xbins)-2):
         newx.append(xbins[i+1])
         newx.append(xbins[i+1])
         newy.append(yvals[i])
         newy.append(yvals[i+1])
+        if len(yerrs)!=0: 
+            newyerr.append(yerrs[i])
+            newyerr.append(yerrs[i+1])
     newx.append(xbins[-1])
     newx.append(xbins[-1])
     newy.append(yvals[-1])
     newy.append(0)
-    return newx, newy</code></pre>
+    if len(yerrs)!=0: 
+        newyerr.append(yerrs[-1])
+        newyerr.append(0)
+        return newx, newy, newyerr
+    else:
+        return newx, newy</code></pre>
 </details>
 </dd>
 <dt id="Hunters_tools.get_colormap"><code class="name flex">
@@ -10049,6 +10957,664 @@ if not a string already, it will be converted into one and appended to 'm' (ex. 
     if isinstance(m,int): m = &#39;m&#39; + str(m)
     latex_str = r&#34;$^{{{}{}}}$&#34;.format(A,m) + &#34;{}&#34;.format(symbol)
     return latex_str</code></pre>
+</details>
+</dd>
+<dt id="Hunters_tools.parse_dyld_files"><code class="name flex">
+<span>def <span class="ident">parse_dyld_files</span></span>(<span>path_to_dyld_file, iredufmt=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Parses the output files of a T-Yield tally generated by PHITS with axis=dchain.
+This function assumes
+that the T-Yield tally was one automatically generated by and corresponding to a T-Dchain tally (axis=dchain).
+This works for region, xyz, and tetrahedral mesh geometries in either the original or reduced format.</p>
+<h2 id="inputs">Inputs</h2>
+<ul>
+<li><code>path_to_dyld_file</code> = path to the T-Yield tally output file to be parsed
+(the *_err.dyld file of the same name is automatically searched for and read, if present)</li>
+<li><code>iredufmt</code> = (DEPRICATED; this is now determined automatically)
+integer 1 or 0 specifying how the xyz meshes are ordered relative to the internal region numbers.
+In the new format (1), region indices are incremented as x-&gt;y-&gt;z (x=innermost loop); this is reversed in the old format (0).
+Ultimately, this corresponds to the same iredufmt parameter in PHITS/DCHAIN, 1='new' and 0='old'.
+This variable is only used for xyz meshes where this ordering matters.</li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li><code>yields</code> = a RxNx2 array containing regionwise yields (and their absolute uncertainties) for all nuclides produced in T-Yield</li>
+<li><code>nuclide_names_yld</code> = a length N list of all nuclide names in order</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_dyld_files(path_to_dyld_file,iredufmt=None):
+    &#39;&#39;&#39;
+    Description:
+        Parses the output files of a T-Yield tally generated by PHITS with axis=dchain.  This function assumes
+        that the T-Yield tally was one automatically generated by and corresponding to a T-Dchain tally (axis=dchain).
+        This works for region, xyz, and tetrahedral mesh geometries in either the original or reduced format.
+        
+    Inputs:
+        - `path_to_dyld_file` = path to the T-Yield tally output file to be parsed 
+                           (the *_err.dyld file of the same name is automatically searched for and read, if present)
+        - `iredufmt` = (DEPRICATED; this is now determined automatically)
+                   integer 1 or 0 specifying how the xyz meshes are ordered relative to the internal region numbers.
+                   In the new format (1), region indices are incremented as x-&gt;y-&gt;z (x=innermost loop); this is reversed in the old format (0).
+                   Ultimately, this corresponds to the same iredufmt parameter in PHITS/DCHAIN, 1=&#39;new&#39; and 0=&#39;old&#39;.
+                   This variable is only used for xyz meshes where this ordering matters.
+        
+    Outputs:
+        - `yields` = a RxNx2 array containing regionwise yields (and their absolute uncertainties) for all nuclides produced in T-Yield
+        - `nuclide_names_yld` = a length N list of all nuclide names in order
+    &#39;&#39;&#39;
+    
+    def ZAM_to_Dname(ZAM):
+        &#39;&#39;&#39;
+        Description:
+            Converts a ZZZAAAM number to a DCHAIN-formatted nuclide name
+           
+        Inputs:
+            - `ZZZAAAM` = nuclide identification ineger, calculated as 10000\*Z + 10\*A + m
+            
+        Outputs:
+            - `Dname` = nuclide identification string in DCHAIN format 
+        &#39;&#39;&#39;
+        elms = [&#34;n &#34;,\
+                &#34;H &#34;,&#34;He&#34;,&#34;Li&#34;,&#34;Be&#34;,&#34;B &#34;,&#34;C &#34;,&#34;N &#34;,&#34;O &#34;,&#34;F &#34;,&#34;Ne&#34;,\
+                &#34;Na&#34;,&#34;Mg&#34;,&#34;Al&#34;,&#34;Si&#34;,&#34;P &#34;,&#34;S &#34;,&#34;Cl&#34;,&#34;Ar&#34;,&#34;K &#34;,&#34;Ca&#34;,\
+                &#34;Sc&#34;,&#34;Ti&#34;,&#34;V &#34;,&#34;Cr&#34;,&#34;Mn&#34;,&#34;Fe&#34;,&#34;Co&#34;,&#34;Ni&#34;,&#34;Cu&#34;,&#34;Zn&#34;,\
+                &#34;Ga&#34;,&#34;Ge&#34;,&#34;As&#34;,&#34;Se&#34;,&#34;Br&#34;,&#34;Kr&#34;,&#34;Rb&#34;,&#34;Sr&#34;,&#34;Y &#34;,&#34;Zr&#34;,\
+                &#34;Nb&#34;,&#34;Mo&#34;,&#34;Tc&#34;,&#34;Ru&#34;,&#34;Rh&#34;,&#34;Pd&#34;,&#34;Ag&#34;,&#34;Cd&#34;,&#34;In&#34;,&#34;Sn&#34;,\
+                &#34;Sb&#34;,&#34;Te&#34;,&#34;I &#34;,&#34;Xe&#34;,&#34;Cs&#34;,&#34;Ba&#34;,&#34;La&#34;,&#34;Ce&#34;,&#34;Pr&#34;,&#34;Nd&#34;,\
+                &#34;Pm&#34;,&#34;Sm&#34;,&#34;Eu&#34;,&#34;Gd&#34;,&#34;Tb&#34;,&#34;Dy&#34;,&#34;Ho&#34;,&#34;Er&#34;,&#34;Tm&#34;,&#34;Yb&#34;,\
+                &#34;Lu&#34;,&#34;Hf&#34;,&#34;Ta&#34;,&#34;W &#34;,&#34;Re&#34;,&#34;Os&#34;,&#34;Ir&#34;,&#34;Pt&#34;,&#34;Au&#34;,&#34;Hg&#34;,\
+                &#34;Tl&#34;,&#34;Pb&#34;,&#34;Bi&#34;,&#34;Po&#34;,&#34;At&#34;,&#34;Rn&#34;,&#34;Fr&#34;,&#34;Ra&#34;,&#34;Ac&#34;,&#34;Th&#34;,\
+                &#34;Pa&#34;,&#34;U &#34;,&#34;Np&#34;,&#34;Pu&#34;,&#34;Am&#34;,&#34;Cm&#34;,&#34;Bk&#34;,&#34;Cf&#34;,&#34;Es&#34;,&#34;Fm&#34;,\
+                &#34;Md&#34;,&#34;No&#34;,&#34;Lr&#34;,&#34;Rf&#34;,&#34;Db&#34;,&#34;Sg&#34;,&#34;Bh&#34;,&#34;Hs&#34;,&#34;Mt&#34;,&#34;Ds&#34;,\
+                &#34;Rg&#34;,&#34;Cn&#34;,&#34;Nh&#34;,&#34;Fl&#34;,&#34;Mc&#34;,&#34;Lv&#34;,&#34;Ts&#34;,&#34;Og&#34;]
+        m = int(str(ZAM)[-1])
+        A = int(str(ZAM)[-4:-1])
+        Z = int(str(ZAM)[:-4])
+        sym = elms[Z]
+        A_str = &#39;{:&gt;3}&#39;.format(A)
+        m_str_list = [&#39; &#39;,&#39;m&#39;,&#39;n&#39;]
+        m_str = m_str_list[m]
+        Dname = sym + A_str + m_str
+        return Dname
+    
+    # Extract text from file
+    f = open(path_to_dyld_file)
+    file_text = f.read()
+    lines = file_text.split(&#39;\n&#39;)
+    f.close()
+    
+    # determine if in reduced format
+    iredufmt=0
+    for li, line in enumerate(lines):
+        if &#34;# num nucleusID yield r.err&#34; in line:
+            iredufmt=1
+            break
+        if &#34;isotope production #&#34; in line:
+            iredufmt=0
+            break
+    
+    
+    # Get error data if available
+    if iredufmt==0:
+        try:
+            f_err = open(path_to_dyld_file.replace(&#39;.dyld&#39;,&#39;_err.dyld&#39;))
+            file_text_err = f_err.read()
+            lines_err = file_text_err.split(&#39;\n&#39;)
+            f_err.close()
+            err_dyld_found = True
+        except:
+            file_text_err = None
+            lines_err = None
+            err_dyld_found = False
+    
+    # Determine geometry type (mesh = reg, xyz, or tet)
+    for line in lines:
+        if &#39;mesh =&#39; in line:
+            meshtype = line.replace(&#39;mesh =&#39;,&#39;&#39;).strip().split()[0]
+            break 
+    
+    # If xyz mesh, need to find mesh dimensions:
+    if meshtype==&#39;xyz&#39;:
+        for line in lines:
+            if &#39;nx =&#39; in line:
+                nx = int(line.replace(&#39;nx =&#39;,&#39;&#39;).strip().split()[0])
+            elif &#39;ny =&#39; in line:
+                ny = int(line.replace(&#39;ny =&#39;,&#39;&#39;).strip().split()[0])
+            elif &#39;nz =&#39; in line:
+                nz = int(line.replace(&#39;nz =&#39;,&#39;&#39;).strip().split()[0])
+                break 
+    
+    # Find starting line
+    for li, line in enumerate(lines):
+        if &#39;nuclear yield (or production)&#39; in line:
+            li_start = li 
+            break 
+    
+    if iredufmt==1:
+        # Count number of nuclides present in whole file
+        nreg = 0 
+        nuc_id_list = []
+        for li, line in enumerate(lines):
+            if li &lt;= li_start+3: continue # in header
+            vals = line.strip().split()
+            if int(vals[0])==0: break # reached end
+            if int(vals[0])&gt;nreg: nreg = int(vals[0])
+            zzzaaam = int(vals[1])
+            if zzzaaam not in nuc_id_list: nuc_id_list.append(zzzaaam)
+        
+        nnuc = len(nuc_id_list)
+        yields = np.zeros((nreg,nnuc,2))
+        nuclide_names_yld = []
+        
+        # Get names
+        nuc_id_list = sorted(nuc_id_list)
+        for id in nuc_id_list:
+            nuclide_names_yld.append(ZAM_to_Dname(id)) 
+        
+        # Get values
+        for li, line in enumerate(lines):
+            if li &lt;= li_start+3: continue # in header
+            vals = line.strip().split()
+            if int(vals[0])==0: break # reached end
+            ri = int(vals[0]) - 1
+            zzzaaam = int(vals[1])
+            ni = nuc_id_list.index(zzzaaam)
+            yields[ri,ni,0] = np.float(vals[2])
+            yields[ri,ni,1] = np.float(vals[3])*np.float(vals[2])
+              
+    else: # old &#39;&#39;traditional&#39;&#39; format
+        # Count number of nuclides present in whole file
+        nnuc = 0
+        for li, line in enumerate(lines):
+            if li &lt;= li_start+2: continue # skip header lines
+            if &#39;isotope production&#39; in line: 
+                N_bounds = line.strip().split(&#39;=&#39;)[-1].split()
+                N_bounds = [int(i) for i in N_bounds]
+                nnuc += N_bounds[1] - N_bounds[0] + 1
+        
+        # Determine number of regions
+        nreg = 0
+        for li, line in enumerate(lines):
+            if li &lt;= li_start+4: continue # skip header lines
+            if len(line) &lt; 2: break # reached end of first element block 
+            nreg += 1
+        
+        yields = np.zeros((nreg,nnuc,2))
+        nuclide_names_yld = []
+        
+        # Extract yield data
+        ni = 0 # nuclide index
+        ni_newstart = 0
+        ri = 0 # region index
+        for li, line in enumerate(lines):
+            if li &lt;= li_start+2: continue # skip header lines
+            if len(line) &lt; 2: continue # skip line breaks
+            
+            if &#39;isotope production&#39; in line: 
+                # extract Z and A info
+                Z = int(line.strip().split(&#39;-&#39;)[0])
+                N_bounds = line.strip().split(&#39;=&#39;)[-1].split()
+                N_bounds = [int(i) for i in N_bounds]
+                N_list = []
+                for i in range(N_bounds[1]-N_bounds[0]+1):
+                    N_list.append(N_bounds[0]+i)
+                nisotopes = len(N_list)
+                A_list = [N+Z for N in N_list]
+                ni_newstart = len(nuclide_names_yld)
+                for A in A_list:
+                    ZAM = 10*A + 10000*Z
+                    nuclide_names_yld.append(ZAM_to_Dname(ZAM)) 
+                on_buffer_line = True
+                continue 
+            
+            if on_buffer_line:
+                ri = 0
+                on_buffer_line = False 
+                continue 
+                  
+            if &#39;# Information for Restart Calculation&#39; in line: break # reached end of useful info
+            
+            # Only lines making it to this point will be ones with region and yield data
+            vals = line.strip().split()
+            if meshtype==&#39;xyz&#39;:
+                yvals = vals[3:]
+                if err_dyld_found: yvals_rerr = lines_err[li].strip().split()[3:]
+                jx,jy,jz = int(vals[0]),int(vals[1]),int(vals[2])
+                rii = jz + (jy-1)*nz + (jx-1)*(nz*ny)
+                #if iredufmt==1:
+                #    rii = jx + (jy-1)*nx + (jz-1)*(nx*ny) 
+                #else:
+                #    rii = jz + (jy-1)*nz + (jx-1)*(nz*ny)
+            else:
+                yvals = vals[1:]
+                if err_dyld_found: yvals_rerr = lines_err[li].split()[1:]
+                rii = ri 
+            
+            for i in range(nisotopes):
+                yields[rii,ni_newstart+i,0] = np.float(yvals[i])
+                if err_dyld_found: yields[rii,ni_newstart+i,1] = np.float(yvals_rerr[i])*yields[rii,ni_newstart+i,0]
+                
+            ri += 1
+        
+    return yields, nuclide_names_yld</code></pre>
+</details>
+</dd>
+<dt id="Hunters_tools.parse_tdeposit_file"><code class="name flex">
+<span>def <span class="ident">parse_tdeposit_file</span></span>(<span>path_to_tdeposit_file, return_metadata=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Parses the output file of a T-Deposit tally generated by PHITS.
+This works for region, xyz, and tetrahedral mesh geometries.
+It has only been tested for output=deposit, axis=eng.
+It is currently only designed for tallies tracking a single particle (or "all").</p>
+<h2 id="inputs">Inputs</h2>
+<ul>
+<li><code>path_to_tdeposit_file</code> = path to the T-Deposit tally output file to be parsed</li>
+<li><code>return_metadata</code> = Boolean indicating whether additional information is outputted with the flux (D=<code>False</code>)</li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li><code>deposit</code> = a RxEx4 array containing regionwise T-Deposit tally output [Elower/Eupper/deposit/abs_error]</li>
+<li><code>deposit_metadata</code> (only returned if <code>return_metadata=True</code>) = list of length two<ul>
+<li><code>deposit_metadata[0]</code> = string denoting axis type 'eng' (old full format) or 'dchain' (new reduced format)</li>
+<li><code>deposit_metadata[1]</code> = string denoting mesh type as either 'reg', 'xyz', or 'tet'</li>
+</ul>
+</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_tdeposit_file(path_to_tdeposit_file,return_metadata=False):
+    &#39;&#39;&#39;
+    Description:
+        Parses the output file of a T-Deposit tally generated by PHITS.  This works for region, xyz, and tetrahedral mesh geometries.
+        It has only been tested for output=deposit, axis=eng.  It is currently only designed for tallies tracking a single particle (or &#34;all&#34;).
+        
+    Inputs:
+        - `path_to_tdeposit_file` = path to the T-Deposit tally output file to be parsed
+        - `return_metadata` = Boolean indicating whether additional information is outputted with the flux (D=`False`)
+        
+    Outputs:
+        - `deposit` = a RxEx4 array containing regionwise T-Deposit tally output [Elower/Eupper/deposit/abs_error]
+        - `deposit_metadata` (only returned if `return_metadata=True`) = list of length two
+               - `deposit_metadata[0]` = string denoting axis type &#39;eng&#39; (old full format) or &#39;dchain&#39; (new reduced format)
+               - `deposit_metadata[1]` = string denoting mesh type as either &#39;reg&#39;, &#39;xyz&#39;, or &#39;tet&#39;
+    &#39;&#39;&#39;
+    
+    # Extract text from file
+    f = open(path_to_tdeposit_file)
+    file_text = f.read()
+    lines = file_text.split(&#39;\n&#39;)
+    f.close()
+    
+    # Determine geometry type (mesh = reg, xyz, or tet)
+    for line in lines:
+        if &#39;mesh =&#39; in line:
+            meshtype = line.replace(&#39;mesh =&#39;,&#39;&#39;).strip().split()[0]
+            break 
+    
+    # Determine if original or reduced format (axis = eng or axis = dchain)
+    for line in lines:
+        if &#39;axis =&#39; in line:
+            axistype = line.replace(&#39;axis =&#39;,&#39;&#39;).strip().split()[0]
+            break 
+    # Double check 
+    for li, line in enumerate(lines):
+        if li&gt;500: break
+        if &#39;#  e-lower      e-upper      neutron     r.err &#39; in line: 
+            axistype=&#39;eng&#39;
+            break
+    
+    deposit_metadata = [axistype,meshtype]
+    
+    # Determine number of regions
+    nreg = file_text.count(&#39;#   no. =&#39;)
+    
+    for line in lines:
+        if &#39;ne =&#39; in line:
+            nEbins = int(line.replace(&#39;ne =&#39;,&#39;&#39;).strip().split()[0])
+            break
+    
+    deposit = np.zeros((nreg,nEbins,4))
+    
+    in_deposit_lines = False
+    ei = 0
+    ri = -1
+    
+    for line in lines:
+        if &#39;#   no. =&#39; in line:
+            ri += 1
+        if &#39;#  e-lower      e-upper  &#39; in line:
+            in_deposit_lines = True 
+            continue 
+        if in_deposit_lines:
+            deposit[ri,ei,:] = [float(x) for x in line.split()]
+            deposit[ri,ei,3] = deposit[ri,ei,3]*deposit[ri,ei,2] # convert relative error to absolute error
+            ei += 1
+            if ei == nEbins:
+                in_deposit_lines = False 
+                ei = 0
+                
+    if return_metadata:
+        return deposit, deposit_metadata
+    else:
+        return deposit</code></pre>
+</details>
+</dd>
+<dt id="Hunters_tools.parse_ttrack_file"><code class="name flex">
+<span>def <span class="ident">parse_ttrack_file</span></span>(<span>path_to_dtrk_file, return_metadata=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Parses the output file of a T-Track tally generated by PHITS.
+Note that this specific function assumes that the T-Track
+tally was one automatically generated by and corresponding to a T-Dchain tally but in principle works with any T-Track tally.
+This works for region, xyz, and tetrahedral mesh geometries in either the original or reduced format.
+It is currently only designed for tallies tracking a single particle (or "all").</p>
+<h2 id="inputs">Inputs</h2>
+<ul>
+<li><code>path_to_dtrk_file</code> = path to the T-Track tally output file to be parsed</li>
+<li><code>return_metadata</code> = Boolean indicating whether additional information is outputted with the flux (D=<code>False</code>)</li>
+</ul>
+<h2 id="outputs">Outputs</h2>
+<ul>
+<li><code>flux</code> = a RxEx4 array containing regionwise fluxes [x-lower/x-upper/flux/abs_error]</li>
+<li><code>dtrk_metadata</code> (only returned if <code>return_metadata=True</code>) = list of length two<ul>
+<li><code>dtrk_metadata[0]</code> = string denoting axis type 'eng' (old full format) or 'dchain' (new reduced format)</li>
+<li><code>dtrk_metadata[1]</code> = string denoting mesh type as either 'reg', 'xyz', or 'tet'</li>
+</ul>
+</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_ttrack_file(path_to_dtrk_file,return_metadata=False):
+    &#39;&#39;&#39;
+    Description:
+        Parses the output file of a T-Track tally generated by PHITS.  Note that this specific function assumes that the T-Track 
+        tally was one automatically generated by and corresponding to a T-Dchain tally but in principle works with any T-Track tally.
+        This works for region, xyz, and tetrahedral mesh geometries in either the original or reduced format.
+        It is currently only designed for tallies tracking a single particle (or &#34;all&#34;).
+        
+    Inputs:
+        - `path_to_dtrk_file` = path to the T-Track tally output file to be parsed
+        - `return_metadata` = Boolean indicating whether additional information is outputted with the flux (D=`False`)
+        
+    Outputs:
+        - `flux` = a RxEx4 array containing regionwise fluxes [x-lower/x-upper/flux/abs_error]
+        - `dtrk_metadata` (only returned if `return_metadata=True`) = list of length two
+               - `dtrk_metadata[0]` = string denoting axis type &#39;eng&#39; (old full format) or &#39;dchain&#39; (new reduced format)
+               - `dtrk_metadata[1]` = string denoting mesh type as either &#39;reg&#39;, &#39;xyz&#39;, or &#39;tet&#39;
+    &#39;&#39;&#39;
+    
+    # Extract text from file
+    f = open(path_to_dtrk_file)
+    file_text = f.read()
+    lines = file_text.split(&#39;\n&#39;)
+    f.close()
+    
+    # Determine geometry type (mesh = reg, xyz, or tet)
+    for line in lines:
+        if &#39;mesh =&#39; in line:
+            meshtype = line.replace(&#39;mesh =&#39;,&#39;&#39;).strip().split()[0]
+            break 
+    
+    # Determine if original or reduced format (axis = eng or axis = dchain or axis=x/y/z)
+    for line in lines:
+        if &#39;axis =&#39; in line:
+            axistype = line.replace(&#39;axis =&#39;,&#39;&#39;).strip().split()[0]
+            break 
+    
+    if meshtype==&#39;xyz&#39;:
+        nx, ny, nz = 0, 0, 0
+        for line in lines:
+            if &#39;nx =&#39; in line:
+                nx = int(line.replace(&#39;nx =&#39;,&#39;&#39;).strip().split()[0])
+                break
+        for line in lines:
+            if &#39;ny =&#39; in line:
+                ny = int(line.replace(&#39;ny =&#39;,&#39;&#39;).strip().split()[0])
+                break
+        for line in lines:
+            if &#39;nz =&#39; in line:
+                nz = int(line.replace(&#39;nz =&#39;,&#39;&#39;).strip().split()[0])
+                break
+        nreg = nx*ny*nz
+    
+    
+    dtrk_metadata = [axistype,meshtype]
+    
+    # Determine number of regions
+    if axistype==&#39;eng&#39;:
+        nreg = file_text.count(&#39;#   no. =&#39;)
+    elif axistype in [&#39;x&#39;,&#39;y&#39;,&#39;z&#39;]:
+        #nreg = nx*ny*nz
+        if axistype==&#39;x&#39;: nbins = nx
+        if axistype==&#39;y&#39;: nbins = ny
+        if axistype==&#39;z&#39;: nbins = nz
+    elif axistype==&#39;dchain&#39;:
+        for li, line in reversed(list(enumerate(lines))):
+            #print(line)
+            if &#39;0    0   0.0000E+00  0.0000&#39; in line:
+                nreg = int(lines[li-1].split()[0])
+                break 
+        
+    if axistype==&#39;dchain&#39;:
+        nEbins = 1968
+    else:
+        for line in lines:
+            if &#39;ne =&#39; in line:
+                nEbins = int(line.replace(&#39;ne =&#39;,&#39;&#39;).strip().split()[0])
+                break
+    
+    if meshtype==&#39;xyz&#39;:
+        flux = np.zeros((nx,ny,nz,nEbins,4))
+    else:
+        flux = np.zeros((nreg,nEbins,4))
+    
+    if axistype==&#39;eng&#39;:
+        in_flux_lines = False
+        ei = 0
+        ri = -1
+        
+        for line in lines:
+            if &#39;#   no. =&#39; in line:
+                ri += 1
+            if &#39;#  e-lower      e-upper &#39; in line:
+                in_flux_lines = True 
+                continue 
+            if in_flux_lines:
+                flux[ri,ei,:] = [float(x) for x in line.split()]
+                flux[ri,ei,3] = flux[ri,ei,3]*flux[ri,ei,2] # convert relative error to absolute error
+                ei += 1
+                if ei == nEbins:
+                    in_flux_lines = False 
+                    ei = 0
+                    
+    elif axistype in [&#39;x&#39;,&#39;y&#39;,&#39;z&#39;]:
+        xi, yi, zi, ei = 0, 0, 0, 0
+        ie_edges, ix_edges, iy_edges, iz_edges = [],[],[],[]
+        in_flux_lines = False
+        for line in lines:
+            if &#39;#   no. =&#39; in line:
+                parts = line.split()
+                if &#39;ie&#39; in parts: ei = int(parts[2+parts.index(&#39;ie&#39;)])-1
+                if &#39;ix&#39; in parts: xi = int(parts[2+parts.index(&#39;ix&#39;)])-1
+                if &#39;iy&#39; in parts: yi = int(parts[2+parts.index(&#39;iy&#39;)])-1
+                if &#39;iz&#39; in parts: zi = int(parts[2+parts.index(&#39;iz&#39;)])-1
+            if &#39;#   e =&#39; in line:
+                parts = line.split()
+                ie_edges.append([float(parts[4]),float(parts[6])])
+            if &#39;#   x =&#39; in line:
+                parts = line.split()
+                ix_edges.append([float(parts[4]),float(parts[6])])
+            if &#39;#   y =&#39; in line:
+                parts = line.split()
+                iy_edges.append([float(parts[4]),float(parts[6])])
+            if &#39;#   z =&#39; in line:
+                parts = line.split()
+                iz_edges.append([float(parts[4]),float(parts[6])])
+                
+            if &#39;#  {}-lower      {}-upper &#39;.format(axistype,axistype) in line:
+                in_flux_lines = True 
+                continue 
+            
+            if in_flux_lines:
+                flux[xi,yi,zi,ei,:] = [float(x) for x in line.split()]
+                flux[xi,yi,zi,ei,3] = flux[xi,yi,zi,ei,3]*flux[xi,yi,zi,ei,2] # convert relative error to absolute error
+                if axistype==&#39;x&#39;: 
+                    xi += 1
+                    if xi==nbins:
+                        in_flux_lines = False 
+                        xi=0
+                if axistype==&#39;y&#39;: 
+                    yi += 1
+                    if yi==nbins:
+                        in_flux_lines = False 
+                        yi=0
+                if axistype==&#39;z&#39;: 
+                    zi += 1
+                    if zi==nbins:
+                        in_flux_lines = False 
+                        zi=0
+        
+            
+                    
+    elif axistype==&#39;dchain&#39;:
+        ebins = [20.0,
+        1.964033E+01,1.947734E+01,1.931570E+01,1.915541E+01,1.899644E+01,1.883880E+01,1.868246E+01,1.852742E+01,1.837367E+01,1.822119E+01,1.806998E+01,1.792002E+01,1.777131E+01,1.762383E+01,1.747757E+01,1.733253E+01,1.718869E+01,1.704605E+01,1.690459E+01,1.676430E+01,1.662518E+01,
+        1.648721E+01,1.635039E+01,1.621470E+01,1.608014E+01,1.594670E+01,1.581436E+01,1.568312E+01,1.555297E+01,1.542390E+01,1.529590E+01,1.516897E+01,1.504309E+01,1.491825E+01,1.479444E+01,1.467167E+01,1.454991E+01,1.442917E+01,1.430943E+01,1.419068E+01,1.407291E+01,
+        1.395612E+01,1.384031E+01,1.372545E+01,1.361155E+01,1.349859E+01,1.338657E+01,1.327548E+01,1.316531E+01,1.305605E+01,1.294770E+01,1.284025E+01,1.273370E+01,1.262802E+01,1.252323E+01,1.241930E+01,1.231624E+01,1.221403E+01,1.211267E+01,1.201215E+01,1.191246E+01,
+        1.181360E+01,1.171557E+01,1.161834E+01,1.152193E+01,1.142631E+01,1.133148E+01,1.123745E+01,1.114419E+01,1.105171E+01,1.095999E+01,1.086904E+01,1.077884E+01,1.068939E+01,1.060068E+01,1.051271E+01,1.042547E+01,1.033895E+01,1.025315E+01,1.016806E+01,1.008368E+01,
+        1.000000E+01,9.917013E+00,9.834715E+00,9.753099E+00,9.672161E+00,9.591895E+00,9.512294E+00,9.433354E+00,9.355070E+00,9.277435E+00,9.200444E+00,9.124092E+00,9.048374E+00,8.973284E+00,8.898818E+00,8.824969E+00,8.751733E+00,8.679105E+00,8.607080E+00,8.535652E+00,
+        8.464817E+00,8.394570E+00,8.324906E+00,8.255820E+00,8.187308E+00,8.119363E+00,8.051983E+00,7.985162E+00,7.918896E+00,7.853179E+00,7.788008E+00,7.723377E+00,7.659283E+00,7.595721E+00,7.532687E+00,7.470175E+00,7.408182E+00,7.346704E+00,7.285736E+00,7.225274E+00,
+        7.165313E+00,7.105850E+00,7.046881E+00,6.988401E+00,6.930406E+00,6.872893E+00,6.815857E+00,6.759294E+00,6.703200E+00,6.647573E+00,6.592406E+00,6.537698E+00,6.483443E+00,6.429639E+00,6.376282E+00,6.323367E+00,6.270891E+00,6.218851E+00,6.167242E+00,6.116062E+00,
+        6.065307E+00,6.014972E+00,5.965056E+00,5.915554E+00,5.866462E+00,5.817778E+00,5.769498E+00,5.721619E+00,5.674137E+00,5.627049E+00,5.580351E+00,5.534042E+00,5.488116E+00,5.442572E+00,5.397406E+00,5.352614E+00,5.308195E+00,5.264143E+00,5.220458E+00,5.177135E+00,
+        5.134171E+00,5.091564E+00,5.049311E+00,5.007408E+00,4.965853E+00,4.924643E+00,4.883775E+00,4.843246E+00,4.803053E+00,4.763194E+00,4.723666E+00,4.684465E+00,4.645590E+00,4.607038E+00,4.568805E+00,4.530890E+00,4.493290E+00,4.456001E+00,4.419022E+00,4.382350E+00,
+        4.345982E+00,4.309916E+00,4.274149E+00,4.238679E+00,4.203504E+00,4.168620E+00,4.134026E+00,4.099719E+00,4.065697E+00,4.031957E+00,3.998497E+00,3.965314E+00,3.932407E+00,3.899773E+00,3.867410E+00,3.835316E+00,3.803488E+00,3.771924E+00,3.740621E+00,3.709579E+00,
+        3.678794E+00,3.648265E+00,3.617989E+00,3.587965E+00,3.558189E+00,3.528661E+00,3.499377E+00,3.470337E+00,3.441538E+00,3.412978E+00,3.384654E+00,3.356566E+00,3.328711E+00,3.301087E+00,3.273692E+00,3.246525E+00,3.219583E+00,3.192864E+00,3.166368E+00,3.140091E+00,
+        3.114032E+00,3.088190E+00,3.062562E+00,3.037147E+00,3.011942E+00,2.986947E+00,2.962159E+00,2.937577E+00,2.913199E+00,2.889023E+00,2.865048E+00,2.841272E+00,2.817693E+00,2.794310E+00,2.771121E+00,2.748124E+00,2.725318E+00,2.702701E+00,2.680272E+00,2.658030E+00,
+        2.635971E+00,2.614096E+00,2.592403E+00,2.570889E+00,2.549554E+00,2.528396E+00,2.507414E+00,2.486605E+00,2.465970E+00,2.445505E+00,2.425211E+00,2.405085E+00,2.385126E+00,2.365332E+00,2.345703E+00,2.326237E+00,2.306932E+00,2.287787E+00,2.268802E+00,2.249973E+00,
+        2.231302E+00,2.212785E+00,2.194421E+00,2.176211E+00,2.158151E+00,2.140241E+00,2.122480E+00,2.104866E+00,2.087398E+00,2.070076E+00,2.052897E+00,2.035860E+00,2.018965E+00,2.002210E+00,1.985595E+00,1.969117E+00,1.952776E+00,1.936570E+00,1.920499E+00,1.904561E+00,
+        1.888756E+00,1.873082E+00,1.857538E+00,1.842122E+00,1.826835E+00,1.811675E+00,1.796640E+00,1.781731E+00,1.766944E+00,1.752281E+00,1.737739E+00,1.723318E+00,1.709017E+00,1.694834E+00,1.680770E+00,1.666821E+00,1.652989E+00,1.639271E+00,1.625667E+00,1.612176E+00,
+        1.598797E+00,1.585530E+00,1.572372E+00,1.559323E+00,1.546383E+00,1.533550E+00,1.520823E+00,1.508202E+00,1.495686E+00,1.483274E+00,1.470965E+00,1.458758E+00,1.446652E+00,1.434646E+00,1.422741E+00,1.410934E+00,1.399225E+00,1.387613E+00,1.376098E+00,1.364678E+00,
+        1.353353E+00,1.342122E+00,1.330984E+00,1.319938E+00,1.308985E+00,1.298122E+00,1.287349E+00,1.276666E+00,1.266071E+00,1.255564E+00,1.245145E+00,1.234812E+00,1.224564E+00,1.214402E+00,1.204324E+00,1.194330E+00,1.184418E+00,1.174589E+00,1.164842E+00,1.155175E+00,
+        1.145588E+00,1.136082E+00,1.126654E+00,1.117304E+00,1.108032E+00,1.098836E+00,1.089717E+00,1.080674E+00,1.071706E+00,1.062812E+00,1.053992E+00,1.045245E+00,1.036571E+00,1.027969E+00,1.019438E+00,1.010978E+00,1.002588E+00,9.942682E-01,9.860171E-01,9.778344E-01,
+        9.697197E-01,9.616723E-01,9.536916E-01,9.457772E-01,9.379285E-01,9.301449E-01,9.224259E-01,9.147709E-01,9.071795E-01,8.996511E-01,8.921852E-01,8.847812E-01,8.774387E-01,8.701570E-01,8.629359E-01,8.557746E-01,8.486728E-01,8.416299E-01,8.346455E-01,8.277190E-01,
+        8.208500E-01,8.140380E-01,8.072825E-01,8.005831E-01,7.939393E-01,7.873507E-01,7.808167E-01,7.743369E-01,7.679109E-01,7.615382E-01,7.552184E-01,7.489511E-01,7.427358E-01,7.365720E-01,7.304594E-01,7.243976E-01,7.183860E-01,7.124243E-01,7.065121E-01,7.006490E-01,
+        6.948345E-01,6.890683E-01,6.833499E-01,6.776790E-01,6.720551E-01,6.664779E-01,6.609470E-01,6.554620E-01,6.500225E-01,6.446282E-01,6.392786E-01,6.339734E-01,6.287123E-01,6.234948E-01,6.183206E-01,6.131893E-01,6.081006E-01,6.030542E-01,5.980496E-01,5.930866E-01,
+        5.881647E-01,5.832837E-01,5.784432E-01,5.736429E-01,5.688824E-01,5.641614E-01,5.594796E-01,5.548366E-01,5.502322E-01,5.456660E-01,5.411377E-01,5.366469E-01,5.321934E-01,5.277769E-01,5.233971E-01,5.190535E-01,5.147461E-01,5.104743E-01,5.062381E-01,5.020369E-01,
+        4.978707E-01,4.937390E-01,4.896416E-01,4.855782E-01,4.815485E-01,4.775523E-01,4.735892E-01,4.696591E-01,4.657615E-01,4.618963E-01,4.580631E-01,4.542618E-01,4.504920E-01,4.467535E-01,4.430460E-01,4.393693E-01,4.357231E-01,4.321072E-01,4.285213E-01,4.249651E-01,
+        4.214384E-01,4.179410E-01,4.144727E-01,4.110331E-01,4.076220E-01,4.042393E-01,4.008846E-01,3.975578E-01,3.942586E-01,3.909868E-01,3.877421E-01,3.845243E-01,3.813333E-01,3.781687E-01,3.750304E-01,3.719181E-01,3.688317E-01,3.657708E-01,3.627354E-01,3.597252E-01,
+        3.567399E-01,3.537795E-01,3.508435E-01,3.479320E-01,3.450446E-01,3.421812E-01,3.393415E-01,3.365254E-01,3.337327E-01,3.309631E-01,3.282166E-01,3.254928E-01,3.227916E-01,3.201129E-01,3.174564E-01,3.148219E-01,3.122093E-01,3.096183E-01,3.070489E-01,3.045008E-01,
+        3.019738E-01,2.994678E-01,2.985000E-01,2.972000E-01,2.969826E-01,2.945181E-01,2.920740E-01,2.896501E-01,2.872464E-01,2.848626E-01,2.824986E-01,2.801543E-01,2.778293E-01,2.755237E-01,2.732372E-01,2.709697E-01,2.687210E-01,2.664910E-01,2.642794E-01,2.620863E-01,
+        2.599113E-01,2.577544E-01,2.556153E-01,2.534941E-01,2.513904E-01,2.493042E-01,2.472353E-01,2.451835E-01,2.431488E-01,2.411310E-01,2.391299E-01,2.371455E-01,2.351775E-01,2.332258E-01,2.312903E-01,2.293709E-01,2.274674E-01,2.255797E-01,2.237077E-01,2.218512E-01,
+        2.200102E-01,2.181844E-01,2.163737E-01,2.145781E-01,2.127974E-01,2.110314E-01,2.092801E-01,2.075434E-01,2.058210E-01,2.041130E-01,2.024191E-01,2.007393E-01,1.990734E-01,1.974214E-01,1.957830E-01,1.941583E-01,1.925470E-01,1.909491E-01,1.893645E-01,1.877930E-01,
+        1.862346E-01,1.846891E-01,1.831564E-01,1.816364E-01,1.801291E-01,1.786342E-01,1.771518E-01,1.756817E-01,1.742237E-01,1.727779E-01,1.713441E-01,1.699221E-01,1.685120E-01,1.671136E-01,1.657268E-01,1.643514E-01,1.629875E-01,1.616349E-01,1.602936E-01,1.589634E-01,
+        1.576442E-01,1.563359E-01,1.550385E-01,1.537519E-01,1.524760E-01,1.512106E-01,1.499558E-01,1.487113E-01,1.474772E-01,1.462533E-01,1.450396E-01,1.438360E-01,1.426423E-01,1.414586E-01,1.402847E-01,1.391205E-01,1.379660E-01,1.368210E-01,1.356856E-01,1.345596E-01,
+        1.334429E-01,1.323355E-01,1.312373E-01,1.301482E-01,1.290681E-01,1.279970E-01,1.269348E-01,1.258814E-01,1.248368E-01,1.238008E-01,1.227734E-01,1.217545E-01,1.207441E-01,1.197421E-01,1.187484E-01,1.177629E-01,1.167857E-01,1.158165E-01,1.148554E-01,1.139022E-01,
+        1.129570E-01,1.120196E-01,1.110900E-01,1.101681E-01,1.092538E-01,1.083471E-01,1.074480E-01,1.065563E-01,1.056720E-01,1.047951E-01,1.039254E-01,1.030630E-01,1.022077E-01,1.013595E-01,1.005184E-01,9.968419E-02,9.885694E-02,9.803655E-02,9.722297E-02,9.641615E-02,
+        9.561602E-02,9.482253E-02,9.403563E-02,9.325525E-02,9.248135E-02,9.171388E-02,9.095277E-02,9.019798E-02,8.944945E-02,8.870714E-02,8.797098E-02,8.724094E-02,8.651695E-02,8.579897E-02,8.508695E-02,8.438084E-02,8.368059E-02,8.298615E-02,8.250000E-02,8.229747E-02,
+        8.161451E-02,8.093721E-02,8.026554E-02,7.959944E-02,7.950000E-02,7.893887E-02,7.828378E-02,7.763412E-02,7.698986E-02,7.635094E-02,7.571733E-02,7.508897E-02,7.446583E-02,7.384786E-02,7.323502E-02,7.262726E-02,7.202455E-02,7.142684E-02,7.083409E-02,7.024626E-02,
+        6.966330E-02,6.908519E-02,6.851187E-02,6.794331E-02,6.737947E-02,6.682031E-02,6.626579E-02,6.571586E-02,6.517051E-02,6.462968E-02,6.409333E-02,6.356144E-02,6.303396E-02,6.251086E-02,6.199211E-02,6.147765E-02,6.096747E-02,6.046151E-02,5.995976E-02,5.946217E-02,
+        5.896871E-02,5.847935E-02,5.799405E-02,5.751277E-02,5.703549E-02,5.656217E-02,5.609278E-02,5.562728E-02,5.516564E-02,5.470784E-02,5.425384E-02,5.380360E-02,5.335710E-02,5.291430E-02,5.247518E-02,5.203971E-02,5.160785E-02,5.117957E-02,5.075484E-02,5.033364E-02,
+        4.991594E-02,4.950170E-02,4.909090E-02,4.868351E-02,4.827950E-02,4.787884E-02,4.748151E-02,4.708747E-02,4.669671E-02,4.630919E-02,4.592488E-02,4.554376E-02,4.516581E-02,4.479099E-02,4.441928E-02,4.405066E-02,4.368510E-02,4.332257E-02,4.296305E-02,4.260651E-02,
+        4.225293E-02,4.190229E-02,4.155455E-02,4.120970E-02,4.086771E-02,4.052857E-02,4.019223E-02,3.985869E-02,3.952791E-02,3.919988E-02,3.887457E-02,3.855196E-02,3.823203E-02,3.791476E-02,3.760011E-02,3.728808E-02,3.697864E-02,3.667176E-02,3.636743E-02,3.606563E-02,
+        3.576633E-02,3.546952E-02,3.517517E-02,3.488326E-02,3.459377E-02,3.430669E-02,3.402199E-02,3.373965E-02,3.345965E-02,3.318198E-02,3.290662E-02,3.263353E-02,3.236272E-02,3.209415E-02,3.182781E-02,3.156368E-02,3.130174E-02,3.104198E-02,3.078437E-02,3.052890E-02,
+        3.027555E-02,3.002430E-02,2.977514E-02,2.952804E-02,2.928300E-02,2.903999E-02,2.879899E-02,2.856000E-02,2.850000E-02,2.832299E-02,2.808794E-02,2.785485E-02,2.762369E-02,2.739445E-02,2.716711E-02,2.700000E-02,2.694166E-02,2.671808E-02,2.649635E-02,2.627647E-02,
+        2.605841E-02,2.584215E-02,2.562770E-02,2.541502E-02,2.520411E-02,2.499495E-02,2.478752E-02,2.458182E-02,2.437782E-02,2.417552E-02,2.397489E-02,2.377593E-02,2.357862E-02,2.338295E-02,2.318890E-02,2.299646E-02,2.280562E-02,2.261636E-02,2.242868E-02,2.224255E-02,
+        2.205796E-02,2.187491E-02,2.169338E-02,2.151335E-02,2.133482E-02,2.115777E-02,2.098218E-02,2.080806E-02,2.063538E-02,2.046413E-02,2.029431E-02,2.012589E-02,1.995887E-02,1.979324E-02,1.962898E-02,1.946608E-02,1.930454E-02,1.914434E-02,1.898547E-02,1.882791E-02,
+        1.867166E-02,1.851671E-02,1.836305E-02,1.821066E-02,1.805953E-02,1.790966E-02,1.776104E-02,1.761364E-02,1.746747E-02,1.732251E-02,1.717876E-02,1.703620E-02,1.689482E-02,1.675461E-02,1.661557E-02,1.647768E-02,1.634094E-02,1.620533E-02,1.607085E-02,1.593748E-02,
+        1.580522E-02,1.567406E-02,1.554398E-02,1.541499E-02,1.528706E-02,1.516020E-02,1.503439E-02,1.490963E-02,1.478590E-02,1.466319E-02,1.454151E-02,1.442083E-02,1.430116E-02,1.418247E-02,1.406478E-02,1.394806E-02,1.383231E-02,1.371752E-02,1.360368E-02,1.349079E-02,
+        1.337883E-02,1.326780E-02,1.315770E-02,1.304851E-02,1.294022E-02,1.283283E-02,1.272634E-02,1.262073E-02,1.251599E-02,1.241212E-02,1.230912E-02,1.220697E-02,1.210567E-02,1.200521E-02,1.190558E-02,1.180678E-02,1.170880E-02,1.161163E-02,1.151527E-02,1.141970E-02,
+        1.132494E-02,1.123095E-02,1.113775E-02,1.104532E-02,1.095366E-02,1.086276E-02,1.077261E-02,1.068321E-02,1.059456E-02,1.050664E-02,1.041944E-02,1.033298E-02,1.024723E-02,1.016219E-02,1.007785E-02,9.994221E-03,9.911282E-03,9.829031E-03,9.747463E-03,9.666572E-03,
+        9.586352E-03,9.506797E-03,9.427903E-03,9.349664E-03,9.272074E-03,9.195127E-03,9.118820E-03,9.043145E-03,8.968099E-03,8.893675E-03,8.819869E-03,8.746676E-03,8.674090E-03,8.602106E-03,8.530719E-03,8.459926E-03,8.389719E-03,8.320095E-03,8.251049E-03,8.182576E-03,
+        8.114671E-03,8.047330E-03,7.980548E-03,7.914319E-03,7.848641E-03,7.783507E-03,7.718914E-03,7.654857E-03,7.591332E-03,7.528334E-03,7.465858E-03,7.403901E-03,7.342458E-03,7.281525E-03,7.221098E-03,7.161172E-03,7.101744E-03,7.042809E-03,6.984362E-03,6.926401E-03,
+        6.868921E-03,6.811918E-03,6.755388E-03,6.699327E-03,6.643731E-03,6.588597E-03,6.533920E-03,6.479697E-03,6.425924E-03,6.372597E-03,6.319712E-03,6.267267E-03,6.215257E-03,6.163678E-03,6.112528E-03,6.061802E-03,6.011496E-03,5.961609E-03,5.912135E-03,5.863072E-03,
+        5.814416E-03,5.766164E-03,5.718312E-03,5.670858E-03,5.623797E-03,5.577127E-03,5.530844E-03,5.484945E-03,5.439427E-03,5.394287E-03,5.349521E-03,5.305127E-03,5.261101E-03,5.217441E-03,5.174143E-03,5.131204E-03,5.088622E-03,5.046393E-03,5.004514E-03,4.962983E-03,
+        4.921797E-03,4.880952E-03,4.840447E-03,4.800277E-03,4.760441E-03,4.720936E-03,4.681758E-03,4.642906E-03,4.604375E-03,4.566165E-03,4.528272E-03,4.490693E-03,4.453426E-03,4.416468E-03,4.379817E-03,4.343471E-03,4.307425E-03,4.271679E-03,4.236230E-03,4.201075E-03,
+        4.166211E-03,4.131637E-03,4.097350E-03,4.063347E-03,4.029627E-03,3.996186E-03,3.963023E-03,3.930135E-03,3.897520E-03,3.865175E-03,3.833099E-03,3.801290E-03,3.769744E-03,3.738460E-03,3.707435E-03,3.676668E-03,3.646157E-03,3.615898E-03,3.585891E-03,3.556133E-03,
+        3.526622E-03,3.497355E-03,3.468332E-03,3.439549E-03,3.411005E-03,3.382698E-03,3.354626E-03,3.326787E-03,3.299179E-03,3.271800E-03,3.244649E-03,3.217722E-03,3.191019E-03,3.164538E-03,3.138276E-03,3.112233E-03,3.086405E-03,3.060792E-03,3.035391E-03,3.010202E-03,
+        2.985221E-03,2.960447E-03,2.935879E-03,2.911515E-03,2.887354E-03,2.863392E-03,2.839630E-03,2.816065E-03,2.792695E-03,2.769519E-03,2.746536E-03,2.723743E-03,2.701139E-03,2.678723E-03,2.656494E-03,2.634448E-03,2.612586E-03,2.590904E-03,2.569403E-03,2.548081E-03,
+        2.526935E-03,2.505965E-03,2.485168E-03,2.464545E-03,2.444092E-03,2.423809E-03,2.403695E-03,2.383747E-03,2.363965E-03,2.344347E-03,2.324892E-03,2.305599E-03,2.286465E-03,2.267490E-03,2.248673E-03,2.230012E-03,2.211506E-03,2.193153E-03,2.174953E-03,2.156904E-03,
+        2.139004E-03,2.121253E-03,2.103650E-03,2.086192E-03,2.068879E-03,2.051710E-03,2.034684E-03,2.017798E-03,2.001053E-03,1.984447E-03,1.967979E-03,1.951647E-03,1.935451E-03,1.919389E-03,1.903461E-03,1.887665E-03,1.871999E-03,1.856464E-03,1.841058E-03,1.825780E-03,
+        1.810628E-03,1.795602E-03,1.780701E-03,1.765923E-03,1.751268E-03,1.736735E-03,1.722323E-03,1.708030E-03,1.693855E-03,1.679798E-03,1.665858E-03,1.652034E-03,1.638324E-03,1.624728E-03,1.611245E-03,1.597874E-03,1.584613E-03,1.571463E-03,1.558422E-03,1.545489E-03,
+        1.532663E-03,1.519944E-03,1.507331E-03,1.494822E-03,1.482417E-03,1.470115E-03,1.457915E-03,1.445816E-03,1.433817E-03,1.421919E-03,1.410118E-03,1.398416E-03,1.386811E-03,1.375303E-03,1.363889E-03,1.352571E-03,1.341346E-03,1.330215E-03,1.319176E-03,1.308228E-03,
+        1.297372E-03,1.286605E-03,1.275928E-03,1.265339E-03,1.254839E-03,1.244425E-03,1.234098E-03,1.223857E-03,1.213700E-03,1.203628E-03,1.193639E-03,1.183734E-03,1.173910E-03,1.164168E-03,1.154507E-03,1.144926E-03,1.135425E-03,1.126002E-03,1.116658E-03,1.107391E-03,
+        1.098201E-03,1.089088E-03,1.080050E-03,1.071087E-03,1.062198E-03,1.053383E-03,1.044641E-03,1.035972E-03,1.027375E-03,1.018849E-03,1.010394E-03,1.002009E-03,9.936937E-04,9.854473E-04,9.772694E-04,9.691593E-04,9.611165E-04,9.531405E-04,9.452307E-04,9.373865E-04,
+        9.296074E-04,9.218928E-04,9.142423E-04,9.066553E-04,8.991312E-04,8.916696E-04,8.842699E-04,8.769316E-04,8.696542E-04,8.624372E-04,8.552801E-04,8.481824E-04,8.411435E-04,8.341631E-04,8.272407E-04,8.203756E-04,8.135676E-04,8.068160E-04,8.001205E-04,7.934805E-04,
+        7.868957E-04,7.803654E-04,7.738894E-04,7.674671E-04,7.610981E-04,7.547820E-04,7.485183E-04,7.423066E-04,7.361464E-04,7.300373E-04,7.239790E-04,7.179709E-04,7.120126E-04,7.061038E-04,7.002441E-04,6.944330E-04,6.886701E-04,6.829550E-04,6.772874E-04,6.716668E-04,
+        6.660928E-04,6.605651E-04,6.550832E-04,6.496469E-04,6.442557E-04,6.389092E-04,6.336071E-04,6.283489E-04,6.231345E-04,6.179633E-04,6.128350E-04,6.077492E-04,6.027057E-04,5.977040E-04,5.927438E-04,5.878248E-04,5.829466E-04,5.781089E-04,5.733114E-04,5.685536E-04,
+        5.638354E-04,5.591563E-04,5.545160E-04,5.499142E-04,5.453506E-04,5.408249E-04,5.363368E-04,5.318859E-04,5.274719E-04,5.230946E-04,5.187536E-04,5.144486E-04,5.101793E-04,5.059455E-04,5.017468E-04,4.975830E-04,4.934537E-04,4.893587E-04,4.852976E-04,4.812703E-04,
+        4.772763E-04,4.733156E-04,4.693877E-04,4.654923E-04,4.616294E-04,4.577984E-04,4.539993E-04,4.502317E-04,4.464953E-04,4.427900E-04,4.391154E-04,4.354713E-04,4.318575E-04,4.282736E-04,4.247195E-04,4.211949E-04,4.176995E-04,4.142332E-04,4.107955E-04,4.073865E-04,
+        4.040057E-04,4.006530E-04,3.973281E-04,3.940308E-04,3.907608E-04,3.875180E-04,3.843021E-04,3.811129E-04,3.779502E-04,3.748137E-04,3.717032E-04,3.686185E-04,3.655595E-04,3.625258E-04,3.595173E-04,3.565338E-04,3.535750E-04,3.506408E-04,3.477309E-04,3.448452E-04,
+        3.419834E-04,3.391454E-04,3.363309E-04,3.335398E-04,3.307719E-04,3.280269E-04,3.253047E-04,3.226051E-04,3.199279E-04,3.172729E-04,3.146399E-04,3.120288E-04,3.094394E-04,3.068715E-04,3.043248E-04,3.017993E-04,2.992948E-04,2.968110E-04,2.943479E-04,2.919052E-04,
+        2.894827E-04,2.870804E-04,2.846980E-04,2.823354E-04,2.799924E-04,2.776688E-04,2.753645E-04,2.730793E-04,2.708131E-04,2.685657E-04,2.663370E-04,2.641267E-04,2.619348E-04,2.597611E-04,2.576054E-04,2.554676E-04,2.533476E-04,2.512451E-04,2.491601E-04,2.470924E-04,
+        2.450418E-04,2.430083E-04,2.409917E-04,2.389917E-04,2.370084E-04,2.350416E-04,2.330910E-04,2.311567E-04,2.292384E-04,2.273360E-04,2.254494E-04,2.235784E-04,2.217230E-04,2.198830E-04,2.180583E-04,2.162487E-04,2.144541E-04,2.126744E-04,2.109095E-04,2.091592E-04,
+        2.074234E-04,2.057021E-04,2.039950E-04,2.023021E-04,2.006233E-04,1.989584E-04,1.973073E-04,1.956699E-04,1.940461E-04,1.924358E-04,1.908388E-04,1.892551E-04,1.876845E-04,1.861269E-04,1.845823E-04,1.830505E-04,1.815315E-04,1.800250E-04,1.785310E-04,1.770494E-04,
+        1.755802E-04,1.741231E-04,1.726781E-04,1.712451E-04,1.698239E-04,1.684146E-04,1.670170E-04,1.656310E-04,1.642565E-04,1.628933E-04,1.615415E-04,1.602010E-04,1.588715E-04,1.575531E-04,1.562456E-04,1.549489E-04,1.536631E-04,1.523879E-04,1.511232E-04,1.498691E-04,
+        1.486254E-04,1.473920E-04,1.461688E-04,1.449558E-04,1.437529E-04,1.425599E-04,1.413768E-04,1.402036E-04,1.390401E-04,1.378862E-04,1.367420E-04,1.356072E-04,1.344818E-04,1.333658E-04,1.322590E-04,1.311615E-04,1.300730E-04,1.289935E-04,1.279231E-04,1.268615E-04,
+        1.258087E-04,1.247646E-04,1.237292E-04,1.227024E-04,1.216842E-04,1.206744E-04,1.196729E-04,1.186798E-04,1.176949E-04,1.167182E-04,1.157496E-04,1.147890E-04,1.138364E-04,1.128917E-04,1.119548E-04,1.110258E-04,1.101044E-04,1.091907E-04,1.082845E-04,1.073859E-04,
+        1.064947E-04,1.056110E-04,1.047345E-04,1.038654E-04,1.030034E-04,1.021486E-04,1.013009E-04,1.004603E-04,9.962658E-05,9.879981E-05,9.797990E-05,9.716679E-05,9.636043E-05,9.556076E-05,9.476773E-05,9.398128E-05,9.320136E-05,9.242791E-05,9.166088E-05,9.090021E-05,
+        9.014586E-05,8.939776E-05,8.865588E-05,8.792015E-05,8.719052E-05,8.646695E-05,8.574939E-05,8.503778E-05,8.433208E-05,8.363223E-05,8.293819E-05,8.224991E-05,8.156734E-05,8.089044E-05,8.021915E-05,7.955344E-05,7.889325E-05,7.823854E-05,7.758926E-05,7.694537E-05,
+        7.630682E-05,7.567357E-05,7.504558E-05,7.442280E-05,7.380518E-05,7.319270E-05,7.258529E-05,7.198293E-05,7.138556E-05,7.079316E-05,7.020566E-05,6.962305E-05,6.904527E-05,6.847228E-05,6.790405E-05,6.734053E-05,6.678169E-05,6.622749E-05,6.567789E-05,6.513285E-05,
+        6.459233E-05,6.405630E-05,6.352471E-05,6.299754E-05,6.247474E-05,6.195628E-05,6.144212E-05,6.093223E-05,6.042657E-05,5.992511E-05,5.942781E-05,5.893464E-05,5.844556E-05,5.796053E-05,5.747954E-05,5.700253E-05,5.652948E-05,5.606036E-05,5.559513E-05,5.513376E-05,
+        5.467623E-05,5.422248E-05,5.377251E-05,5.332626E-05,5.288373E-05,5.244486E-05,5.200963E-05,5.157802E-05,5.114999E-05,5.072551E-05,5.030456E-05,4.988709E-05,4.947309E-05,4.906253E-05,4.865538E-05,4.825160E-05,4.785117E-05,4.745407E-05,4.706026E-05,4.666972E-05,
+        4.628243E-05,4.589834E-05,4.551744E-05,4.513971E-05,4.476511E-05,4.439361E-05,4.402521E-05,4.365985E-05,4.329753E-05,4.293822E-05,4.258189E-05,4.222851E-05,4.187807E-05,4.153054E-05,4.118589E-05,4.084410E-05,4.050514E-05,4.016900E-05,3.983565E-05,3.950507E-05,
+        3.917723E-05,3.885211E-05,3.852969E-05,3.820994E-05,3.789285E-05,3.757838E-05,3.726653E-05,3.695727E-05,3.665057E-05,3.634642E-05,3.604479E-05,3.574566E-05,3.544902E-05,3.515484E-05,3.486310E-05,3.457378E-05,3.428686E-05,3.400233E-05,3.372015E-05,3.344032E-05,
+        3.316281E-05,3.288760E-05,3.261467E-05,3.234401E-05,3.207560E-05,3.180942E-05,3.154544E-05,3.128365E-05,3.102404E-05,3.076658E-05,3.051126E-05,3.025805E-05,3.000695E-05,2.975793E-05,2.951098E-05,2.926607E-05,2.902320E-05,2.878235E-05,2.854349E-05,2.830662E-05,
+        2.807171E-05,2.783875E-05,2.760773E-05,2.737862E-05,2.715141E-05,2.692609E-05,2.670264E-05,2.648104E-05,2.626128E-05,2.604335E-05,2.582722E-05,2.561289E-05,2.540033E-05,2.518954E-05,2.498050E-05,2.477320E-05,2.456761E-05,2.436373E-05,2.416154E-05,2.396104E-05,
+        2.376219E-05,2.356499E-05,2.336944E-05,2.317550E-05,2.298317E-05,2.279244E-05,2.260329E-05,2.241572E-05,2.222969E-05,2.204522E-05,2.186227E-05,2.168084E-05,2.150092E-05,2.132249E-05,2.114554E-05,2.097006E-05,2.079603E-05,2.062345E-05,2.045231E-05,2.028258E-05,
+        2.011426E-05,1.994734E-05,1.978180E-05,1.961764E-05,1.945484E-05,1.929339E-05,1.913328E-05,1.897449E-05,1.881703E-05,1.866087E-05,1.850601E-05,1.835244E-05,1.820013E-05,1.804910E-05,1.789931E-05,1.775077E-05,1.760346E-05,1.745738E-05,1.731250E-05,1.716883E-05,
+        1.702635E-05,1.688506E-05,1.674493E-05,1.660597E-05,1.646816E-05,1.633150E-05,1.619597E-05,1.606156E-05,1.592827E-05,1.579609E-05,1.566500E-05,1.553500E-05,1.540608E-05,1.527823E-05,1.515144E-05,1.502570E-05,1.490101E-05,1.477735E-05,1.465472E-05,1.453310E-05,
+        1.441250E-05,1.429289E-05,1.417428E-05,1.405665E-05,1.394000E-05,1.382431E-05,1.370959E-05,1.359582E-05,1.348299E-05,1.337110E-05,1.326014E-05,1.315010E-05,1.304097E-05,1.293274E-05,1.282542E-05,1.271898E-05,1.261343E-05,1.250876E-05,1.240495E-05,1.230201E-05,
+        1.219991E-05,1.209867E-05,1.199827E-05,1.189870E-05,1.179995E-05,1.170203E-05,1.160492E-05,1.150861E-05,1.141311E-05,1.131839E-05,1.122446E-05,1.113132E-05,1.103894E-05,1.094733E-05,1.085648E-05,1.076639E-05,1.067704E-05,1.058843E-05,1.050056E-05,1.041342E-05,
+        1.032701E-05,1.024130E-05,1.015631E-05,1.007203E-05,9.988446E-06,9.905554E-06,9.823351E-06,9.741830E-06,9.660985E-06,9.580812E-06,9.501303E-06,9.422455E-06,9.344261E-06,9.266715E-06,9.189814E-06,9.113550E-06,9.037919E-06,8.962916E-06,8.888536E-06,8.814772E-06,
+        8.741621E-06,8.669077E-06,8.597135E-06,8.525790E-06,8.455037E-06,8.384871E-06,8.315287E-06,8.246281E-06,8.177848E-06,8.109982E-06,8.042680E-06,7.975936E-06,7.909746E-06,7.844105E-06,7.779009E-06,7.714454E-06,7.650434E-06,7.586945E-06,7.523983E-06,7.461544E-06,
+        7.399622E-06,7.338215E-06,7.277317E-06,7.216925E-06,7.157034E-06,7.097640E-06,7.038739E-06,6.980326E-06,6.922399E-06,6.864952E-06,6.807981E-06,6.751484E-06,6.695455E-06,6.639892E-06,6.584789E-06,6.530144E-06,6.475952E-06,6.422210E-06,6.368914E-06,6.316060E-06,
+        6.263645E-06,6.211665E-06,6.160116E-06,6.108995E-06,6.058298E-06,6.008022E-06,5.958164E-06,5.908719E-06,5.859684E-06,5.811056E-06,5.762832E-06,5.715008E-06,5.667581E-06,5.620547E-06,5.573904E-06,5.527647E-06,5.481775E-06,5.436284E-06,5.391169E-06,5.346430E-06,
+        5.302061E-06,5.258061E-06,5.214426E-06,5.171153E-06,5.128239E-06,5.085681E-06,5.043477E-06,4.918953E-06,4.797503E-06,4.679053E-06,4.563526E-06,4.450853E-06,4.340961E-06,4.233782E-06,4.129250E-06,4.000000E-06,3.927860E-06,3.830880E-06,3.736300E-06,3.644050E-06,
+        3.554080E-06,3.466330E-06,3.380750E-06,3.300000E-06,3.217630E-06,3.137330E-06,3.059020E-06,2.983490E-06,2.909830E-06,2.837990E-06,2.767920E-06,2.720000E-06,2.659320E-06,2.600000E-06,2.550000E-06,2.485030E-06,2.421710E-06,2.382370E-06,2.360000E-06,2.300270E-06,
+        2.242050E-06,2.185310E-06,2.130000E-06,2.100000E-06,2.059610E-06,2.020000E-06,1.974490E-06,1.930000E-06,1.884460E-06,1.855390E-06,1.840000E-06,1.797000E-06,1.755000E-06,1.711970E-06,1.670000E-06,1.629510E-06,1.590000E-06,1.544340E-06,1.500000E-06,1.475000E-06,
+        1.440000E-06,1.404560E-06,1.370000E-06,1.337500E-06,1.300000E-06,1.267080E-06,1.235000E-06,1.202060E-06,1.170000E-06,1.150000E-06,1.123000E-06,1.110000E-06,1.097000E-06,1.080000E-06,1.071000E-06,1.045000E-06,1.035000E-06,1.020000E-06,9.960000E-07,9.860000E-07,
+        9.720000E-07,9.500000E-07,9.300000E-07,9.100000E-07,8.764250E-07,8.600000E-07,8.500000E-07,8.194500E-07,7.900000E-07,7.800000E-07,7.415500E-07,7.050000E-07,6.825600E-07,6.531500E-07,6.250000E-07,5.952800E-07,5.669600E-07,5.400000E-07,5.315800E-07,5.196200E-07,
+        5.000000E-07,4.850000E-07,4.670100E-07,4.496800E-07,4.330000E-07,4.139900E-07,4.000000E-07,3.910000E-07,3.699300E-07,3.500000E-07,3.346600E-07,3.200000E-07,3.145000E-07,3.000000E-07,2.800000E-07,2.635100E-07,2.480000E-07,2.335800E-07,2.200000E-07,2.091400E-07,
+        1.988100E-07,1.890000E-07,1.800000E-07,1.697100E-07,1.600000E-07,1.530300E-07,1.463700E-07,1.400000E-07,1.340000E-07,1.150000E-07,1.000000E-07,9.500000E-08,8.000000E-08,7.700000E-08,6.700000E-08,5.800000E-08,5.000000E-08,4.200000E-08,3.500000E-08,3.000000E-08,
+        2.500000E-08,2.000000E-08,1.500000E-08,1.000000E-08,6.900000E-09,5.000000E-09,3.000000E-09,1.000010E-11
+        ]
+        ebins = ebins[::-1]
+        in_flux_lines = False
+        for line in lines:
+            if &#39;# num ie flux r.err&#39; in line:
+                in_flux_lines = True 
+                continue 
+            if &#39;0    0   0.0000E+00  0.0000&#39; in line:
+                in_flux_lines = False
+                break 
+            if in_flux_lines:
+                vals = line.split() 
+                ri = int(vals[0])-1
+                ei = int(vals[1])-1
+                fval = np.float(vals[2])
+                ferr = np.float(vals[3])
+                
+                flux[ri,ei,0] = ebins[ei]
+                flux[ri,ei,1] = ebins[ei+1]
+                flux[ri,ei,2] = fval
+                flux[ri,ei,3] = fval*ferr 
+                
+    if return_metadata:
+        return flux, dtrk_metadata
+    else:
+        return flux</code></pre>
 </details>
 </dd>
 <dt id="Hunters_tools.quotient"><code class="name flex">
@@ -10883,7 +12449,7 @@ be uniform for all entries, a single value (or list of single values) may be pro
 </details>
 </dd>
 <dt id="Hunters_tools.tally"><code class="name flex">
-<span>def <span class="ident">tally</span></span>(<span>data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_event_indices_histogram=False)</span>
+<span>def <span class="ident">tally</span></span>(<span>data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_uncertainties=False, return_event_indices_histogram=False)</span>
 </code></dt>
 <dd>
 <div class="desc"><h2 id="description">Description</h2>
@@ -10908,8 +12474,10 @@ width normalization from <code>divide_by_bin_width</code> but before any scaling
 <li><code>scaling_factor</code> = value which all final bins are multiplied/scaled by (D=<code>1</code>)</li>
 <li><code>place_overflow_at_ends</code> = handling of values outside of binning range (D=<code>True</code>); if <code>True</code> extreme
 values are tallied in the first/last bin, if <code>False</code> extreme values are discarded</li>
-<li><code>return_event_indices_histogram</code> = return an extra N-length list whose elements are each a list
-of the event indices corresponding to each bin (D=<code>False</code>)</li>
+<li><code>return_uncertainties</code> = Boolean denoting if should return an extra N-length list whose elements<br>
+are the statistical uncertainties (square root w/ normalizations) of the tally bins (D=<code>False</code>)</li>
+<li><code>return_event_indices_histogram</code> = Boolean denoting if should return an extra N-length list whose elements<br>
+are each a list of the event indices corresponding to each bin (D=<code>False</code>)</li>
 </ul>
 <h2 id="notes">Notes</h2>
 <p>Regarding the binning structure, this function only needs to be provided <code>bin_edges</code> directly (takes priority)
@@ -10920,13 +12488,14 @@ either <code>nbins</code> or <code>bin_width</code>.
 <ul>
 <li><code>tallied_hist</code> = N-length list of tallied data</li>
 <li><code>bin_edges</code> = list of N+1 bin edge values for a tally of N bins</li>
+<li><code>tallied_hist_err</code> = (optional) N-length list of statistical uncertainties of tallied data</li>
 <li><code>tallied_event_indicies</code> = (optional) N-length list of, for each bin, a list of the event indices populating it</li>
 </ul></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_event_indices_histogram=False):
+<pre><code class="python">def tally(data, bin_edges=[], min_bin_left_edge=None, max_bin_right_edge=None, nbins=None, bin_width=None, divide_by_bin_width=False, normalization=None, scaling_factor=1, place_overflow_at_ends=True, return_uncertainties=False, return_event_indices_histogram=False):
     &#39;&#39;&#39;
     Description:
         Tally number of incidences of values falling within a desired binning structure
@@ -10947,8 +12516,10 @@ either <code>nbins</code> or <code>bin_width</code>.
         - `scaling_factor` = value which all final bins are multiplied/scaled by (D=`1`)
         - `place_overflow_at_ends` = handling of values outside of binning range (D=`True`); if `True` extreme 
                        values are tallied in the first/last bin, if `False` extreme values are discarded
-        - `return_event_indices_histogram` = return an extra N-length list whose elements are each a list 
-                       of the event indices corresponding to each bin (D=`False`)
+        - `return_uncertainties` = Boolean denoting if should return an extra N-length list whose elements  
+                       are the statistical uncertainties (square root w/ normalizations) of the tally bins (D=`False`)
+        - `return_event_indices_histogram` = Boolean denoting if should return an extra N-length list whose elements  
+                       are each a list of the event indices corresponding to each bin (D=`False`)
     
     Notes:
         Regarding the binning structure, this function only needs to be provided `bin_edges` directly (takes priority) 
@@ -10958,6 +12529,7 @@ either <code>nbins</code> or <code>bin_width</code>.
     Outputs:
         - `tallied_hist` = N-length list of tallied data
         - `bin_edges` = list of N+1 bin edge values for a tally of N bins
+        - `tallied_hist_err` = (optional) N-length list of statistical uncertainties of tallied data
         - `tallied_event_indicies` = (optional) N-length list of, for each bin, a list of the event indices populating it
     &#39;&#39;&#39;
     
@@ -10998,19 +12570,33 @@ either <code>nbins</code> or <code>bin_width</code>.
                     tallied_event_indicies[j-1].append(i)
                     break
         
-        if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
-        if normalization==&#39;unity-sum&#39;: tallied_hist = tallied_hist/np.sum(tallied_hist)
-        if normalization==&#39;unity-max-val&#39;: tallied_hist = tallied_hist/np.max(tallied_hist)
-        if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
-        return tallied_hist,bin_edges,tallied_event_indicies
-    
+        
+        
     else:
         tallied_hist, bins = np.histogram(data,bins=bin_edges)
-        if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
-        if normalization==&#39;unity-sum&#39;: tallied_hist = tallied_hist/np.sum(tallied_hist)
-        if normalization==&#39;unity-max-val&#39;: tallied_hist = tallied_hist/np.max(tallied_hist)
-        if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
-        return tallied_hist,bin_edges</code></pre>
+    
+    if return_uncertainties: 
+        tallied_hist_err = np.sqrt(tallied_hist)
+        if divide_by_bin_width: tallied_hist_err = tallied_hist_err/(bin_edges[1:]-bin_edges[:-1])
+        if normalization==&#39;unity-sum&#39;: tallied_hist_err = tallied_hist_err/np.sum(tallied_hist)
+        if normalization==&#39;unity-max-val&#39;: tallied_hist_err = tallied_hist_err/np.max(tallied_hist)
+        if scaling_factor != 1: tallied_hist_err = tallied_hist_err*scaling_factor
+        
+    if divide_by_bin_width: tallied_hist = tallied_hist/(bin_edges[1:]-bin_edges[:-1])
+    if normalization==&#39;unity-sum&#39;: tallied_hist = tallied_hist/np.sum(tallied_hist)
+    if normalization==&#39;unity-max-val&#39;: tallied_hist = tallied_hist/np.max(tallied_hist)
+    if scaling_factor != 1: tallied_hist = tallied_hist*scaling_factor
+        
+    if return_event_indices_histogram:
+        if return_uncertainties: 
+            return tallied_hist,bin_edges,tallied_hist_err,tallied_event_indicies
+        else:
+            return tallied_hist,bin_edges,tallied_event_indicies
+    else:
+        if return_uncertainties: 
+            return tallied_hist,bin_edges,tallied_hist_err
+        else:
+            return tallied_hist,bin_edges</code></pre>
 </details>
 </dd>
 <dt id="Hunters_tools.time_str_to_sec_multiplier"><code class="name flex">
@@ -11178,6 +12764,7 @@ Higher values of <code>n</code> just correspond to a higher-quality and more acc
 <ul>
 <li><a href="#general-purpose-functions">General Purpose Functions</a></li>
 <li><a href="#scienceengineering-functions">Science/Engineering Functions</a></li>
+<li><a href="#monte-carlo-transport-code-functions-phitsmcnp">Monte Carlo transport code Functions (PHITS/MCNP)</a></li>
 <li><a href="#plotting-related-functions">Plotting-related Functions</a></li>
 </ul>
 </div>
@@ -11199,14 +12786,18 @@ Higher values of <code>n</code> just correspond to a higher-quality and more acc
 <li><code><a title="Hunters_tools.absolute_difference" href="#Hunters_tools.absolute_difference">absolute_difference</a></code></li>
 <li><code><a title="Hunters_tools.assemble_GCR_flux" href="#Hunters_tools.assemble_GCR_flux">assemble_GCR_flux</a></code></li>
 <li><code><a title="Hunters_tools.calc_GCR_intensity" href="#Hunters_tools.calc_GCR_intensity">calc_GCR_intensity</a></code></li>
+<li><code><a title="Hunters_tools.chi_squared" href="#Hunters_tools.chi_squared">chi_squared</a></code></li>
 <li><code><a title="Hunters_tools.circ_solid_angle" href="#Hunters_tools.circ_solid_angle">circ_solid_angle</a></code></li>
 <li><code><a title="Hunters_tools.circumcenter" href="#Hunters_tools.circumcenter">circumcenter</a></code></li>
 <li><code><a title="Hunters_tools.circumradius" href="#Hunters_tools.circumradius">circumradius</a></code></li>
 <li><code><a title="Hunters_tools.colors_list_10" href="#Hunters_tools.colors_list_10">colors_list_10</a></code></li>
 <li><code><a title="Hunters_tools.colors_list_12" href="#Hunters_tools.colors_list_12">colors_list_12</a></code></li>
+<li><code><a title="Hunters_tools.colors_list_20" href="#Hunters_tools.colors_list_20">colors_list_20</a></code></li>
 <li><code><a title="Hunters_tools.colors_list_6" href="#Hunters_tools.colors_list_6">colors_list_6</a></code></li>
+<li><code><a title="Hunters_tools.colors_list_64" href="#Hunters_tools.colors_list_64">colors_list_64</a></code></li>
 <li><code><a title="Hunters_tools.curvature" href="#Hunters_tools.curvature">curvature</a></code></li>
 <li><code><a title="Hunters_tools.dist" href="#Hunters_tools.dist">dist</a></code></li>
+<li><code><a title="Hunters_tools.energy_resolution_of_peak" href="#Hunters_tools.energy_resolution_of_peak">energy_resolution_of_peak</a></code></li>
 <li><code><a title="Hunters_tools.eval_distribution" href="#Hunters_tools.eval_distribution">eval_distribution</a></code></li>
 <li><code><a title="Hunters_tools.fancy_3D_plot" href="#Hunters_tools.fancy_3D_plot">fancy_3D_plot</a></code></li>
 <li><code><a title="Hunters_tools.fancy_plot" href="#Hunters_tools.fancy_plot">fancy_plot</a></code></li>
@@ -11224,6 +12815,9 @@ Higher values of <code>n</code> just correspond to a higher-quality and more acc
 <li><code><a title="Hunters_tools.nuclide_plain_str_to_ZZZAAAM" href="#Hunters_tools.nuclide_plain_str_to_ZZZAAAM">nuclide_plain_str_to_ZZZAAAM</a></code></li>
 <li><code><a title="Hunters_tools.nuclide_plain_str_to_latex_str" href="#Hunters_tools.nuclide_plain_str_to_latex_str">nuclide_plain_str_to_latex_str</a></code></li>
 <li><code><a title="Hunters_tools.nuclide_to_Latex_form" href="#Hunters_tools.nuclide_to_Latex_form">nuclide_to_Latex_form</a></code></li>
+<li><code><a title="Hunters_tools.parse_dyld_files" href="#Hunters_tools.parse_dyld_files">parse_dyld_files</a></code></li>
+<li><code><a title="Hunters_tools.parse_tdeposit_file" href="#Hunters_tools.parse_tdeposit_file">parse_tdeposit_file</a></code></li>
+<li><code><a title="Hunters_tools.parse_ttrack_file" href="#Hunters_tools.parse_ttrack_file">parse_ttrack_file</a></code></li>
 <li><code><a title="Hunters_tools.quotient" href="#Hunters_tools.quotient">quotient</a></code></li>
 <li><code><a title="Hunters_tools.r_squared" href="#Hunters_tools.r_squared">r_squared</a></code></li>
 <li><code><a title="Hunters_tools.rebinner" href="#Hunters_tools.rebinner">rebinner</a></code></li>
