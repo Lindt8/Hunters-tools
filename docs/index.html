@@ -50,6 +50,10 @@ other scripts and/or are just generally useful and could possibly be useful in t
 : generates an Excel-formatted (tab-delimited) table string</li>
 <li><code><a title="Hunters_tools.Latex_table_generator" href="#Hunters_tools.Latex_table_generator">Latex_table_generator()</a></code>
 : generates a LaTeX-formatted table string</li>
+<li><code><a title="Hunters_tools.make_pickle" href="#Hunters_tools.make_pickle">make_pickle()</a></code>
+: saves an object to a pickle file</li>
+<li><code><a title="Hunters_tools.read_pickle" href="#Hunters_tools.read_pickle">read_pickle()</a></code>
+: retrieves an object from a pickle file</li>
 </ul>
 <h3 id="scienceengineering-functions">Science/Engineering Functions</h3>
 <ul>
@@ -190,6 +194,8 @@ The functions contained in this module and brief descriptions of their functions
 - `table_array_generator`           : generates an array of table values and headers
 - `Excel_table_generator`           : generates an Excel-formatted (tab-delimited) table string
 - `Latex_table_generator`           : generates a LaTeX-formatted table string
+- `make_pickle`                     : saves an object to a pickle file
+- `read_pickle`                     : retrieves an object from a pickle file
 
 ### Science/Engineering Functions
 
@@ -297,6 +303,7 @@ from munch import *
 from scipy.optimize import curve_fit
 from scipy import stats
 from scipy.stats import chisquare
+from scipy.io import FortranFile
 
 
 &#39;&#39;&#39;
@@ -945,7 +952,44 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
 
     return tab_str
 
+def make_pickle(path_to_pickle_file, object_to_be_pickled):
+    &#39;&#39;&#39;
+    Description:
+        Save a provided object to a provided filepath as a pickle file.
 
+    Dependencies:
+        `import pickle`
+
+    Input:
+        - `path_to_pickle_file` = File path to where the pickle file should be saved
+        - `object_to_be_pickled` = Object (array, dict, list, etc.) to be pickled.
+
+    Output:
+        - (none)
+    &#39;&#39;&#39;
+    with open(path_to_pickle_file, &#39;wb&#39;) as handle:
+        pickle.dump(object_to_be_pickled, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        print(&#39;Pickle file written:&#39;, path_to_pickle_file, &#39;\n&#39;)
+    return
+
+
+def read_pickle(path_to_pickle_file):
+    &#39;&#39;&#39;
+    Description:
+        Save a provided object to a provided filepath as a pickle file.
+
+    Dependencies:
+        `import pickle`
+
+    Input:
+        - `path_to_pickle_file` = File path to where the pickle file is saved
+
+    Output:
+        - `extracted_data_from_pickle` = Object with contents of the pickle file
+    &#39;&#39;&#39;
+    with open(path_to_pickle_file, &#39;rb&#39;) as handle:
+        extracted_data_from_pickle = pickle.load(handle)
+    return extracted_data_from_pickle
 
 &#39;&#39;&#39;
 **************************************************************************************************
@@ -10766,6 +10810,48 @@ makeErrorBoxes(xdata,ydata,xerrbox,yerrbox,fc=nx_color,ec='None',alpha=0.1,lw=0.
     ax.add_collection(pc)</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.make_pickle"><code class="name flex">
+<span>def <span class="ident">make_pickle</span></span>(<span>path_to_pickle_file, object_to_be_pickled)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Save a provided object to a provided filepath as a pickle file.</p>
+<h2 id="dependencies">Dependencies</h2>
+<p><code>import pickle</code></p>
+<h2 id="input">Input</h2>
+<ul>
+<li><code>path_to_pickle_file</code> = File path to where the pickle file should be saved</li>
+<li><code>object_to_be_pickled</code> = Object (array, dict, list, etc.) to be pickled.</li>
+</ul>
+<h2 id="output">Output</h2>
+<ul>
+<li>(none)</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def make_pickle(path_to_pickle_file, object_to_be_pickled):
+    &#39;&#39;&#39;
+    Description:
+        Save a provided object to a provided filepath as a pickle file.
+
+    Dependencies:
+        `import pickle`
+
+    Input:
+        - `path_to_pickle_file` = File path to where the pickle file should be saved
+        - `object_to_be_pickled` = Object (array, dict, list, etc.) to be pickled.
+
+    Output:
+        - (none)
+    &#39;&#39;&#39;
+    with open(path_to_pickle_file, &#39;wb&#39;) as handle:
+        pickle.dump(object_to_be_pickled, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        print(&#39;Pickle file written:&#39;, path_to_pickle_file, &#39;\n&#39;)
+    return</code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.nuclide_plain_str_ZZZAAAM"><code class="name flex">
 <span>def <span class="ident">nuclide_plain_str_ZZZAAAM</span></span>(<span>nuc_str)</span>
 </code></dt>
@@ -12266,6 +12352,45 @@ It is currently only designed for tallies tracking a single particle (or "all").
     return r2</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.read_pickle"><code class="name flex">
+<span>def <span class="ident">read_pickle</span></span>(<span>path_to_pickle_file)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Save a provided object to a provided filepath as a pickle file.</p>
+<h2 id="dependencies">Dependencies</h2>
+<p><code>import pickle</code></p>
+<h2 id="input">Input</h2>
+<ul>
+<li><code>path_to_pickle_file</code> = File path to where the pickle file is saved</li>
+</ul>
+<h2 id="output">Output</h2>
+<ul>
+<li><code>extracted_data_from_pickle</code> = Object with contents of the pickle file</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_pickle(path_to_pickle_file):
+    &#39;&#39;&#39;
+    Description:
+        Save a provided object to a provided filepath as a pickle file.
+
+    Dependencies:
+        `import pickle`
+
+    Input:
+        - `path_to_pickle_file` = File path to where the pickle file is saved
+
+    Output:
+        - `extracted_data_from_pickle` = Object with contents of the pickle file
+    &#39;&#39;&#39;
+    with open(path_to_pickle_file, &#39;rb&#39;) as handle:
+        extracted_data_from_pickle = pickle.load(handle)
+    return extracted_data_from_pickle</code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.rebinner"><code class="name flex">
 <span>def <span class="ident">rebinner</span></span>(<span>output_xbins, input_xbins, input_ybins)</span>
 </code></dt>
@@ -13381,6 +13506,7 @@ Higher values of <code>n</code> just correspond to a higher-quality and more acc
 <li><code><a title="Hunters_tools.hex_to_rgb" href="#Hunters_tools.hex_to_rgb">hex_to_rgb</a></code></li>
 <li><code><a title="Hunters_tools.humansize" href="#Hunters_tools.humansize">humansize</a></code></li>
 <li><code><a title="Hunters_tools.makeErrorBoxes" href="#Hunters_tools.makeErrorBoxes">makeErrorBoxes</a></code></li>
+<li><code><a title="Hunters_tools.make_pickle" href="#Hunters_tools.make_pickle">make_pickle</a></code></li>
 <li><code><a title="Hunters_tools.nuclide_plain_str_ZZZAAAM" href="#Hunters_tools.nuclide_plain_str_ZZZAAAM">nuclide_plain_str_ZZZAAAM</a></code></li>
 <li><code><a title="Hunters_tools.nuclide_plain_str_to_ZZZAAAM" href="#Hunters_tools.nuclide_plain_str_to_ZZZAAAM">nuclide_plain_str_to_ZZZAAAM</a></code></li>
 <li><code><a title="Hunters_tools.nuclide_plain_str_to_latex_str" href="#Hunters_tools.nuclide_plain_str_to_latex_str">nuclide_plain_str_to_latex_str</a></code></li>
@@ -13391,6 +13517,7 @@ Higher values of <code>n</code> just correspond to a higher-quality and more acc
 <li><code><a title="Hunters_tools.parse_ttrack_file" href="#Hunters_tools.parse_ttrack_file">parse_ttrack_file</a></code></li>
 <li><code><a title="Hunters_tools.quotient" href="#Hunters_tools.quotient">quotient</a></code></li>
 <li><code><a title="Hunters_tools.r_squared" href="#Hunters_tools.r_squared">r_squared</a></code></li>
+<li><code><a title="Hunters_tools.read_pickle" href="#Hunters_tools.read_pickle">read_pickle</a></code></li>
 <li><code><a title="Hunters_tools.rebinner" href="#Hunters_tools.rebinner">rebinner</a></code></li>
 <li><code><a title="Hunters_tools.relative_error_to_N" href="#Hunters_tools.relative_error_to_N">relative_error_to_N</a></code></li>
 <li><code><a title="Hunters_tools.rgb_to_hex" href="#Hunters_tools.rgb_to_hex">rgb_to_hex</a></code></li>

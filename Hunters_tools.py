@@ -18,6 +18,8 @@ The functions contained in this module and brief descriptions of their functions
 - `table_array_generator`           : generates an array of table values and headers
 - `Excel_table_generator`           : generates an Excel-formatted (tab-delimited) table string
 - `Latex_table_generator`           : generates a LaTeX-formatted table string
+- `make_pickle`                     : saves an object to a pickle file
+- `read_pickle`                     : retrieves an object from a pickle file
 
 ### Science/Engineering Functions
 
@@ -125,6 +127,7 @@ from munch import *
 from scipy.optimize import curve_fit
 from scipy import stats
 from scipy.stats import chisquare
+from scipy.io import FortranFile
 
 
 '''
@@ -773,7 +776,44 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
 
     return tab_str
 
+def make_pickle(path_to_pickle_file, object_to_be_pickled):
+    '''
+    Description:
+        Save a provided object to a provided filepath as a pickle file.
 
+    Dependencies:
+        `import pickle`
+
+    Input:
+        - `path_to_pickle_file` = File path to where the pickle file should be saved
+        - `object_to_be_pickled` = Object (array, dict, list, etc.) to be pickled.
+
+    Output:
+        - (none)
+    '''
+    with open(path_to_pickle_file, 'wb') as handle:
+        pickle.dump(object_to_be_pickled, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        print('Pickle file written:', path_to_pickle_file, '\n')
+    return
+
+
+def read_pickle(path_to_pickle_file):
+    '''
+    Description:
+        Save a provided object to a provided filepath as a pickle file.
+
+    Dependencies:
+        `import pickle`
+
+    Input:
+        - `path_to_pickle_file` = File path to where the pickle file is saved
+
+    Output:
+        - `extracted_data_from_pickle` = Object with contents of the pickle file
+    '''
+    with open(path_to_pickle_file, 'rb') as handle:
+        extracted_data_from_pickle = pickle.load(handle)
+    return extracted_data_from_pickle
 
 '''
 **************************************************************************************************
