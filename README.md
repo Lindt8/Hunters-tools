@@ -6,4 +6,6 @@ This Python module contains a collection of my functions which I often utilize i
 
 One may use the functions by first placing the Hunters_tools.py Python script into a folder in their PYTHONPATH system variable or in the active directory and then just importing them normally ( from Hunters_tools import * ).
 
-I have also written a similar tools module for usage with the DCHAIN-PHITS code; it can be found at [https://github.com/Lindt8/DCHAIN-Tools](https://github.com/Lindt8/DCHAIN-Tools).
+I have also written similar tools modules for usage with the PHITS and DCHAIN-PHITS codes; they can be found at [PHITS-Tools](https://github.com/Lindt8/PHITS-Tools) and [DCHAIN-Tools](https://github.com/Lindt8/DCHAIN-Tools).
+
+All of the professionally-relevant Python modules I have developed are summarized [here](https://lindt8.github.io/professional-code-projects/), and more general information about me and the work I do / have done can be found on [my personal webpage](https://lindt8.github.io/).
