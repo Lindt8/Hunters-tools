@@ -796,6 +796,11 @@ def make_pickle(path_to_pickle_file, object_to_be_pickled):
         print('Pickle file written:', path_to_pickle_file, '\n')
     return
 
+import numpy as np
+import os
+import sys
+import pickle
+import time
 
 def read_pickle(path_to_pickle_file):
     '''
@@ -4344,8 +4349,8 @@ def fancy_plot(
     plt.ylabel(y_label_str,fontsize=fs)
     plt.xscale(x_scale)
     plt.yscale(y_scale)
-    plt.grid(b=True, which='major', linestyle='-', alpha=0.25)
-    plt.grid(b=True, which='minor', linestyle='-', alpha=0.10)
+    plt.grid(visible=True, which='major', linestyle='-', alpha=0.25)
+    plt.grid(visible=True, which='minor', linestyle='-', alpha=0.10)
     # ensure at least minimum number of decades are present on a plot by increasing padding if necessary
     zoom_mult = 1.0
     x_log_buffer = 0.15*zoom_mult
