@@ -3967,7 +3967,7 @@ def fancy_plot(
             xdata_lists = dxdata_lists
             ydata_lists = dydata_lists
 
-            if all([x == None for x in data_labels]):
+            if all([x == None for x in ddata_labels]):
                 data_labels = None
             else:
                 data_labels = ddata_labels
