@@ -79,6 +79,7 @@ The functions contained in this module and brief descriptions of their functions
 - `colors_list_64`                  : return 1 of 64 color values from a StackOverflow comment by user Tatarize
 - `get_colormap`                    : retrieve a matplotlib colormap using just its string name
 - `truncate_colormap`               : truncate a colormap to new upper/lower bounds to a subset of the original colormap
+- `add_colorbar_onto_plot`          : overlay a colorbar onto an existing figure with user-specified bounds and values
 - `makeErrorBoxes`                  : draw uncertainties as a box surrounding a point (can be used with/instead of crosshair-style error bars)
 - `fancy_plot`                      : very comprehensive plotter for 2D datasets, an accumulation of all of my past plotting commands/settings
 - `fancy_3D_plot`                   : very comprehensive plotter for 3D datasets on 3D axes, an accumulation of all of my past plotting commands/settings
@@ -3623,6 +3624,68 @@ def truncate_colormap(cmap, min_val=0.0, max_val=1.0, n=100):
         'trunc({n},{a:.2f},{b:.2f})'.format(n=cmap.name, a=min_val, b=max_val),
         cmap(np.linspace(min_val, max_val, n)))
     return new_cmap
+
+
+def add_colorbar_onto_plot(fig, colormap, cm_val_min, cm_val_max, boundaries=None, orientation='horizontal',
+                           location_from_left=0.25, location_from_bottom=0.80, width=0.5, height=0.05,
+                           label_text='colorbar', label_fontsize=14, spacing='proportional', drawedges=False,
+                           extend='neither', extendfrac=None, extendrect=False, ticks=None, tick_format=None
+                           ):
+    '''
+    Description:
+        Overlay a colorbar on top of an existing figure, such as one made by `fancy_plot()`.  Note that this is more for
+        "hacking in" a color bar with your own specified values and boundaries that is overlaid on top of the plot area.
+        For a more "proper" colorbar figure, please see the `fancy_3D_plot()` function.
+
+    Inputs:
+       (required)
+
+      - `fig` = pyplot figure (same as the output `fig` of `fancy_plot()`)
+      - `colormap` = callable colormap object which can be evaluated for any value from 0 to 1, such as is outputted from
+            the `get_colormap()` and `truncate_colormap()` functions.
+      - `cm_val_min` = the minimum value (`float`) represented by color on the color bar
+      - `cm_val_max` = the maximum value (`float`) represented by color on the color bar
+
+    Inputs:
+       (optional)
+
+      - `boundaries` = if desired, provide a list of numbers to be used as the discrete color "bins" on the color bar (D=`None`)
+      - `orientation` = specify orientation of the colorbar as `'horizontal'` or `'vertical'` (D=`'horizontal'`)
+      - `location_from_left` = horizontal location of colorbar on the `fig`, specified as the fraction of the `fig` width from the left edge (D=`0.25`)
+      - `location_from_bottom` = vertical location of colorbar on the `fig`, specified as the fraction of the `fig` height from the bottom edge (D=`0.80`)
+      - `width` = width of colorbar as a fraction of the width of `fig` (D=`0.25`)
+      - `height` = height of colorbar as a fraction of the height of `fig` (D=`0.25`)
+      - `label_text` = label for the colorbar (D=`'colorbar'`)
+      - `label_fontsize` = font size of the label text (D=`14`)
+      - `extend` = Select one: {`'neither'`, `'both'`, `'min'`, `'max'`} (D=`'neither'`) Make pointed end(s) for out-of-range values
+             (unless 'neither'). These are set for a given colormap using the colormap set_under and set_over methods.
+      - `extendfrac` = If set to `None`, both the minimum and maximum triangular colorbar extensions will have a length of 5% of the interior colorbar length (this is the default setting).
+             If set to 'auto', makes the triangular colorbar extensions the same lengths as the interior boxes (when spacing is set to `'uniform'`) or the same lengths as the respective adjacent interior boxes (when spacing is set to `'proportional'`).
+             If a scalar, indicates the length of both the minimum and maximum triangular colorbar extensions as a fraction of the interior colorbar length. A two-element sequence of fractions may also be given, indicating the lengths of the minimum and maximum colorbar extensions respectively as a fraction of the interior colorbar length.
+      - `extendrect` = A Boolean, if `False` the minimum and maximum colorbar extensions will be triangular (the default). If `True` the extensions will be rectangular.(D=`False`)
+      - `spacing` = Select one: {'uniform', 'proportional'} (D=`'proportional'`) For discrete colorbars (BoundaryNorm or contours), `'uniform'` gives each color the same space; `'proportional'` makes the space proportional to the data interval.
+      - `ticks` = (D=`None`) If `None`, ticks are determined automatically from the input; otherwise, provide a list of ticks or Locator
+      - `tick_format` = (D=`None`) If `None`, ScalarFormatter is used. Format strings, e.g., `"%4.2e"` or `"{x:.2e}"`, are supported. An alternative Formatter may be given instead.
+      - `drawedges` = A Boolean (D=`False`) specifying whether to draw lines at color boundaries.
+
+    Outputs:
+      - `cax` = colorbar axes
+      - `cbar` = colorbar object
+
+    '''
+    # https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.colorbar.html
+    cax = fig.add_axes([location_from_left, location_from_bottom, width, height])  # left, bottom, width, height
+    sm = plt.cm.ScalarMappable(cmap=colormap, norm=plt.Normalize(vmin=cm_val_min, vmax=cm_val_max))
+    sm._A = []
+    cbar = plt.colorbar(sm, cax=cax, boundaries=boundaries, orientation=orientation, spacing=spacing,
+                        extend=extend, extendfrac=extendfrac, extendrect=extendrect,
+                        ticks=ticks, format=tick_format, drawedges=drawedges
+                        )  #
+    cbar.set_label(label=label_text, size=label_fontsize)  # weight='bold')
+    return cax, cbar
+
+
+
 
 def makeErrorBoxes(ax,xdata,ydata,xerror,yerror,fc='None',ec='k',alpha=1.0,lw=0.5):
     '''
