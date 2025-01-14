@@ -83,6 +83,7 @@ The functions contained in this module and brief descriptions of their functions
 - `makeErrorBoxes`                  : draw uncertainties as a box surrounding a point (can be used with/instead of crosshair-style error bars)
 - `fancy_plot`                      : very comprehensive plotter for 2D datasets, an accumulation of all of my past plotting commands/settings
 - `fancy_3D_plot`                   : very comprehensive plotter for 3D datasets on 3D axes, an accumulation of all of my past plotting commands/settings
+- `fancy_save_plot`                 : save images of figures in various file formats at once
 
 '''
 '''
@@ -5577,7 +5578,53 @@ def fancy_3D_plot(
     return fig, ax
 
 
+def fancy_save_plot(fig,dir_path=None,filename=None,extensions=['.png','.pdf'],facecolor=(0, 0, 0, 0),**savefig_kwargs):
+    '''
+    Description:
+        Save a provided Matplotlib/Pyplot figure handle as an image file.
 
+    Dependencies:
+    
+        - `import matplotlib.pyplot as plt`
+        - `slugify()` function from Hunters_tools (if `filename=None`)
+
+    Input:
+       (required)
+       
+        - `fig` = Matplotlib/Pyplot figure handle (e.g., `fig, ax = plt.subplots()`)
+
+    Inputs:
+       (optional)
+       
+        - `dir_path` = (D=`None`) string or Path object denoting the path to the directory where image(s) are to 
+               be saved; if `None`, the current working directory is used.
+        - `filename` = (D=`None`) string denoting the filename of the plot image; if `None`, an attempt will be made
+               to retrieve the title of the plot and use the `slugify()` version of it as the filename. 
+               Failing that, the figure window's name will be used.  And failing that, it will simply be named "plot".
+        - `extensions` = (D=`['.png','.pdf']`) a single string or list of strings of the file extension(s) for the figure to be saved as; 
+               listed [here](https://matplotlib.org/stable/api/backend_bases_api.html#matplotlib.backend_bases.FigureCanvasBase.filetypes)
+               or using `plt.gcf().canvas.get_supported_filetypes()` you can see a list of options.
+        - `facecolor` = (D=`(0, 0, 0, 0)`) `facecolor` argument of [`plt.savefig`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html)
+        - `**savefig_kwargs` extra keyword arguments to be passed directly to [`plt.savefig`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html)
+    Output:
+        - (none)
+    '''
+    import matplotlib.pyplot as plt
+    from pathlib import Path
+    if isinstance(extensions, str): extensions = [extensions]
+    if dir_path == None: dir_path = Path.cwd()
+    if filename == None:
+        filename = 'plot'
+        try:
+            filename = slugify(fig.axes[0].get_title())
+        except:
+            filename = slugify(fig.canvas.get_window_title())
+    if filename.strip() == '': filename = 'plot'
+    for ext in extensions:
+        plot_filename = filename + ext  # or use fig.canvas.get_window_title()
+        plot_save_path = Path.joinpath(dir_path, plot_filename)
+        fig.savefig(plot_save_path, facecolor=facecolor,**savefig_kwargs)
+    return
 
 
 

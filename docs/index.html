@@ -171,6 +171,8 @@ other scripts and/or are just generally useful and could possibly be useful in t
 : very comprehensive plotter for 2D datasets, an accumulation of all of my past plotting commands/settings</li>
 <li><code><a title="Hunters_tools.fancy_3D_plot" href="#Hunters_tools.fancy_3D_plot">fancy_3D_plot()</a></code>
 : very comprehensive plotter for 3D datasets on 3D axes, an accumulation of all of my past plotting commands/settings</li>
+<li><code><a title="Hunters_tools.fancy_save_plot" href="#Hunters_tools.fancy_save_plot">fancy_save_plot()</a></code>
+: save images of figures in various file formats at once</li>
 </ul>
 <details class="source">
 <summary>
@@ -261,6 +263,7 @@ The functions contained in this module and brief descriptions of their functions
 - `makeErrorBoxes`                  : draw uncertainties as a box surrounding a point (can be used with/instead of crosshair-style error bars)
 - `fancy_plot`                      : very comprehensive plotter for 2D datasets, an accumulation of all of my past plotting commands/settings
 - `fancy_3D_plot`                   : very comprehensive plotter for 3D datasets on 3D axes, an accumulation of all of my past plotting commands/settings
+- `fancy_save_plot`                 : save images of figures in various file formats at once
 
 &#39;&#39;&#39;
 &#39;&#39;&#39;
@@ -5755,7 +5758,53 @@ def fancy_3D_plot(
     return fig, ax
 
 
+def fancy_save_plot(fig,dir_path=None,filename=None,extensions=[&#39;.png&#39;,&#39;.pdf&#39;],facecolor=(0, 0, 0, 0),**savefig_kwargs):
+    &#39;&#39;&#39;
+    Description:
+        Save a provided Matplotlib/Pyplot figure handle as an image file.
 
+    Dependencies:
+    
+        - `import matplotlib.pyplot as plt`
+        - `slugify()` function from Hunters_tools (if `filename=None`)
+
+    Input:
+       (required)
+       
+        - `fig` = Matplotlib/Pyplot figure handle (e.g., `fig, ax = plt.subplots()`)
+
+    Inputs:
+       (optional)
+       
+        - `dir_path` = (D=`None`) string or Path object denoting the path to the directory where image(s) are to 
+               be saved; if `None`, the current working directory is used.
+        - `filename` = (D=`None`) string denoting the filename of the plot image; if `None`, an attempt will be made
+               to retrieve the title of the plot and use the `slugify()` version of it as the filename. 
+               Failing that, the figure window&#39;s name will be used.  And failing that, it will simply be named &#34;plot&#34;.
+        - `extensions` = (D=`[&#39;.png&#39;,&#39;.pdf&#39;]`) a single string or list of strings of the file extension(s) for the figure to be saved as; 
+               listed [here](https://matplotlib.org/stable/api/backend_bases_api.html#matplotlib.backend_bases.FigureCanvasBase.filetypes)
+               or using `plt.gcf().canvas.get_supported_filetypes()` you can see a list of options.
+        - `facecolor` = (D=`(0, 0, 0, 0)`) `facecolor` argument of [`plt.savefig`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html)
+        - `**savefig_kwargs` extra keyword arguments to be passed directly to [`plt.savefig`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html)
+    Output:
+        - (none)
+    &#39;&#39;&#39;
+    import matplotlib.pyplot as plt
+    from pathlib import Path
+    if isinstance(extensions, str): extensions = [extensions]
+    if dir_path == None: dir_path = Path.cwd()
+    if filename == None:
+        filename = &#39;plot&#39;
+        try:
+            filename = slugify(fig.axes[0].get_title())
+        except:
+            filename = slugify(fig.canvas.get_window_title())
+    if filename.strip() == &#39;&#39;: filename = &#39;plot&#39;
+    for ext in extensions:
+        plot_filename = filename + ext  # or use fig.canvas.get_window_title()
+        plot_save_path = Path.joinpath(dir_path, plot_filename)
+        fig.savefig(plot_save_path, facecolor=facecolor,**savefig_kwargs)
+    return
 
 
 
@@ -10207,6 +10256,94 @@ Likewise, for <code>'outside bottom'</code> legends only the x-coordinate needs 
     return fig, ax</code></pre>
 </details>
 </dd>
+<dt id="Hunters_tools.fancy_save_plot"><code class="name flex">
+<span>def <span class="ident">fancy_save_plot</span></span>(<span>fig, dir_path=None, filename=None, extensions=['.png', '.pdf'], facecolor=(0, 0, 0, 0), **savefig_kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="description">Description</h2>
+<p>Save a provided Matplotlib/Pyplot figure handle as an image file.</p>
+<h2 id="dependencies">Dependencies</h2>
+<ul>
+<li><code>import matplotlib.pyplot as plt</code></li>
+<li><code><a title="Hunters_tools.slugify" href="#Hunters_tools.slugify">slugify()</a></code> function from Hunters_tools (if <code>filename=None</code>)</li>
+</ul>
+<h2 id="input">Input</h2>
+<p>(required)</p>
+<ul>
+<li><code>fig</code> = Matplotlib/Pyplot figure handle (e.g., <code>fig, ax = plt.subplots()</code>)</li>
+</ul>
+<h2 id="inputs">Inputs</h2>
+<p>(optional)</p>
+<ul>
+<li><code>dir_path</code> = (D=<code>None</code>) string or Path object denoting the path to the directory where image(s) are to
+be saved; if <code>None</code>, the current working directory is used.</li>
+<li><code>filename</code> = (D=<code>None</code>) string denoting the filename of the plot image; if <code>None</code>, an attempt will be made
+to retrieve the title of the plot and use the <code><a title="Hunters_tools.slugify" href="#Hunters_tools.slugify">slugify()</a></code> version of it as the filename.
+Failing that, the figure window's name will be used.
+And failing that, it will simply be named "plot".</li>
+<li><code>extensions</code> = (D=<code>['.png','.pdf']</code>) a single string or list of strings of the file extension(s) for the figure to be saved as;
+listed <a href="https://matplotlib.org/stable/api/backend_bases_api.html#matplotlib.backend_bases.FigureCanvasBase.filetypes">here</a>
+or using <code>plt.gcf().canvas.get_supported_filetypes()</code> you can see a list of options.</li>
+<li><code>facecolor</code> = (D=<code>(0, 0, 0, 0)</code>) <code>facecolor</code> argument of <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html"><code>plt.savefig</code></a></li>
+<li><code>**savefig_kwargs</code> extra keyword arguments to be passed directly to <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html"><code>plt.savefig</code></a></li>
+</ul>
+<h2 id="output">Output</h2>
+<ul>
+<li>(none)</li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fancy_save_plot(fig,dir_path=None,filename=None,extensions=[&#39;.png&#39;,&#39;.pdf&#39;],facecolor=(0, 0, 0, 0),**savefig_kwargs):
+    &#39;&#39;&#39;
+    Description:
+        Save a provided Matplotlib/Pyplot figure handle as an image file.
+
+    Dependencies:
+    
+        - `import matplotlib.pyplot as plt`
+        - `slugify()` function from Hunters_tools (if `filename=None`)
+
+    Input:
+       (required)
+       
+        - `fig` = Matplotlib/Pyplot figure handle (e.g., `fig, ax = plt.subplots()`)
+
+    Inputs:
+       (optional)
+       
+        - `dir_path` = (D=`None`) string or Path object denoting the path to the directory where image(s) are to 
+               be saved; if `None`, the current working directory is used.
+        - `filename` = (D=`None`) string denoting the filename of the plot image; if `None`, an attempt will be made
+               to retrieve the title of the plot and use the `slugify()` version of it as the filename. 
+               Failing that, the figure window&#39;s name will be used.  And failing that, it will simply be named &#34;plot&#34;.
+        - `extensions` = (D=`[&#39;.png&#39;,&#39;.pdf&#39;]`) a single string or list of strings of the file extension(s) for the figure to be saved as; 
+               listed [here](https://matplotlib.org/stable/api/backend_bases_api.html#matplotlib.backend_bases.FigureCanvasBase.filetypes)
+               or using `plt.gcf().canvas.get_supported_filetypes()` you can see a list of options.
+        - `facecolor` = (D=`(0, 0, 0, 0)`) `facecolor` argument of [`plt.savefig`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html)
+        - `**savefig_kwargs` extra keyword arguments to be passed directly to [`plt.savefig`](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html)
+    Output:
+        - (none)
+    &#39;&#39;&#39;
+    import matplotlib.pyplot as plt
+    from pathlib import Path
+    if isinstance(extensions, str): extensions = [extensions]
+    if dir_path == None: dir_path = Path.cwd()
+    if filename == None:
+        filename = &#39;plot&#39;
+        try:
+            filename = slugify(fig.axes[0].get_title())
+        except:
+            filename = slugify(fig.canvas.get_window_title())
+    if filename.strip() == &#39;&#39;: filename = &#39;plot&#39;
+    for ext in extensions:
+        plot_filename = filename + ext  # or use fig.canvas.get_window_title()
+        plot_save_path = Path.joinpath(dir_path, plot_filename)
+        fig.savefig(plot_save_path, facecolor=facecolor,**savefig_kwargs)
+    return</code></pre>
+</details>
+</dd>
 <dt id="Hunters_tools.fetch_MC_material"><code class="name flex">
 <span>def <span class="ident">fetch_MC_material</span></span>(<span>matid=None, matname=None, matsource=None, concentration_type=None, particle=None)</span>
 </code></dt>
@@ -13675,6 +13812,7 @@ Higher values of <code>n</code> just correspond to a higher-quality and more acc
 <li><code><a title="Hunters_tools.eval_distribution" href="#Hunters_tools.eval_distribution">eval_distribution</a></code></li>
 <li><code><a title="Hunters_tools.fancy_3D_plot" href="#Hunters_tools.fancy_3D_plot">fancy_3D_plot</a></code></li>
 <li><code><a title="Hunters_tools.fancy_plot" href="#Hunters_tools.fancy_plot">fancy_plot</a></code></li>
+<li><code><a title="Hunters_tools.fancy_save_plot" href="#Hunters_tools.fancy_save_plot">fancy_save_plot</a></code></li>
 <li><code><a title="Hunters_tools.fetch_MC_material" href="#Hunters_tools.fetch_MC_material">fetch_MC_material</a></code></li>
 <li><code><a title="Hunters_tools.find" href="#Hunters_tools.find">find</a></code></li>
 <li><code><a title="Hunters_tools.fit_distribution" href="#Hunters_tools.fit_distribution">fit_distribution</a></code></li>
