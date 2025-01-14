@@ -621,7 +621,7 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
             else:
                 if np.any(color_val_table==0):
                     print('Warning: core_table contains zero values; they will be ignored while assigning colors.')
-                color_val_table[color_val_table==0] = np.NaN # set to NaN and use this as a flag to ignore later
+                color_val_table[color_val_table==0] = np.nan # set to NaN and use this as a flag to ignore later
                 color_val_table = np.log(color_val_table)
                 col_min_val = np.log(col_min_val)
                 col_max_val = np.log(col_max_val)
@@ -4959,28 +4959,28 @@ def fancy_3D_plot(
 
         # If user provided axis bounds, enforce them now
         if x_limits:
-            if x_limits[0]: xvals[xvals<x_limits[0]] = np.NaN
-            if x_limits[1]: xvals[xvals>x_limits[1]] = np.NaN
+            if x_limits[0]: xvals[xvals<x_limits[0]] = np.nan
+            if x_limits[1]: xvals[xvals>x_limits[1]] = np.nan
         if y_limits:
-            if y_limits[0]: yvals[yvals<y_limits[0]] = np.NaN
-            if y_limits[1]: yvals[yvals>y_limits[1]] = np.NaN
+            if y_limits[0]: yvals[yvals<y_limits[0]] = np.nan
+            if y_limits[1]: yvals[yvals>y_limits[1]] = np.nan
         if z_limits:
             if OoB_z_handling=='NaN':
-                if z_limits[0]: zvals[zvals<z_limits[0]] = np.NaN
-                if z_limits[1]: zvals[zvals>z_limits[1]] = np.NaN
+                if z_limits[0]: zvals[zvals<z_limits[0]] = np.nan
+                if z_limits[1]: zvals[zvals>z_limits[1]] = np.nan
             elif OoB_z_handling=='limits':
                 if z_limits[0]: zvals[zvals<z_limits[0]] = z_limits[0]
                 if z_limits[1]: zvals[zvals>z_limits[1]] = z_limits[1]
 
 
         if z_scale == 'log':
-            zvals[(zvals<=0)] = np.NaN
+            zvals[(zvals<=0)] = np.nan
             zvals = np.log10(zvals)
         if y_scale == 'log':
-            yvals[yvals<=0] = np.NaN
+            yvals[yvals<=0] = np.nan
             yvals = np.log10(yvals)
         if x_scale == 'log':
-            xvals[xvals<=0] = np.NaN
+            xvals[xvals<=0] = np.nan
             xvals = np.log10(xvals)
 
         if len(yvals) != 0:
