@@ -4,14 +4,15 @@ This script serves to automate production of HTML documentation for Hunters tool
 
 import pdoc
 import os
-import re
+import sys
 
 #output_dir = "docs"
 #os.makedirs(output_dir, exist_ok=True)
 output_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.abspath(os.path.join(output_dir, '..')))
 
 # Build documentation following pdoc instructions: https://pdoc3.github.io/pdoc/doc/pdoc/#programmatic-usage
-modules = ['../Hunters_tools.py'] 
+modules = ['Hunters_tools'] 
 context = pdoc.Context()
 modules = [pdoc.Module(mod, context=context) for mod in modules]
 pdoc.link_inheritance(context)

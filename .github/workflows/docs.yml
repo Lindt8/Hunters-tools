@@ -33,6 +33,17 @@ jobs:
     - name: Build documentation
       run: python docs/build_docs.py
 
+    - name: Show diff and status for debugging
+      run: |
+        echo "Calculating hash of docs/index.html..."
+        sha256sum docs/index.html || echo "No index.html found"
+        echo ""
+        echo "Git status:"
+        git status
+        echo ""
+        echo "Git diff:"
+        git diff docs/index.html || echo "No diff"
+
     - name: Commit and push updated docs
       run: |
         git config user.name "github-actions[bot]"
