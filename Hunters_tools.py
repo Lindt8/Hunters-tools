@@ -84,6 +84,7 @@ The functions contained in this module and brief descriptions of their functions
 - `fancy_plot`                      : very comprehensive plotter for 2D datasets, an accumulation of all of my past plotting commands/settings
 - `fancy_3D_plot`                   : very comprehensive plotter for 3D datasets on 3D axes, an accumulation of all of my past plotting commands/settings
 - `fancy_save_plot`                 : save images of figures in various file formats at once
+- `fancy_add_second_vertical_axis`  : add a second, re-scaled vertical axis to the right side of a plot
 
 '''
 '''
@@ -5625,6 +5626,187 @@ def fancy_save_plot(fig,dir_path=None,filename=None,extensions=['.png','.pdf'],f
         plot_save_path = Path.joinpath(dir_path, plot_filename)
         fig.savefig(plot_save_path, facecolor=facecolor,**savefig_kwargs)
     return
+
+
+def fancy_add_second_vertical_axis(fig, ax, color='tab:blue',
+                                   y2_label='y2-text', y2_fontsize=None,
+                                   conversion_factor=1.0, show_minor_gridlines=False,
+                                   show_midpoint_gridlines=True, adjust_layout=True,
+                                   manual_margins=None):
+    r"""
+    Description:
+        Add a second vertical axis to an existing matplotlib plot.  This adds a new vertical axis to the right side of 
+        the plot that is just a rescaled version of the left vertical axis.  The idea is to be able to have two sets of 
+        units for the same set of data displayed at the same time, e.g., meters and yards, hours and minutes, 
+        seconds per cycle and days per million cycles, etc.
+
+    Input:
+       (required)
+       
+        - `fig` = Matplotlib/Pyplot figure handle (e.g., `fig, ax = plt.subplots()`, `fig, ax = fancy_plot()`)
+        - `ax` = Matplotlib/Pyplot axis handle (e.g., `fig, ax = plt.subplots()`, `fig, ax = fancy_plot()`), this will become `ax1` in output
+
+    Inputs:
+       (optional)
+       
+        - `color` = (D=`'tab:blue'`) a string denoting the color for the secondary axis elements 
+        - `y2_label` = (D=`'y2-text'`) a string of the label for the secondary y-axis
+        - `y2_fontsize` = (D=`None`, copy fs from `ax`) a float denoting the font size for the secondary y-axis label
+        - `conversion_factor` = (D=`1.0`) a float denoting the multiplicative conversion factor between the units of 
+                the left vertical axis and the new right vertical axis. 
+                For instance, if the original left vertical axis is showing time in hours but you want the new right
+                vertical axis to show time in minutes, you would set `conversion_factor=60`.
+        - `show_minor_gridlines` = (D=`False`) Boolean denoting whether to show all minor gridlines from `ax2`
+        - `show_midpoint_gridlines` = (D=`True`) Boolean denoting whether to show midpoint gridlines from `ax2`. 
+           - If `ax` has a linear scale, these are simply at the midpoints between major gridlines. 
+           - If `ax` has a log scale, these are placed at value of 3*10^N for relevant N.
+        - `adjust_layout` = (D=`True`) Boolean denoting whether to automatically adjust subplot margins using `fig.tight_layout(pad=2.0)`
+                (this is usually a good idea as the creation of the twin axis can often mess this up); 
+                see `manual_margins` for further custimization options on this
+        - `manual_margins` = (D=`None`) a tuple or list providing
+                manual margin settings as (left, bottom, right, top) in figure coordinates (0-1).
+                If provided and `adjust_layout=True`, uses manual adjustment instead of `fig.tight_layout(pad=2.0)` 
+                (default behavior when set to `None`).
+           - If using this, `manual_margins=(0.15, 0.15, 0.85, 0.9)` is often a good starting point. 
+    
+    
+    Outputs:
+      - `fig` = pyplot figure object
+      - `ax1` = the original pyplot figure plot/subplot axes handles
+      - `ax2` = the new secondary pyplot figure plot/subplot axes handles
+
+    """
+    ax1 = ax
+    # Create the second y-axis on the right side
+    ax2 = ax1.twinx()
+    # If ax1 is log-scaled, make ax2 log-scaled too
+    if ax1.get_yscale() == 'log':
+        ax2.set_yscale('log')
+    # Get the y-axis limits from the original axis
+    y_min, y_max = ax1.get_ylim()
+    # Set the same limits for the second axis, but converted
+    ax2.set_ylim(y_min * conversion_factor, y_max * conversion_factor)
+    # Set labels for both axes
+    if y2_fontsize is None:
+        # Try to get font size from ax1's ylabel
+        try:
+            y2_fontsize = ax1.yaxis.label.get_fontsize()
+        except:
+            y2_fontsize = plt.rcParams['axes.labelsize']  # Use default if can't get ax1 size
+    ax2.set_ylabel(y2_label, color=color, fontsize=y2_fontsize)
+
+    # Style the right axis in the specified color
+    ax2.tick_params(axis='y', colors=color, which='both', labelcolor=color)
+    ax2.spines['right'].set_color(color)
+    ax2.yaxis.label.set_color(color)
+
+    # Add 3×10^N tick labels to the secondary axis if enabled
+    if show_midpoint_gridlines and ax1.get_yscale() == 'log':
+        # Get existing major ticks within bounds (more elegant approach)
+        y_min_ax2, y_max_ax2 = ax2.get_ylim()
+        existing_ticks = [t for t in ax2.get_yticks() if y_min_ax2 <= t <= y_max_ax2]
+
+        # Generate 3×10^N values that span the ax2 range
+        min_exp = int(np.floor(np.log10(y_min_ax2 / 3)))
+        max_exp = int(np.ceil(np.log10(y_max_ax2 / 3)))
+
+        midpoint_ticks = [3 * (10 ** exp) for exp in range(min_exp, max_exp + 1)
+                          if y_min_ax2 <= 3 * (10 ** exp) <= y_max_ax2]
+
+        # Combine and sort all ticks
+        all_ticks = sorted(list(set(existing_ticks + midpoint_ticks)))
+        ax2.set_yticks(all_ticks)
+
+    # Turn off ax2's gridlines completely
+    ax2.grid(False)
+
+    def draw_custom_gridlines():
+        """Draw custom gridlines on ax1 based on ax2 tick positions"""
+        # Clear existing blue gridlines
+        lines_to_remove = [line for line in ax1.lines if hasattr(line, '_gridline_blue') and line._gridline_blue]
+        for line in lines_to_remove:
+            line.remove()
+
+        # Draw major gridlines
+        ax2_major_ticks = ax2.get_yticks()
+        y_min_ax2, y_max_ax2 = ax2.get_ylim()
+
+        for tick in ax2_major_ticks:
+            if y_min_ax2 <= tick <= y_max_ax2:  # Only ticks within ax2 range
+                tick_pos_ax1 = tick / conversion_factor
+                if ax1.get_ylim()[0] <= tick_pos_ax1 <= ax1.get_ylim()[1]:
+                    line = ax1.axhline(y=tick_pos_ax1, color=color, alpha=0.3,
+                                       linestyle='--', linewidth=0.8, zorder=0)
+                    line._gridline_blue = True
+
+        # Draw minor gridlines if enabled
+        if show_minor_gridlines:
+            ax2_minor_ticks = ax2.yaxis.get_ticklocs(minor=True)
+            for tick in ax2_minor_ticks:
+                if y_min_ax2 <= tick <= y_max_ax2:
+                    tick_pos_ax1 = tick / conversion_factor
+                    if ax1.get_ylim()[0] <= tick_pos_ax1 <= ax1.get_ylim()[1]:
+                        line = ax1.axhline(y=tick_pos_ax1, color=color, alpha=0.15,
+                                           linestyle='--', linewidth=0.4, zorder=0)
+                        line._gridline_blue = True
+
+        # Draw midpoint gridlines if enabled
+        if show_midpoint_gridlines:
+            if ax1.get_yscale() == 'log':
+                # Log scale: use 3×10^N positions
+                min_exp = int(np.floor(np.log10(y_min_ax2 / 3)))
+                max_exp = int(np.ceil(np.log10(y_max_ax2 / 3)))
+                for exp in range(min_exp, max_exp + 1):
+                    midpoint_ax2 = 3 * (10 ** exp)
+                    if y_min_ax2 <= midpoint_ax2 <= y_max_ax2:
+                        midpoint_ax1 = midpoint_ax2 / conversion_factor
+                        if ax1.get_ylim()[0] <= midpoint_ax1 <= ax1.get_ylim()[1]:
+                            line = ax1.axhline(y=midpoint_ax1, color=color, alpha=0.2,
+                                               linestyle='--', linewidth=0.6, zorder=0)
+                            line._gridline_blue = True
+            else:
+                # Linear scale: use midpoints between major ticks
+                major_ticks = [tick for tick in ax2_major_ticks if y_min_ax2 <= tick <= y_max_ax2]
+                major_ticks.sort()
+                for i in range(len(major_ticks) - 1):
+                    midpoint_ax2 = (major_ticks[i] + major_ticks[i + 1]) / 2
+                    midpoint_ax1 = midpoint_ax2 / conversion_factor
+                    if ax1.get_ylim()[0] <= midpoint_ax1 <= ax1.get_ylim()[1]:
+                        line = ax1.axhline(y=midpoint_ax1, color=color, alpha=0.2,
+                                           linestyle='--', linewidth=0.6, zorder=0)
+                        line._gridline_blue = True
+
+    # Draw initial gridlines
+    draw_custom_gridlines()
+
+    # Function to keep ax2 synchronized with ax1
+    def update_ax2(ax1):
+        """Function to keep ax2 synchronized with ax1"""
+        y_min, y_max = ax1.get_ylim()
+        ax2.set_ylim(y_min * conversion_factor, y_max * conversion_factor)
+        draw_custom_gridlines()  # Redraw gridlines at new positions
+
+    # Connect the synchronization function to axis limit changes
+    ax1.callbacks.connect('ylim_changed', lambda ax: update_ax2(ax1))
+
+    # Format the right axis ticks
+    ax2.yaxis.set_major_formatter(ticker.FuncFormatter(
+        lambda x, p: f'{x:.2g}' if x < 1 else f'{x:.1f}'.rstrip('0').rstrip('.')
+    ))
+
+    # Automatic layout adjustment using tight_layout with padding
+    if adjust_layout:
+        if manual_margins is not None:
+            # Use manual margin specification
+            left, bottom, right, top = manual_margins
+            fig.subplots_adjust(left=left, bottom=bottom, right=right, top=top)
+        else:
+            # Use automatic tight_layout with padding
+            fig.tight_layout(pad=2.0)
+
+    return fig, ax1, ax2
+
+
 
 
 
