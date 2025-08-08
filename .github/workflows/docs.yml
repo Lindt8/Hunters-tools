@@ -17,8 +17,6 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v4
-      with:
-        persist-credentials: false  # Prevents token reuse issues
 
     - name: Set up Python
       uses: actions/setup-python@v5
