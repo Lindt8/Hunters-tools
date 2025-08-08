@@ -6,9 +6,7 @@ import pdoc
 import os
 import sys
 
-#output_dir = "docs"
-#os.makedirs(output_dir, exist_ok=True)
-output_dir = os.path.dirname(os.path.abspath(__file__))
+output_dir = os.path.dirname(os.path.abspath(__file__))  # this script is in /docs/
 sys.path.insert(0, os.path.abspath(os.path.join(output_dir, '..')))
 
 # Build documentation following pdoc instructions: https://pdoc3.github.io/pdoc/doc/pdoc/#programmatic-usage
