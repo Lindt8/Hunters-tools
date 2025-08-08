@@ -1,0 +1,44 @@
+name: Generate Docs
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'Hunters_tools.py'
+      - 'docs/build_docs.py'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false  # Prevents token reuse issues
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt || true 
+        pip install pdoc3==0.10.0
+
+    - name: Build documentation
+      run: python docs/build_docs.py
+
+    - name: Commit and push updated docs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/index.html
+          git commit -m "Auto-update docs [skip ci]" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
