@@ -197,8 +197,8 @@ def slugify(value):
     '''
     old_value = value
     value = str(ud.normalize('NFKD', value).encode('ascii', 'ignore'))
-    value = str(re.sub('[^\w\s-]', '', value).strip().lower())
-    value = str(re.sub('[-\s]+', '-', value))
+    value = str(re.sub(r'[^\w\s-]', '', value).strip().lower())
+    value = str(re.sub(r'[-\s]+', '-', value))
     if value[0]=='b' and old_value[0]!='b': value = value[1:] # TeX strings sometimes case resulting string to being with 'b'
     return value
 
@@ -557,7 +557,7 @@ def Latex_table_generator(core_table,title=None,row_headers=None,row_header_span
        - `hline_row_indices` = list (or single) of integer row indices beneath which a hline, spanning all columns,
                       should be drawn (D=`None`) (-1 places line above very first row)
        - `cline_row_cstart_cend_indices_triplets` = list of length-3 lists (or an individual length-3 list) composed of
-                      [row index, column start, column end] for the \cline{start-stop} command
+                      [row index, column start, column end] for the \\cline{start-stop} command
        - `return_only_core_tabular_environment` = boolean specifying whether the whole table (`False`) or just the inner
                       tabular environment (`True`) will be returned (D=`False`)
        - `nest_in_ruledtabular` = boolean specifying if the tabular environment will (`True`) or will not (`False`) be
@@ -1372,7 +1372,7 @@ def nuclide_plain_str_to_latex_str(nuc_str,include_Z=False):
     return tex_str
 
 def nuclide_plain_str_to_ZZZAAAM(nuc_str):
-    '''
+    r'''
     Description:
         Converts a plaintext string of a nuclide to an integer ZZZAAAM = 10000\*Z + 10\*A + M
 
@@ -1502,7 +1502,7 @@ nuclide_plain_str_ZZZAAAM = nuclide_plain_str_to_ZZZAAAM # backwards compatibili
 
 
 def ZZZAAAM_to_nuclide_plain_str(ZZZAAAM,include_Z=False,ZZZAAA=False,delimiter='-'):
-    '''
+    r'''
     Description:
         Converts a plaintext string of a nuclide to an integer ZZZAAAM = 10000\*Z + 10\*A + M
 
@@ -2263,7 +2263,7 @@ def rebinner(output_xbins,input_xbins,input_ybins):
 
 
 def calc_GCR_intensity(Z,W,E):
-    '''
+    r'''
     Description:
         Calculate GCR flux for a given ion at a given energy using the Matthia model
         https://www.sciencedirect.com/science/article/pii/S0273117712005947?via%3Dihub
@@ -2309,7 +2309,7 @@ def calc_GCR_intensity(Z,W,E):
     return IOSI
 
 def assemble_GCR_flux(W,Z_list,nEbins=1000):
-    '''
+    r'''
     Description:
         Composes a NumPy array containing GCR flux from 10 MeV/n to 1 TeV/n for each GCR ion specified
 
@@ -2351,7 +2351,7 @@ def assemble_GCR_flux(W,Z_list,nEbins=1000):
 
 
 def ICRP116_effective_dose_coeff(E=1.0,particle='photon',geometry='AP',interp_scale='log',interp_type='cubic',extrapolation_on=False):
-    '''
+    r'''
     Description:
         For a given particle at a given energy in a given geometry, returns its
         effective dose conversion coefficient from ICRP 116
@@ -3289,7 +3289,7 @@ def parse_dyld_files(path_to_dyld_file,iredufmt=None):
     '''
 
     def ZAM_to_Dname(ZAM):
-        '''
+        r'''
         Description:
             Converts a ZZZAAAM number to a DCHAIN-formatted nuclide name
 
