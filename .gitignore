@@ -3,3 +3,4 @@
 /docs/index.html
 .idea/*
 __pycache__/*
+.DS_Store
