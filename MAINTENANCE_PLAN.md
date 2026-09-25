@@ -11,7 +11,7 @@ Last updated: 2026-09-25
 - [ ] Stage 1 user visual review and authorized commit/push checkpoint.
 
 **Stage 1 tests and examples are implemented; toolkit behavior is unchanged.**
-`Hunters_tools.py` has not been edited. There are 21 passing synthetic tests and
+`Hunters_tools.py` has not been edited. There are 22 passing synthetic tests and
 a six-figure gallery, with instructions in `tests/README.md`. No packages were
 installed and no network access, commits, or pushes were performed in Stage 1.
 
@@ -157,12 +157,13 @@ Exit condition: a reproducible baseline exists without changing function results
 Commit(s): pending.
 
 Local validation (2026-09-25): `python3 -B -m unittest discover -s tests -v`
-passed all 21 tests. The gallery rendered all six PNGs. Representative visual
+passed all 22 tests after the legend-export repair. The gallery rendered all six PNGs. Representative visual
 inspection confirmed the known P12 map discrepancy; the center-map test checks
 the intended orientation, while the edge-map defect remains an explicitly labeled
 review example. PNG and SVG rendering are exercised in automated plot tests.
 The environment matches the review baseline listed below. Gallery exports use
-tight bounds to retain external colorbar labels and legends; no runtime layout
+tight bounds with explicit extra legend artists to retain external colorbar labels
+and legends; no runtime layout
 code was changed. Interactive GUI behavior and the author's visual acceptance
 remain pending.
 
@@ -414,3 +415,4 @@ Useful references:
 | --- | --- | --- |
 | 2026-09-24 | Two read-only review passes; documented the plan and updated priorities. | Synthetic checks described above; implementation and commits pending. |
 | 2026-09-25 | Stage 1: synthetic unittest suite, visual gallery, running instructions, and ignored disposable output. Toolkit unchanged. | 21 tests passed; six gallery figures rendered; user visual review and commit/push pending. GitHub tests explicitly deferred. |
+| 2026-09-25 | Repaired gallery legend cropping introduced by tight export bounds; added a saved-PNG regression check for right-side and bottom legends. | New test failed for both positions before repair; all 22 tests now pass. Gallery regenerated and legend/colorbar visibility inspected. Toolkit unchanged. |

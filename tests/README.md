@@ -55,8 +55,12 @@ under `examples/plot_output/`, ignored by Git. Previous runs are preserved for
 comparison. Rendering errors terminate the command rather than silently omitting
 a figure. The gallery uses direct `fig.savefig()` because repairs to the toolkit's
 save helper are scheduled for Stage 2.
-Exports use `bbox_inches='tight'` to include external legends and colorbar labels;
-this does not change the toolkit's layout or interactive window behavior.
+Exports use `bbox_inches='tight'` with external legends explicitly included in
+`bbox_extra_artists`, preserving legends and colorbar labels. Tight bounds alone
+cropped the legends in the initial gallery. A regression test now uses the same
+export function as the gallery, checks that right-side and bottom legends fit
+inside the saved PNG, and checks for drawn pixels in their image regions.
+This does not change the toolkit's layout or interactive window behavior.
 
 Editable `show_plots` and `save_plots` settings are near the top of the script.
 To try zoom/pan and further interactive review locally, set `show_plots = True`

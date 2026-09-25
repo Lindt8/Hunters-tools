@@ -3,6 +3,7 @@ import io
 import unittest
 
 from tests.support import ht, matplotlib, np, plt
+from examples.plot_gallery import save_figure
 
 
 class PlottingTests(unittest.TestCase):
@@ -50,6 +51,49 @@ class PlottingTests(unittest.TestCase):
                                    [[[1, 1.8], [1, 2.2]], [[2, 3.6], [2, 4.4]],
                                     [[3, 5.4], [3, 6.6]]])
         self.assert_renders(fig)
+
+    def test_gallery_export_contains_external_legend(self):
+        for position in ('outside right', 'outside bottom'):
+            with self.subTest(position=position):
+                fig, ax = ht.fancy_plot(
+                    [[1., 2., 3.], [1., 2., 3.]], [[2., 3., 4.], [4., 3., 2.]],
+                    x_scale='linear', y_scale='linear',
+                    data_labels=['First synthetic curve', 'Second synthetic curve'],
+                    legend_position=position)
+                legend = ax.get_legend()
+                self.assertIsNotNone(legend)
+                self.assertTrue(legend.get_visible())
+                saved_bounds = []
+
+                def record_export_bounds(event):
+                    # The last draw occurs on the cropped export canvas, after
+                    # savefig has shifted the artists into output coordinates.
+                    saved_bounds.append((fig.bbox.frozen(),
+                                         legend.get_window_extent(event.renderer).frozen()))
+
+                connection = fig.canvas.mpl_connect('draw_event', record_export_bounds)
+                try:
+                    with io.BytesIO() as output:
+                        save_figure(fig, output)
+                        output.seek(0)
+                        pixels = plt.imread(output, format='png')
+                finally:
+                    fig.canvas.mpl_disconnect(connection)
+                    plt.close(fig)
+
+                canvas, bounds = saved_bounds[-1]
+                height, width = pixels.shape[:2]
+                self.assertAlmostEqual(canvas.width, width, delta=1)
+                self.assertAlmostEqual(canvas.height, height, delta=1)
+                self.assertGreaterEqual(bounds.x0, 0)
+                self.assertGreaterEqual(bounds.y0, 0)
+                self.assertLessEqual(bounds.x1, width)
+                self.assertLessEqual(bounds.y1, height)
+                # Also check that the saved legend region contains drawn pixels,
+                # rather than only checking that an artist exists in memory.
+                legend_pixels = pixels[height-int(bounds.y1):height-int(bounds.y0),
+                                       int(bounds.x0):int(bounds.x1), :3]
+                self.assertTrue(np.any(legend_pixels < .8))
 
     def test_logarithmic_scales_and_explicit_limits(self):
         fig, ax = ht.fancy_plot([[1., 10., 100.]], [[1., 4., 9.]],

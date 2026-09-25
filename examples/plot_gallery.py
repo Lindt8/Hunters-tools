@@ -58,6 +58,19 @@ def generate_figures():
     return figures
 
 
+def save_figure(fig, destination, file_format='png', dpi=120):
+    """Export a gallery figure; shared with the saved-image regression test."""
+    # fancy_plot adds external legends as artists. Explicitly include them in
+    # the tight bounding box, alongside the usual labels and other artists.
+    extra_artists = list(fig.get_default_bbox_extra_artists())
+    for ax in fig.axes:
+        legend = ax.get_legend()
+        if legend is not None and legend.get_visible():
+            extra_artists.append(legend)
+    fig.savefig(destination, format=file_format, dpi=dpi, bbox_inches='tight',
+                bbox_extra_artists=extra_artists)
+
+
 def main():
     output_root.mkdir(parents=True, exist_ok=True)
     # A temporary configuration keeps these examples from writing to the user's
@@ -76,7 +89,7 @@ def main():
                 if save_plots:
                     output_dir = Path(tempfile.mkdtemp(prefix='gallery-', dir=output_root))
                     for name, (fig, ax) in figures.items():
-                        fig.savefig(output_dir / (name + '.png'), dpi=120, bbox_inches='tight')
+                        save_figure(fig, output_dir / (name + '.png'))
                     versions = '\n'.join(
                         f'{package}: {importlib.metadata.version(package)}'
                         for package in ('numpy', 'matplotlib', 'scipy', 'munch', 'lmfit'))
