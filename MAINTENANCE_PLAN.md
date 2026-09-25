@@ -1,22 +1,25 @@
 # Hunters_tools maintenance plan
 
-Last updated: 2026-09-24
+Last updated: 2026-09-25
 
 ## Current status and next action
 
 - [x] Review the documentation workflow and library compatibility.
 - [x] Perform a second, bug-focused review with small synthetic examples.
 - [x] Record findings, preservation requirements, and implementation stages here.
-- [ ] Begin Stage 1: establish a small regression suite and plotting gallery.
+- [x] Stage 1 local implementation: establish a small regression suite and plotting gallery.
+- [ ] Stage 1 user visual review and authorized commit/push checkpoint.
 
-**No implementation changes have been made.** This document is the only file
-created for the planning work. No fixes, test files, commits, or pushes have been
-made as part of this maintenance effort. Current authorization covers writing
-this document; the stages below describe future work.
+**Stage 1 tests and examples are implemented; toolkit behavior is unchanged.**
+`Hunters_tools.py` has not been edited. There are 21 passing synthetic tests and
+a six-figure gallery, with instructions in `tests/README.md`. No packages were
+installed and no network access, commits, or pushes were performed in Stage 1.
 
-Next action: when implementation is requested, begin Stage 1. Read this plan and
-the applicable AGENTS.md instructions, inspect the working tree, and preserve
-any unrelated user changes. Update this document at each completed checkpoint.
+Next action: review the gallery locally, then commit/push Stage 1 when authorized.
+Stage 2 follows that checkpoint; do not start its repairs implicitly. At each
+session, read this plan and the applicable AGENTS.md instructions, inspect the
+working tree, and preserve unrelated changes. Update this document at each
+completed checkpoint.
 
 ## Scope and behavior requirements
 
@@ -43,7 +46,7 @@ any unrelated user changes. Update this document at each completed checkpoint.
 - No packages are to be installed without permission. Network access was
   approved for the review's official-source and GitHub checks; do not treat that
   as authorization for unrelated network activity.
-- No commit or push is authorized by the request to create this document.
+- No commit or push is authorized by the request to begin Stage 1 implementation.
 
 ### Usage priorities
 
@@ -139,19 +142,33 @@ commit before the next push. Do not overwrite or rewrite remote history.
 
 ### Stage 1 — Test foundation and visual examples
 
-- [ ] Add a small passing suite for representative existing working behavior.
-- [ ] Cover `rebinner()` conservation and nonuniform-bin overlap without changing
+- [x] Add a small passing suite for representative existing working behavior.
+- [x] Cover `rebinner()` conservation and nonuniform-bin overlap without changing
       its implementation; establish examples for `tally()` compatibility work.
-- [ ] Add a synthetic plotting gallery, including asymmetric maps that expose
+- [x] Add a synthetic plotting gallery, including asymmetric maps that expose
       orientation errors, and clear instructions for running tests/examples.
-- [ ] Record the baseline environment and distinguish known failures from
+- [x] Record the baseline environment and distinguish known failures from
       established behavior.
-- [ ] Add GitHub test automation once local checks are dependable, or explicitly
+- [x] Add GitHub test automation once local checks are dependable, or explicitly
       record its deferral. Keep the existing documentation workflow.
 - [ ] Commit/push checkpoint; verify automation and update this plan.
 
 Exit condition: a reproducible baseline exists without changing function results.
 Commit(s): pending.
+
+Local validation (2026-09-25): `python3 -B -m unittest discover -s tests -v`
+passed all 21 tests. The gallery rendered all six PNGs. Representative visual
+inspection confirmed the known P12 map discrepancy; the center-map test checks
+the intended orientation, while the edge-map defect remains an explicitly labeled
+review example. PNG and SVG rendering are exercised in automated plot tests.
+The environment matches the review baseline listed below. Gallery exports use
+tight bounds to retain external colorbar labels and legends; no runtime layout
+code was changed. Interactive GUI behavior and the author's visual acceptance
+remain pending.
+
+GitHub automation is explicitly deferred until Stage 2 compatibility repairs
+and agreement on supported versions. No workflow or dependency changes were
+made. Tests/examples remain separate from the single-file runtime toolkit.
 
 ### Stage 2 — Compatibility, specialized imports, and small obvious fixes
 
@@ -396,3 +413,4 @@ Useful references:
 | Date | Work | Validation / commit |
 | --- | --- | --- |
 | 2026-09-24 | Two read-only review passes; documented the plan and updated priorities. | Synthetic checks described above; implementation and commits pending. |
+| 2026-09-25 | Stage 1: synthetic unittest suite, visual gallery, running instructions, and ignored disposable output. Toolkit unchanged. | 21 tests passed; six gallery figures rendered; user visual review and commit/push pending. GitHub tests explicitly deferred. |

@@ -10,3 +10,7 @@ One may use the functions by first placing the Hunters_tools.py Python script in
 I have also written similar tools modules for usage with the PHITS and DCHAIN-PHITS codes; they can be found at [PHITS-Tools](https://github.com/Lindt8/PHITS-Tools) and [DCHAIN-Tools](https://github.com/Lindt8/DCHAIN-Tools).
 
 All of the professionally-relevant Python modules I have developed are summarized [here](https://lindt8.github.io/professional-code-projects/), and more general information about me and the work I do / have done can be found on [my personal webpage](https://lindt8.github.io/).
+
+## Maintenance and testing
+
+See [the maintenance plan](MAINTENANCE_PLAN.md) for staged repairs and behavior-preservation requirements, and [the testing instructions](tests/README.md) for running the synthetic tests and plotting gallery. These development files are separate from the single-file toolkit and are not required to use it.
